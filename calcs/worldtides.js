@@ -32,15 +32,21 @@ module.exports = function (app, plugin) {
         agent('GET', endPoint).end().then(function onResult(response)  {
           worldtidesToDeltas(JSON.parse(response.text))
         })
-
       }
+
+      // DEV TESTING
+      //var response = require('../responses/worldtides.json')
+      //worldtidesToDeltas(response)
+
+
       function worldtidesToDeltas(response){
         app.debug('updating tide')
         if ( response.status != 200){
           app.debug('worldtides response: ' + response.error?response.error:'none')
         } else {
           app.debug(JSON.stringify(response))
-          response.extremes.forEach(extreme => {
+          response.extremes.forEach((extreme, index) => {
+            if (index > 1) return
             if (extreme.type == 'Low'){
               heightLowTime = new Date(extreme.dt*1000).toISOString()
               heightLow = extreme.height
