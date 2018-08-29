@@ -1,0 +1,22 @@
+signalk-tides-api starting worldtides +1m
+signalk-tides-api got delta: {"context":"vessels.urn:mrn:imo:mmsi:1000000","updates":[{"timestamp":"2018-08-29T02:22:30.820Z","values":[{"path":"environment.tide.heightHigh","value":0.004},{"path":"environment.tide.heightLow"},{"path":"environment.tide.timeLow"},{"path":"environment.tide.timeHigh","value":{"meta":{"units":"RFC 3339 (UTC)","description":"Time of next high tide in UTC"},"value":"2018-08-29T09:42:18.000Z","$source":"tides-api","timestamp":"2018-08-29T02:21:30.587Z"}}]}]} +1ms
+Illegal value in delta:{"path":"environment.tide.heightLow"}
+Illegal value in delta:{"path":"environment.tide.timeLow"}
+signalk-tides-api starting worldtides +1m
+TypeError: Converting circular structure to JSON
+  at JSON.stringify (<anonymous>)
+  at unsubscribes.push.Bacon.combineWith.changes.debounceImmediate.skipDuplicates.onValue.values (/Users/joachim/Downloads/signalk-tides-api/index.js:140:48)
+  at /Users/joachim/Downloads/signalk-tides-api/node_modules/baconjs/dist/Bacon.js:1048:16
+  at /Users/joachim/Downloads/signalk-tides-api/node_modules/baconjs/dist/Bacon.js:463:23
+  at processAfters (/Users/joachim/Downloads/signalk-tides-api/node_modules/baconjs/dist/Bacon.js:359:11)
+  at Object.inTransaction (/Users/joachim/Downloads/signalk-tides-api/node_modules/baconjs/dist/Bacon.js:439:9)
+  at Dispatcher.push (/Users/joachim/Downloads/signalk-tides-api/node_modules/baconjs/dist/Bacon.js:1214:24)
+  at Dispatcher.handleEvent (/Users/joachim/Downloads/signalk-tides-api/node_modules/baconjs/dist/Bacon.js:1267:17)
+  at /Users/joachim/Downloads/signalk-tides-api/node_modules/baconjs/dist/Bacon.js:242:17
+  at flushWhileTriggers (/Users/joachim/Downloads/signalk-tides-api/node_modules/baconjs/dist/Bacon.js:1502:25)
+  at flush (/Users/joachim/Downloads/signalk-tides-api/node_modules/baconjs/dist/Bacon.js:1531:23)
+  at Object.sink (/Users/joachim/Downloads/signalk-tides-api/node_modules/baconjs/dist/Bacon.js:1558:17)
+  at Dispatcher.pushToSubscriptions (/usr/local/lib/node_modules/signalk-server/node_modules/baconjs/dist/Bacon.js:1223:23)
+  at Dispatcher.pushIt (/usr/local/lib/node_modules/signalk-server/node_modules/baconjs/dist/Bacon.js:1245:10)
+  at Object.inTransaction (/usr/local/lib/node_modules/signalk-server/node_modules/baconjs/dist/Bacon.js:434:24)
+  at Dispatcher.push (/usr/local/lib/node_modules/signalk-server/node_modules/baconjs/dist/Bacon.js:1214:24)
