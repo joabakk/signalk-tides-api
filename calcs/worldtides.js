@@ -26,7 +26,7 @@ module.exports = function (app, plugin) {
       if(app.getSelfPath('environment.tide.timeLow')){
         heightLowTime = app.getSelfPath('environment.tide.timeLow')
       }
-      const endPoint = 'https://www.worldtides.info/api?extremes&lat='+position.latitude+'&lon='+position.longitude+'&length=52200&start='+now+'&key='+plugin.properties.tides.worldtidesApiKey
+      const endPoint = 'https://www.worldtides.info/api?extremes&lat='+position.latitude+'&lon='+position.longitude+'&length=52200&start='+now+'&datum=LAT&key='+plugin.properties.tides.worldtidesApiKey
 
       if( typeof heightHighTime == 'undefined' || (now < heightHighTime || now < heightLowTime)){
         agent('GET', endPoint).end().then(function onResult(response)  {
