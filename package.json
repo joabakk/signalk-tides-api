@@ -1,7 +1,7 @@
 {
   "name": "signalk-tides-api",
   "version": "0.0.1",
-  "description": "Plugin that derives signalk data from other signalk data",
+  "description": "Plugin that derives tides from online sources to signalK format",
   "main": "index.js",
   "scripts": {
     "test": "$NODE $npm_package_main"
@@ -31,6 +31,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sbender9/signalk-derived-data"
+    "url": "https://github.com/joabakk/signalk-tides-api"
   }
 }
