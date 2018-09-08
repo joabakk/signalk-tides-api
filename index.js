@@ -120,27 +120,35 @@ module.exports = function(app) {
           .changes()
           .debounceImmediate(calculation.debounceDelay || 20)
           .skipDuplicates(skip_function)
-          .onValue(values => {
-            if ( typeof values !== 'undefined' && values.length > 0 ) {
-              if ( values[0].context ) {
-                values.forEach(delta => {
-                  app.handleMessage(plugin.id, delta)
-                })
-              } else {
-                let delta = {
-                  "context": "vessels." + app.selfId,
-                  "updates": [
-                    {
-                      "timestamp": (new Date()).toISOString(),
-                      "values": values
-                    }
-                  ]
-                }
+          .onValue(promise => {
+            if ( !promise )
+              return
+            
+            promise.then((values) => {
+              if ( typeof values !== 'undefined' && values.length > 0 ) {
+                if ( values[0].context ) {
+                  values.forEach(delta => {
+                    app.handleMessage(plugin.id, delta)
+                  })
+                } else {
+                  let delta = {
+                    "context": "vessels." + app.selfId,
+                    "updates": [
+                      {
+                        "timestamp": (new Date()).toISOString(),
+                        "values": values
+                      }
+                    ]
+                  }
 
-                app.debug("got delta: " + JSON.stringify(delta))
-                app.handleMessage(plugin.id, delta)
+                  app.debug("got delta: " + JSON.stringify(delta))
+                  app.handleMessage(plugin.id, delta)
+                }
               }
-            }
+            }).catch(err => {
+              app.setProviderError(err.message)
+              app.error(err.message)
+            })
           })
       );
     });
@@ -150,11 +158,13 @@ module.exports = function(app) {
     unsubscribes.forEach(f => f());
     unsubscribes = [];
 
-    calculations.forEach(calc => {
-      if ( calc.stop ) {
-        calc.stop()
-      }
-    });
+    if ( calculations ) {
+      calculations.forEach(calc => {
+        if ( calc.stop ) {
+          calc.stop()
+        }
+      })
+    }
   }
 
   plugin.id = "tides-api"
@@ -279,8 +289,8 @@ module.exports = function(app) {
       }
     });
 
-    app.debug("schema: " + JSON.stringify(schema, null, 2))
-    app.debug("uiSchema: " + JSON.stringify(uiSchema, null, 2))
+    //app.debug("schema: " + JSON.stringify(schema, null, 2))
+    //app.debug("uiSchema: " + JSON.stringify(uiSchema, null, 2))
   }
 
   return plugin;
