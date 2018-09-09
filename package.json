@@ -19,7 +19,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "baconjs": "^0.7.88",
+    "baconjs": "^2.0.9",
     "cubic-spline": "^1.0.4",
     "geolib": "^2.0.24",
     "lethexa-motionpredict": "^0.4.1",
