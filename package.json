@@ -21,7 +21,7 @@
   "dependencies": {
     "baconjs": "^2.0.9",
     "cubic-spline": "^1.0.4",
-    "geolib": "^2.0.24",
+    "geolib": "^3.0.0",
     "lethexa-motionpredict": "^0.4.1",
     "lodash": "^4.17.4",
     "promise": "^8.0.1",
