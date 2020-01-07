@@ -26,7 +26,7 @@
     "lodash": "^4.17.4",
     "promise": "^8.0.1",
     "suncalc": "^1.8.0",
-    "superagent": "^3.8.3",
+    "superagent": "^5.2.0",
     "superagent-promise": "^1.1.0"
   },
   "repository": {
