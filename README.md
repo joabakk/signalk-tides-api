@@ -1,6 +1,6 @@
 # signalk-tides-API
 
-[![Build Status](https://travis-ci.org/joabakk/signalk-tides-api.svg?branch=master)](https://travis-ci.org/joabakk/signalk-tides-api)[![Greenkeeper badge](https://badges.greenkeeper.io/joabakk/signalk-tides-api.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/joabakk/signalk-tides-api.svg?branch=master)](https://travis-ci.org/joabakk/signalk-tides-api)
 
 This is a copy of sbender9's derived-data.
 
