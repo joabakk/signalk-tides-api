@@ -18,8 +18,8 @@ module.exports = function (app, plugin) {
   var downloadingStations = false
   var lastLowTime
   var lastHighTime
-  
-  
+
+
   function reportError(error) {
     app.setProviderError(error.message)
     app.error("error: " + error.message)
@@ -81,10 +81,10 @@ module.exports = function (app, plugin) {
     if ( ! sorted ) {
       sorted = sortStations(app, stations, position)
     }
-    
+
     let nowS = app.getSelfPath('navigation.datetime.value')
     let now = nowS ? new Date(nowS) : new Date()
-    
+
     let station = findClosestStation(app, sorted, position)
     const endpoint = new URL(dataGetterUrl);
     const params = endpoint.searchParams;
@@ -99,7 +99,7 @@ module.exports = function (app, plugin) {
     params.set('interval', 'hilo');
     params.set('format', 'json');
     app.debug(`${endpoint}`)
-        
+
     request({
       url: `${endpoint}`,
       method: "GET",
@@ -143,14 +143,15 @@ module.exports = function (app, plugin) {
       }
     })
   })
-  
+
   return {
     group: 'tides',
     optionKey: 'noaa',
-    title: 'NOAA',
+    title: 'NOAA (currently disabled)',
     derivedFrom: [ 'navigation.position'],
     debounceDelay: 10 * 1000,
-    calculator: function (position) {
+    calculator: function(position){return}
+    /*function (position) {
       if ( !stations || downloadingStations ) {
         return
       }
@@ -159,12 +160,12 @@ module.exports = function (app, plugin) {
         if ( ! sorted ) {
           sorted = sortStations(app, stations, position)
         }
-        
+
         let station = findClosestStation(app, sorted, position)
 
         let nowS = app.getSelfPath('navigation.datetime.value')
         let now = nowS ? new Date(nowS) : new Date()
-        
+
         if ( lastHighTime && lastLowTime && now.getTime() < lastHighTime && now.getTime() < lastLowTime ) {
           resolve(undefined)
           return
@@ -183,7 +184,7 @@ module.exports = function (app, plugin) {
         params.set('interval', 'hilo');
         params.set('format', 'json');
         app.debug(`${endpoint}`)
-        
+
         request({
           url: `${endpoint}`,
           method: "GET",
@@ -204,7 +205,7 @@ module.exports = function (app, plugin) {
             let nextLow
             body.predictions.forEach(p => {
               let date = new Date(moment(`${p.t}Z`))
-              
+
               if ( date.getTime() > now.getTime() ) {
                 if ( !nextHigh && p.type === 'H' ) {
                   nextHigh = p
@@ -215,7 +216,7 @@ module.exports = function (app, plugin) {
                 }
               }
             })
-            
+
             let updates = []
             if ( nextLow ) {
               lastLowTime = nextLow.date.getTime()
@@ -243,7 +244,7 @@ module.exports = function (app, plugin) {
           }
         })
       })
-    }
+    }*/
   }
 }
 
@@ -258,7 +259,7 @@ function sortStations(app, stations, position) {
     ...station,
     distance: geolib.getDistance(position, {latitude: station.lat, longitude: station.lon})
   }));
-  
+
   stationsWithDistances.sort((a, b) => a.distance - b.distance);
   return stationsWithDistances
 }
