@@ -68,7 +68,7 @@ module.exports = function (app, plugin) {
     }
   }
 
-  downloadStations()
+  //downloadStations()
 
   app.use('/signalk/v1/api/resources/tides/closest', (req, res, next) => {
     let position = app.getSelfPath('navigation.position.value')
