@@ -1,6 +1,6 @@
 {
   "name": "signalk-tides-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Plugin that derives tides from online sources to signalK format",
   "main": "index.js",
   "scripts": {
