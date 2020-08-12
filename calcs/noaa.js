@@ -5,9 +5,9 @@ const geolib = require('geolib')
 const { URL } = require('url');
 const moment = require('moment');
 
-const apiUrl = 'https://tidesandcurrents.noaa.gov/mdapi/v0.6/webapi'
-const stationsUrl = apiUrl + '/tidepredstations.json'
-const dataGetterUrl = 'https://tidesandcurrents.noaa.gov/api/datagetter'
+const apiUrl = 'https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi'
+const stationsUrl = apiUrl + '/stations.json?type=tidepredictions'
+const dataGetterUrl = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter'
 
 const datum = 'MLLW'
 
@@ -37,7 +37,7 @@ module.exports = function (app, plugin) {
         if ( error ) {
           reportError(error)
         } else {
-          let stationArray = body.stationList
+          let stationArray = body.stations
           stations = new Map(stationArray.map((station) => [station.stationId, station]));
           fs.writeFile(stationsFile, JSON.stringify(body, null, 2), err => {
             if ( err ) {
@@ -56,7 +56,7 @@ module.exports = function (app, plugin) {
         } else {
           try {
             let json = JSON.parse(data)
-            let stationArray = json.stationList
+            let stationArray = json.stations
             stations = new Map(stationArray.map((station) => [station.stationId, station]));
 
             downloadingStations = false
@@ -79,6 +79,7 @@ module.exports = function (app, plugin) {
     }
 
     if ( ! sorted ) {
+      app.debug(position, stations)
       sorted = sortStations(app, stations, position)
     }
 
@@ -88,12 +89,12 @@ module.exports = function (app, plugin) {
     let station = findClosestStation(app, sorted, position)
     const endpoint = new URL(dataGetterUrl);
     const params = endpoint.searchParams;
-    params.set('station', station.stationId);
-    params.set('begin_date', moment(now).subtract(1, 'day').format('YYYYMMDD'));
-    params.set('range', 24 * 3);
     params.set('product', 'predictions');
     params.set('application', 'signalk.org/node-server');
+    params.set('begin_date', moment(now).subtract(1, 'day').format('YYYYMMDD'));
+    params.set('end_date', moment(now).format('YYYYMMDD'));
     params.set('datum', datum);
+    params.set('station', station.reference_id);
     params.set('time_zone', 'gmt');
     params.set('units', 'metric');
     params.set('interval', 'hilo');
@@ -116,10 +117,10 @@ module.exports = function (app, plugin) {
         } else {
           let tides = {
             name: station.name,
-            id: station.id,
+            id: station.reference_id,
             position: {
               latitude: station.lat,
-              longitude: station.lon
+              longitude: station.lng
             },
             date: {}
           }
@@ -147,11 +148,10 @@ module.exports = function (app, plugin) {
   return {
     group: 'tides',
     optionKey: 'noaa',
-    title: 'NOAA (currently disabled)',
+    title: 'NOAA (US only)',
     derivedFrom: [ 'navigation.position'],
     debounceDelay: 10 * 1000,
-    calculator: function(position){return}
-    /*function (position) {
+    calculator: function (position) {
       if ( !stations || downloadingStations ) {
         return
       }
@@ -244,7 +244,7 @@ module.exports = function (app, plugin) {
           }
         })
       })
-    }*/
+    }
   }
 }
 
@@ -257,7 +257,7 @@ function findClosestStation(app, sorted, position) {
 function sortStations(app, stations, position) {
   const stationsWithDistances = [...stations.values()].map((station) => ({
     ...station,
-    distance: geolib.getDistance(position, {latitude: station.lat, longitude: station.lon})
+    distance: geolib.getDistance(position, {latitude: station.lat, longitude: station.lng})
   }));
 
   stationsWithDistances.sort((a, b) => a.distance - b.distance);
