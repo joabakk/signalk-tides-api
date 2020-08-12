@@ -26,6 +26,7 @@
     "lodash": "^4.17.16",
     "moment": "^2.27.0",
     "promise": "^8.0.1",
+    "request": "^2.88.2",
     "suncalc": "^1.8.0",
     "superagent": "^3.8.3",
     "superagent-promise": "^1.1.0"
