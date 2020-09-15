@@ -26,7 +26,7 @@
     "geolib": "^2.0.24",
     "lethexa-motionpredict": "^0.4.1",
     "lodash": "^4.17.20",
-    "moment": "^2.27.0",
+    "moment": "^2.28.0",
     "promise": "^8.1.0",
     "request": "^2.88.2",
     "suncalc": "^1.8.0",
