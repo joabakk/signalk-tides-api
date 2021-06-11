@@ -38,7 +38,7 @@ module.exports = function (app, plugin) {
           reportError(error)
         } else {
           let stationArray = body.stations
-          stations = new Map(stationArray.map((station) => [station.stationId, station]));
+          stations = new Map(stationArray.map((station) => [station.id, station]));
           fs.writeFile(stationsFile, JSON.stringify(body, null, 2), err => {
             if ( err ) {
               reportError(err)
@@ -57,7 +57,7 @@ module.exports = function (app, plugin) {
           try {
             let json = JSON.parse(data)
             let stationArray = json.stations
-            stations = new Map(stationArray.map((station) => [station.stationId, station]));
+            stations = new Map(stationArray.map((station) => [station.id, station]));
 
             downloadingStations = false
           } catch ( err ) {
@@ -173,7 +173,7 @@ module.exports = function (app, plugin) {
 
         const endpoint = new URL(dataGetterUrl);
         const params = endpoint.searchParams;
-        params.set('station', station.stationId);
+        params.set('station', station.id);
         params.set('begin_date', moment(now).format('YYYYMMDD MM:mm'));
         params.set('range', 24 * 1);
         params.set('product', 'predictions');
