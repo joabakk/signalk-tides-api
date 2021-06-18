@@ -153,6 +153,7 @@ module.exports = function (app, plugin) {
     debounceDelay: 10 * 1000,
     calculator: function (position) {
       if ( !stations || downloadingStations ) {
+        app.debug('skipping ' + downloadingStations)
         return
       }
 
@@ -167,6 +168,7 @@ module.exports = function (app, plugin) {
         let now = nowS ? new Date(nowS) : new Date()
 
         if ( lastHighTime && lastLowTime && now.getTime() < lastHighTime && now.getTime() < lastLowTime ) {
+          app.debug('waiting for tide change')
           resolve(undefined)
           return
         }
@@ -194,7 +196,7 @@ module.exports = function (app, plugin) {
             reportError(error)
             reject(error)
           } else {
-            //app.debug(JSON.stringify(body, null, 2))
+            app.debug(JSON.stringify(body, null, 2))
 
             if ( body.error ) {
               reject(new Error(`error response: ${body.error.message}`))
