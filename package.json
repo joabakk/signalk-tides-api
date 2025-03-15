@@ -4,9 +4,7 @@
   "description": "Plugin that derives tides from online sources to signalK format",
   "main": "index.js",
   "scripts": {
-    "test": "$NODE $npm_package_main",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "test": "$NODE $npm_package_main"
   },
   "keywords": [
     "signalk-node-server-plugin"
@@ -21,22 +19,17 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "baconjs": "^2.0.9",
-    "cubic-spline": "^1.0.4",
     "geolib": "^2.0.24",
-    "lethexa-motionpredict": "^0.4.1",
     "lodash": "^4.17.21",
     "moment": "^2.27.0",
     "promise": "^8.1.0",
     "request": "^2.88.2",
-    "suncalc": "^1.8.0",
     "superagent": "^3.8.3",
-    "superagent-promise": "^1.1.0",
-    "snyk": "^1.680.0"
+    "superagent-promise": "^1.1.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/joabakk/signalk-tides-api"
   },
-  "snyk": true
+  "signalk-plugin-enabled-by-default": true
 }
