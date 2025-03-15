@@ -19,15 +19,11 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "baconjs": "^2.0.9",
-    "cubic-spline": "^1.0.4",
     "geolib": "^2.0.24",
-    "lethexa-motionpredict": "^0.4.1",
     "lodash": "^4.17.21",
     "moment": "^2.27.0",
     "promise": "^8.1.0",
     "request": "^2.88.2",
-    "suncalc": "^1.8.0",
     "superagent": "^3.8.3",
     "superagent-promise": "^1.1.0"
   },
