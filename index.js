@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-const Bacon = require('baconjs');
 const _ = require('lodash')
 const path = require('path')
 const fs = require('fs')
@@ -26,10 +25,11 @@ const defaultTanks = 'fuel.0, fuel.1'
 
 module.exports = function(app) {
   var plugin = {};
-  var unsubscribes = []
   var schema
   var uiSchema
   var calculations
+  var intervalId
+  var updateInterval = 60 * 60 * 1000 // 1 hour
 
   plugin.start = function(props) {
     plugin.properties = props;
@@ -51,113 +51,89 @@ module.exports = function(app) {
     calculations = load_calcs(app, plugin, 'calcs')
     calculations = [].concat.apply([], calculations)
 
-    calculations.forEach(calculation => {
+    intervalId = setInterval(update, updateInterval);
+    update();
 
-      if ( calculation.group ) {
-        if ( !props[calculation.group] || !props[calculation.group][calculation.optionKey] ) {
+    function sendDeltas(promise) {
+      if (!promise) return;
+
+      promise
+        .then((values) => {
+          if (typeof values !== "undefined" && values.length > 0) {
+            if (values[0].context) {
+              values.forEach((delta) => {
+                app.handleMessage(plugin.id, delta);
+              });
+            } else {
+              let delta = {
+                context: "vessels." + app.selfId,
+                updates: [
+                  {
+                    timestamp: new Date().toISOString(),
+                    values: values,
+                  },
+                ],
+              };
+
+              app.debug("got delta: " + JSON.stringify(delta));
+              app.handleMessage(plugin.id, delta);
+            }
+          }
+        })
+        .catch((err) => {
+          app.setProviderError(err.message);
+          app.error(err.message);
+        });
+    }
+
+    function update() {
+      calculations.forEach(calculation => {
+        if ( calculation.group ) {
+          if ( !props[calculation.group] || !props[calculation.group][calculation.optionKey] ) {
+            return
+          }
+        } else if ( !props[calculation.optionKey] ) {
           return
         }
-      } else if ( !props[calculation.optionKey] ) {
-        return
-      }
 
-      var derivedFrom;
+        let { derivedFrom } = calculation;
+        if ( typeof derivedFrom == 'function' ) derivedFrom = derivedFrom();
 
-      if ( typeof calculation.derivedFrom == 'function' )
-        derivedFrom = calculation.derivedFrom()
-      else
-        derivedFrom = calculation.derivedFrom
-
-      var skip_function
-      if ( (typeof calculation.ttl !== 'undefined' && calculation.ttl > 0)
-           || props.default_ttl > 0 ) {
-        //app.debug("using skip")
-        skip_function = function(before, after) {
-          var tnow = (new Date()).getTime();
-          if ( _.isEqual(before,after) ) {
-            // values are equial, but should we emit the delta anyway.
-            // This protects from a sequence of changes that produce no change from
-            // generating events, but ensures events are still generated at
-            // a default rate. On  Pi Zero W, the extra cycles reduce power consumption.
-            if ( calculation.nextOutput > tnow ) {
-              //console.log("Rejected dupilate ", calculation.nextOutput - tnow);
-              return true;
-            }
-           //console.log("Sent dupilate ", calculation.nextOutput - tnow);
-          }
-
-          var ttl = typeof calculation.ttl === 'undefined' ? props.default_ttl : calculation.ttl;
-          //app.debug("ttl: " + ttl, "def: " + props.default_ttl)
-
-          calculation.nextOutput = tnow + (ttl*1000);
-          //console.log("New Value ----------------------------- ", before, after);
-          return false;
-        }
-      } else {
-        skip_function = function(before, after) { return false }
-      }
-
-      const selfStreams = derivedFrom.map((key, index) => {
-        let stream
-        /*
-        if ( !_.isUndefined(calculation.allContexts) && calculation.allContexts ) {
-          stream = app.streambundle.getBus(key)
-        } else {
-        */
-          stream = app.streambundle.getSelfStream(key)
-        /*}*/
-        if (calculation.defaults && calculation.defaults[index] != undefined) {
-          stream = stream.merge(Bacon.once(calculation.defaults[index]))
-        }
-        return stream
-      }, app.streambundle)
-
-      unsubscribes.push(
-        Bacon.combineWith(
-          calculation.calculator,
-          selfStreams
-        )
-          .changes()
-          .debounceImmediate(calculation.debounceDelay || 20)
-          .skipDuplicates(skip_function)
-          .onValue(promise => {
-            if ( !promise )
-              return
-            
-            promise.then((values) => {
-              if ( typeof values !== 'undefined' && values.length > 0 ) {
-                if ( values[0].context ) {
-                  values.forEach(delta => {
-                    app.handleMessage(plugin.id, delta)
-                  })
-                } else {
-                  let delta = {
-                    "context": "vessels." + app.selfId,
-                    "updates": [
-                      {
-                        "timestamp": (new Date()).toISOString(),
-                        "values": values
-                      }
-                    ]
-                  }
-
-                  app.debug("got delta: " + JSON.stringify(delta))
-                  app.handleMessage(plugin.id, delta)
-                }
+        var skip_function
+        if ( (typeof calculation.ttl !== 'undefined' && calculation.ttl > 0)
+            || props.default_ttl > 0 ) {
+          //app.debug("using skip")
+          skip_function = function(before, after) {
+            var tnow = (new Date()).getTime();
+            if ( _.isEqual(before,after) ) {
+              // values are equal, but should we emit the delta anyway.
+              // This protects from a sequence of changes that produce no change from
+              // generating events, but ensures events are still generated at
+              // a default rate. On  Pi Zero W, the extra cycles reduce power consumption.
+              if ( calculation.nextOutput > tnow ) {
+                //console.log("Rejected dupilate ", calculation.nextOutput - tnow);
+                return true;
               }
-            }).catch(err => {
-              app.setProviderError(err.message)
-              app.error(err.message)
-            })
-          })
-      );
-    });
+            //console.log("Sent dupilate ", calculation.nextOutput - tnow);
+            }
+
+            var ttl = typeof calculation.ttl === 'undefined' ? props.default_ttl : calculation.ttl;
+            //app.debug("ttl: " + ttl, "def: " + props.default_ttl)
+
+            calculation.nextOutput = tnow + (ttl*1000);
+            //console.log("New Value ----------------------------- ", before, after);
+            return false;
+          }
+        } else {
+          skip_function = function(before, after) { return false }
+        }
+
+        sendDeltas(calculation.calculator(app.getSelfPath("navigation.position").value));
+      });
+    }
   }
 
   plugin.stop = function() {
-    unsubscribes.forEach(f => f());
-    unsubscribes = [];
-
     if ( calculations ) {
       calculations.forEach(calc => {
         if ( calc.stop ) {
