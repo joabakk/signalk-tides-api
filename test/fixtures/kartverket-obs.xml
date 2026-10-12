@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC FIXTURE for tests. Structure inferred from NIVANorge/nortide and Home Assistant usage of tideapi.php; NOT captured from the live API. Values are made up. -->
+<tide>
+  <locationdata>
+    <location name="Viker" code="VIK" latitude="59.036000" longitude="10.950000"/>
+    <reflevelcode>CD</reflevelcode>
+    <data type="observation" unit="cm">
+      <waterlevel value="58.0" time="2026-10-12T14:00:00+00:00" flag="obs"/>
+      <waterlevel value="64.3" time="2026-10-12T15:00:00+00:00" flag="obs"/>
+    </data>
+  </locationdata>
+</tide>

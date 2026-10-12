@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC FIXTURE for tests. Structure inferred from NIVANorge/nortide and Home Assistant usage of tideapi.php; NOT captured from the live API. Values are made up. -->
+<tide>
+  <locationdata>
+    <location name="Lesja" latitude="62.298400" longitude="9.242200"/>
+    <nodata info="Position is out of range or on land"/>
+  </locationdata>
+</tide>

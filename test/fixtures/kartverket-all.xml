@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC FIXTURE for tests. Structure inferred from NIVANorge/nortide and Home Assistant usage of tideapi.php; NOT captured from the live API. Values are made up. -->
+<tide>
+  <locationdata>
+    <location name="Fredrikstad" code="" latitude="59.210000" longitude="10.950000" delay="0" factor="1.00" obsname="Viker" obscode="VIK" descr="Water level &amp; tide, location"/>
+    <reflevelcode>CD</reflevelcode>
+    <data type="prediction" unit="cm">
+      <waterlevel value="43.7" time="2026-10-12T14:00:00+00:00" flag="pre"/>
+      <waterlevel value="50.0" time="2026-10-12T15:00:00+00:00" flag="pre"/>
+      <waterlevel value="57.4" time="2026-10-12T16:00:00+00:00" flag="pre"/>
+      <waterlevel value="64.3" time="2026-10-12T17:00:00+00:00" flag="pre"/>
+      <waterlevel value="68.8" time="2026-10-12T18:00:00+00:00" flag="pre"/>
+      <waterlevel value="69.9" time="2026-10-12T19:00:00+00:00" flag="pre"/>
+      <waterlevel value="67.2" time="2026-10-12T20:00:00+00:00" flag="pre"/>
+      <waterlevel value="61.5" time="2026-10-12T21:00:00+00:00" flag="pre"/>
+      <waterlevel value="54.2" time="2026-10-12T22:00:00+00:00" flag="pre"/>
+      <waterlevel value="47.0" time="2026-10-12T23:00:00+00:00" flag="pre"/>
+      <waterlevel value="41.9" time="2026-10-13T00:00:00+00:00" flag="pre"/>
+      <waterlevel value="40.0" time="2026-10-13T01:00:00+00:00" flag="pre"/>
+      <waterlevel value="41.9" time="2026-10-13T02:00:00+00:00" flag="pre"/>
+      <waterlevel value="47.1" time="2026-10-13T03:00:00+00:00" flag="pre"/>
+      <waterlevel value="54.3" time="2026-10-13T04:00:00+00:00" flag="pre"/>
+      <waterlevel value="61.6" time="2026-10-13T05:00:00+00:00" flag="pre"/>
+      <waterlevel value="67.3" time="2026-10-13T06:00:00+00:00" flag="pre"/>
+      <waterlevel value="69.9" time="2026-10-13T07:00:00+00:00" flag="pre"/>
+      <waterlevel value="68.8" time="2026-10-13T08:00:00+00:00" flag="pre"/>
+      <waterlevel value="64.2" time="2026-10-13T09:00:00+00:00" flag="pre"/>
+      <waterlevel value="57.3" time="2026-10-13T10:00:00+00:00" flag="pre"/>
+      <waterlevel value="49.9" time="2026-10-13T11:00:00+00:00" flag="pre"/>
+      <waterlevel value="43.7" time="2026-10-13T12:00:00+00:00" flag="pre"/>
+      <waterlevel value="40.3" time="2026-10-13T13:00:00+00:00" flag="pre"/>
+      <waterlevel value="40.7" time="2026-10-13T14:00:00+00:00" flag="pre"/>
+      <waterlevel value="44.6" time="2026-10-13T15:00:00+00:00" flag="pre"/>
+      <waterlevel value="51.1" time="2026-10-13T16:00:00+00:00" flag="pre"/>
+      <waterlevel value="58.6" time="2026-10-13T17:00:00+00:00" flag="pre"/>
+      <waterlevel value="65.2" time="2026-10-13T18:00:00+00:00" flag="pre"/>
+      <waterlevel value="69.3" time="2026-10-13T19:00:00+00:00" flag="pre"/>
+      <waterlevel value="69.7" time="2026-10-13T20:00:00+00:00" flag="pre"/>
+      <waterlevel value="66.5" time="2026-10-13T21:00:00+00:00" flag="pre"/>
+    </data>
+    <data type="weathereffect" unit="cm">
+      <waterlevel value="12.0" time="2026-10-12T14:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.9" time="2026-10-12T15:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.9" time="2026-10-12T16:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.8" time="2026-10-12T17:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.7" time="2026-10-12T18:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.7" time="2026-10-12T19:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.6" time="2026-10-12T20:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.5" time="2026-10-12T21:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.5" time="2026-10-12T22:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.4" time="2026-10-12T23:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.4" time="2026-10-13T00:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.3" time="2026-10-13T01:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.2" time="2026-10-13T02:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.2" time="2026-10-13T03:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.1" time="2026-10-13T04:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.0" time="2026-10-13T05:00:00+00:00" flag="weather"/>
+      <waterlevel value="11.0" time="2026-10-13T06:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.9" time="2026-10-13T07:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.8" time="2026-10-13T08:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.8" time="2026-10-13T09:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.7" time="2026-10-13T10:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.6" time="2026-10-13T11:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.6" time="2026-10-13T12:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.5" time="2026-10-13T13:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.5" time="2026-10-13T14:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.4" time="2026-10-13T15:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.3" time="2026-10-13T16:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.3" time="2026-10-13T17:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.2" time="2026-10-13T18:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.1" time="2026-10-13T19:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.1" time="2026-10-13T20:00:00+00:00" flag="weather"/>
+      <waterlevel value="10.0" time="2026-10-13T21:00:00+00:00" flag="weather"/>
+    </data>
+    <data type="forecast" unit="cm">
+      <waterlevel value="55.7" time="2026-10-12T14:00:00+00:00" flag="fore"/>
+      <waterlevel value="61.9" time="2026-10-12T15:00:00+00:00" flag="fore"/>
+      <waterlevel value="69.3" time="2026-10-12T16:00:00+00:00" flag="fore"/>
+      <waterlevel value="76.1" time="2026-10-12T17:00:00+00:00" flag="fore"/>
+      <waterlevel value="80.6" time="2026-10-12T18:00:00+00:00" flag="fore"/>
+      <waterlevel value="81.6" time="2026-10-12T19:00:00+00:00" flag="fore"/>
+      <waterlevel value="78.9" time="2026-10-12T20:00:00+00:00" flag="fore"/>
+      <waterlevel value="73.1" time="2026-10-12T21:00:00+00:00" flag="fore"/>
+      <waterlevel value="65.6" time="2026-10-12T22:00:00+00:00" flag="fore"/>
+      <waterlevel value="58.4" time="2026-10-12T23:00:00+00:00" flag="fore"/>
+      <waterlevel value="53.2" time="2026-10-13T00:00:00+00:00" flag="fore"/>
+      <waterlevel value="51.3" time="2026-10-13T01:00:00+00:00" flag="fore"/>
+      <waterlevel value="53.1" time="2026-10-13T02:00:00+00:00" flag="fore"/>
+      <waterlevel value="58.2" time="2026-10-13T03:00:00+00:00" flag="fore"/>
+      <waterlevel value="65.4" time="2026-10-13T04:00:00+00:00" flag="fore"/>
+      <waterlevel value="72.6" time="2026-10-13T05:00:00+00:00" flag="fore"/>
+      <waterlevel value="78.3" time="2026-10-13T06:00:00+00:00" flag="fore"/>
+      <waterlevel value="80.8" time="2026-10-13T07:00:00+00:00" flag="fore"/>
+      <waterlevel value="79.6" time="2026-10-13T08:00:00+00:00" flag="fore"/>
+      <waterlevel value="75.0" time="2026-10-13T09:00:00+00:00" flag="fore"/>
+      <waterlevel value="68.0" time="2026-10-13T10:00:00+00:00" flag="fore"/>
+      <waterlevel value="60.5" time="2026-10-13T11:00:00+00:00" flag="fore"/>
+      <waterlevel value="54.3" time="2026-10-13T12:00:00+00:00" flag="fore"/>
+      <waterlevel value="50.8" time="2026-10-13T13:00:00+00:00" flag="fore"/>
+      <waterlevel value="51.1" time="2026-10-13T14:00:00+00:00" flag="fore"/>
+      <waterlevel value="55.0" time="2026-10-13T15:00:00+00:00" flag="fore"/>
+      <waterlevel value="61.4" time="2026-10-13T16:00:00+00:00" flag="fore"/>
+      <waterlevel value="68.9" time="2026-10-13T17:00:00+00:00" flag="fore"/>
+      <waterlevel value="75.4" time="2026-10-13T18:00:00+00:00" flag="fore"/>
+      <waterlevel value="79.4" time="2026-10-13T19:00:00+00:00" flag="fore"/>
+      <waterlevel value="79.8" time="2026-10-13T20:00:00+00:00" flag="fore"/>
+      <waterlevel value="76.5" time="2026-10-13T21:00:00+00:00" flag="fore"/>
+    </data>
+  </locationdata>
+</tide>

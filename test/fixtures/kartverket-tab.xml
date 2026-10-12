@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC FIXTURE for tests. Structure inferred from NIVANorge/nortide and Home Assistant usage of tideapi.php; NOT captured from the live API. Values are made up. -->
+<tide>
+  <locationdata>
+    <location name="Fredrikstad" code="" latitude="59.210000" longitude="10.950000" delay="0" factor="1.00" obsname="Viker" obscode="VIK" descr="Water level &amp; tide, location"/>
+    <reflevelcode>CD</reflevelcode>
+    <data type="prediction" unit="cm">
+      <waterlevel value="70.0" time="2026-10-12T18:47:00+00:00" flag="high"/>
+      <waterlevel value="40.0" time="2026-10-13T01:00:00+00:00" flag="low"/>
+      <waterlevel value="70.0" time="2026-10-13T07:12:00+00:00" flag="high"/>
+      <waterlevel value="40.0" time="2026-10-13T13:25:00+00:00" flag="low"/>
+      <waterlevel value="70.0" time="2026-10-13T19:37:00+00:00" flag="high"/>
+    </data>
+  </locationdata>
+</tide>

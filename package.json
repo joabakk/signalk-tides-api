@@ -4,7 +4,7 @@
   "description": "Plugin that derives tides from online sources to signalK format",
   "main": "index.js",
   "scripts": {
-    "test": "$NODE $npm_package_main",
+    "test": "node test/kartverket.test.js",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"
   },
