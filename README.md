@@ -32,7 +32,7 @@ Published paths (heights in metres above the chosen reference level, times in UT
 | `environment.tide.heightPredicted` | astronomical tide now (not in the Signal K specification) |
 | `environment.tide.heightForecast` | forecast water level now, including wind and air pressure (not in the specification) |
 | `environment.tide.weatherEffect` | forecast minus prediction, i.e. the effect of wind and pressure (not in the specification) |
-| `environment.tide.heightObserved` | latest measured water level from a tide gauge, not older than 3 hours (not in the specification) |
+| `environment.tide.heightObserved` | latest observed water level, not older than 3 hours (not in the specification) |
 
 In the Oslofjord and Skagerrak the astronomical tide is small (about 30 cm range at Fredrikstad),
 so wind and air pressure often matter more. Compare `heightForecast` or `heightObserved` with `heightPredicted`.
@@ -43,7 +43,7 @@ Options:
 |---|---|---|
 | Reference level | Chart datum (CD) | `CD` chart datum (sjøkartnull), `MSL` mean sea level, `NN2000` Norwegian height datum |
 | Minutes between water level updates | 30 | minimum 10 |
-| Station latitude / longitude | empty | position of a Kartverket tide gauge (find it on https://kartverket.no/en/at-sea/se-havniva). Kartverket only returns measured water levels for station positions, so set this to get `heightObserved` while sailing. Costs one extra request per update. |
+| Station latitude / longitude | empty | position of a Kartverket tide gauge (find it on https://kartverket.no/en/at-sea/se-havniva). Usually not needed: where Kartverket derives a position's tide from a nearby gauge, it also returns that gauge's observations (Fredrikstad gets Viker's, shifted 5 minutes and scaled by 1.03). Set this only if `heightObserved` stays empty for your area. Costs one extra request per update. |
 | API address | `https://vannstand.kartverket.no/tideapi.php` | change only if Kartverket moves the service (it used to be `api.sehavniva.no`) |
 
 Requests and caching: the high/low table is requested again only after the next high or low tide has
@@ -64,5 +64,5 @@ or share the data.
 npm test
 ```
 
-Runs the Kartverket provider tests offline against XML fixtures in `test/fixtures`. These fixtures are
-synthetic: their structure follows other clients of the API, not a captured live response.
+Runs the Kartverket provider tests offline against XML fixtures in `test/fixtures`. `kartverket-live-*.xml`
+are real responses for Fredrikstad (data: Kartverket, CC BY 4.0); the others are synthetic, in the same format.

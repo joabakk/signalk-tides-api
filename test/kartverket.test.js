@@ -1,8 +1,8 @@
 /*
  * Offline tests for calcs/kartverket.js. Run with: node test/kartverket.test.js
  *
- * The XML fixtures in test/fixtures are synthetic: their structure follows what
- * other clients of tideapi.php parse, but they were not captured from the live API.
+ * kartverket-live-*.xml are real responses from Kartverket (Fredrikstad, 2026-10-12).
+ * The other fixtures are synthetic, written in the same format.
  */
 const assert = require('assert')
 const fs = require('fs')
@@ -130,6 +130,26 @@ test('derives high and low from the prediction when the table has no flags', () 
   assert.ok(Math.abs(low.value - 0.4) <= 0.01, String(low.value))
 })
 
+test('live response: parses all four series, including values without a flag', () => {
+  const r = kartverket.parseTideXml(fixture('kartverket-live-all.xml'))
+  assert.deepStrictEqual(Object.keys(r.series).sort(), ['forecast', 'observation', 'prediction', 'weathereffect'])
+  assert.strictEqual(r.series.observation[0].value, 0.588)
+  assert.strictEqual(r.series.weathereffect[0].value, -0.127)
+  assert.strictEqual(r.series.weathereffect[0].flag, '')
+  assert.strictEqual(r.location.obscode, 'VIK')
+  assert.strictEqual(r.reflevelcode, 'CD')
+})
+
+test('live response: tide table', () => {
+  const points = kartverket.extremesFrom(kartverket.parseTideXml(fixture('kartverket-live-tab.xml')))
+  assert.strictEqual(points.length, 5)
+  const { high, low } = kartverket.nextExtremes(points, new Date('2026-10-12T12:00:00Z'))
+  assert.strictEqual(high.time.toISOString(), '2026-10-12T16:45:00.000Z')
+  assert.strictEqual(high.value, 0.771)
+  assert.strictEqual(low.time.toISOString(), '2026-10-12T22:21:00.000Z')
+  assert.strictEqual(low.value, 0.568)
+})
+
 // --- provider -----------------------------------------------------------------
 
 test('publishes high, low and height now with the expected request', async () => {
@@ -165,6 +185,25 @@ test('publishes high, low and height now with the expected request', async () =>
     assert.deepStrictEqual(fetchText.calls.map(u => u.searchParams.get('datatype')), ['tab', 'all'])
     assert.ok(app.statuses.some(s => s.includes('Kartverket')), 'attribution in status')
     assert.deepStrictEqual(app.providerErrors, [])
+  } finally {
+    calc.stop()
+  }
+})
+
+test('live responses: height now is the observation, with prediction, forecast and weather effect', async () => {
+  const { calc, state } = setup({ overrides: { tab: fixture('kartverket-live-tab.xml'), all: fixture('kartverket-live-all.xml') } })
+  state.now = '2026-10-12T16:30:00Z'
+  try {
+    const v = byPath(await calc.calculator(FREDRIKSTAD))
+    assert.strictEqual(v['environment.tide.heightHigh'], 0.771)
+    assert.strictEqual(v['environment.tide.timeHigh'], '2026-10-12T16:45:00.000Z')
+    assert.strictEqual(v['environment.tide.heightLow'], 0.568)
+    assert.strictEqual(v['environment.tide.timeLow'], '2026-10-12T22:21:00.000Z')
+    assert.strictEqual(v['environment.tide.heightNow'], 0.642) // observation at 16:00
+    assert.strictEqual(v['environment.tide.heightObserved'], 0.642)
+    assert.strictEqual(v['environment.tide.heightPredicted'], 0.762)
+    assert.strictEqual(v['environment.tide.heightForecast'], 0.642)
+    assert.ok(Math.abs(v['environment.tide.weatherEffect'] - -0.1085) < 0.001, String(v['environment.tide.weatherEffect']))
   } finally {
     calc.stop()
   }
