@@ -1,4 +1,4 @@
-const request = require("request")
+const superagent = require("superagent")
 const path = require('path')
 const fs = require('fs')
 const geolib = require('geolib')
@@ -11,6 +11,21 @@ const dataGetterUrl = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter
 
 const datum = 'MLLW'
 
+// Stand-in for the deprecated request module, for the GET + json calls below:
+// callback(error, response, body). Error statuses still deliver their body, and the
+// callback runs outside the promise chain like it did with request.
+function request(options, callback) {
+  superagent
+    .get(options.url)
+    .set('Accept', 'application/json')
+    .then(
+      res => setImmediate(() => callback(null, res, res.body)),
+      err => setImmediate(() => err.response
+        ? callback(null, err.response, err.response.body)
+        : callback(err))
+    )
+}
+
 module.exports = function (app, plugin) {
   const stationsFile = path.join(app.config.configPath, 'noaastations.json')
   var stations
@@ -21,7 +36,12 @@ module.exports = function (app, plugin) {
 
 
   function reportError(error) {
-    app.setProviderError(error.message)
+    // setPluginError replaces setProviderError in newer servers
+    if ( app.setPluginError ) {
+      app.setPluginError(error.message)
+    } else if ( app.setProviderError ) {
+      app.setProviderError(error.message)
+    }
     app.error("error: " + error.message)
   }
 

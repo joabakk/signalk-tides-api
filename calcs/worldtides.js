@@ -1,6 +1,5 @@
 module.exports = function (app, plugin) {
-  var Promise = this.Promise || require('promise');
-  var agent = require('superagent-promise')(require('superagent'), Promise)
+  var superagent = require('superagent')
   var heightLowTime, heightHighTime, heightLow, heightHigh
   var update = true
   var updates = []
@@ -30,9 +29,9 @@ module.exports = function (app, plugin) {
         const endPoint = 'https://www.worldtides.info/api?extremes&lat='+position.latitude+'&lon='+position.longitude+'&length=52200&start='+now+'&datum=LAT&key='+plugin.properties.tides.worldtidesApiKey
 
         if( typeof heightHighTime == 'undefined' || (now < heightHighTime || now < heightLowTime)){
-          agent('GET', endPoint).end().then(function onResult(response)  {
+          superagent.get(endPoint).then(function onResult(response)  {
             worldtidesToDeltas(JSON.parse(response.text))
-          })
+          }).catch(reject)
         } else {
           resolve(undefined)
           return
