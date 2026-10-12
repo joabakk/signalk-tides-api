@@ -209,6 +209,49 @@ test('live responses: height now is the observation, with prediction, forecast a
   }
 })
 
+test('live responses after the last weather effect value: uses the latest one', async () => {
+  const { calc, state } = setup({ overrides: { tab: fixture('kartverket-live-tab.xml'), all: fixture('kartverket-live-all.xml') } })
+  state.now = '2026-10-12T17:25:00Z' // weathereffect ends at 17:00, forecast and prediction too in this trimmed file
+  try {
+    const v = byPath(await calc.calculator(FREDRIKSTAD))
+    assert.strictEqual(v['environment.tide.weatherEffect'], -0.104)
+    assert.strictEqual(v['environment.tide.heightNow'], 0.665)
+    assert.strictEqual(v['environment.tide.timeHigh'], '2026-10-13T05:05:00.000Z')
+  } finally {
+    calc.stop()
+  }
+})
+
+test('weather effect falls back to forecast minus prediction', async () => {
+  const noWeather = fixture('kartverket-live-all.xml').replace(/<data type="weathereffect"[\s\S]*?<\/data>/, '')
+  const { calc, state } = setup({ overrides: { tab: fixture('kartverket-live-tab.xml'), all: noWeather } })
+  state.now = '2026-10-12T16:00:00Z'
+  try {
+    const v = byPath(await calc.calculator(FREDRIKSTAD))
+    assert.strictEqual(v['environment.tide.weatherEffect'], -0.12) // 63.5 - 75.5 cm
+  } finally {
+    calc.stop()
+  }
+})
+
+test('sends units for the non-standard paths once', async () => {
+  const { calc, app, state } = setup()
+  try {
+    await calc.calculator(FREDRIKSTAD)
+    state.now = '2026-10-12T15:20:00Z'
+    await calc.calculator(FREDRIKSTAD)
+    const metas = app.messages.filter(m => m.updates[0].meta)
+    assert.strictEqual(metas.length, 1)
+    assert.strictEqual(metas[0].context, 'vessels.' + app.selfId)
+    const paths = metas[0].updates[0].meta.map(m => m.path).sort()
+    assert.deepStrictEqual(paths, ['environment.tide.heightForecast', 'environment.tide.heightObserved',
+      'environment.tide.heightPredicted', 'environment.tide.weatherEffect'])
+    assert.ok(metas[0].updates[0].meta.every(m => m.value.units === 'm' && m.value.description))
+  } finally {
+    calc.stop()
+  }
+})
+
 test('caches: water level every 30 min, tide table only after the next event', async () => {
   const { calc, fetchText, state } = setup()
   try {
@@ -454,8 +497,8 @@ test('re-publishes from the cache on a timer without new requests', async () => 
     await calc.calculator(FREDRIKSTAD)
     state.now = '2026-10-12T15:20:00Z'
     await new Promise(resolve => setTimeout(resolve, 100))
-    assert.ok(app.messages.length >= 1, 'published by the timer')
-    const delta = app.messages[app.messages.length - 1]
+    assert.ok(app.messages.some(m => m.updates[0].values), 'published by the timer')
+    const delta = app.messages.filter(m => m.updates[0].values).pop()
     assert.strictEqual(delta.context, 'vessels.' + app.selfId)
     const v = byPath(delta.updates[0].values)
     // 15:20 is between 15:00 (50.0) and 16:00 (57.4)

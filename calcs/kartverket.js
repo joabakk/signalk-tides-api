@@ -30,6 +30,14 @@ const REFETCH_DISTANCE = 5000 // metres moved before the location data is fetche
 const MAX_OBSERVATION_AGE = 3 * HOUR
 const REQUEST_TIMEOUT = { response: 20 * 1000, deadline: 60 * 1000 }
 
+// Units and descriptions for the paths that are not in the Signal K specification.
+const META = [
+  ['environment.tide.heightPredicted', 'Astronomical tide now, from Kartverket'],
+  ['environment.tide.heightForecast', 'Forecast water level now including wind and air pressure, from Kartverket'],
+  ['environment.tide.weatherEffect', 'Effect of wind and air pressure on the water level (forecast minus astronomical tide), from Kartverket'],
+  ['environment.tide.heightObserved', 'Latest observed water level, from Kartverket']
+].map(([path, description]) => ({ path, value: { units: 'm', description } }))
+
 module.exports = function (app, plugin, deps) {
   const fetchText = (deps && deps.fetchText) || defaultFetchText
   const republishInterval = (deps && deps.republishInterval) || REPUBLISH_INTERVAL
@@ -40,6 +48,7 @@ module.exports = function (app, plugin, deps) {
   const failures = { tab: { count: 0, retryAt: 0 }, levels: { count: 0, retryAt: 0 }, observed: { count: 0, retryAt: 0 } }
   let running
   let timer
+  let metaSent = false
 
   function config () {
     const tides = (plugin.properties && plugin.properties.tides) || {}
@@ -197,7 +206,15 @@ module.exports = function (app, plugin, deps) {
       const forecast = valueAt(s.forecast, now)
       push('environment.tide.heightPredicted', predicted)
       push('environment.tide.heightForecast', forecast)
-      push('environment.tide.weatherEffect', valueAt(s.weathereffect, now))
+      // The weather effect series stops at the latest observation, so between hours use
+      // the latest value; without the series, forecast minus prediction.
+      let weather = valueAt(s.weathereffect, now)
+      if (weather === null) {
+        const latest = latestObservation(s.weathereffect, now)
+        if (latest) weather = latest.value
+        else if (forecast !== null && predicted !== null) weather = round(forecast - predicted)
+      }
+      push('environment.tide.weatherEffect', weather)
       const obs = latestObservation(s.observation, now)
       const stationObs = observed ? latestObservation(observed.series.observation, now) : null
       const best = stationObs || obs
@@ -216,6 +233,14 @@ module.exports = function (app, plugin, deps) {
     } else if (observed) {
       const stationObs = latestObservation(observed.series.observation, now)
       if (stationObs) push('environment.tide.heightObserved', stationObs.value)
+    }
+
+    if (values.length && !metaSent) {
+      metaSent = true
+      app.handleMessage(plugin.id, {
+        context: 'vessels.' + app.selfId,
+        updates: [{ meta: META }]
+      })
     }
 
     if (values.length && app.setProviderStatus) {
