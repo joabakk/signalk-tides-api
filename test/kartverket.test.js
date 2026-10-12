@@ -27,8 +27,11 @@ function mockApp (state) {
     messages: [],
     debug () {},
     error (m) { this.errors.push(m) },
-    setProviderError (m) { this.providerErrors.push(m) },
-    setProviderStatus (m) { this.statuses.push(m) },
+    deprecated: [],
+    setPluginError (m) { this.providerErrors.push(m) },
+    setPluginStatus (m) { this.statuses.push(m) },
+    setProviderError (m) { this.deprecated.push(m) },
+    setProviderStatus (m) { this.deprecated.push(m) },
     handleMessage (id, delta) { this.messages.push(delta) },
     getSelfPath (p) {
       if (p === 'navigation.datetime') return state.now ? { value: state.now } : undefined
@@ -185,6 +188,7 @@ test('publishes high, low and height now with the expected request', async () =>
     assert.deepStrictEqual(fetchText.calls.map(u => u.searchParams.get('datatype')), ['tab', 'all'])
     assert.ok(app.statuses.some(s => s.includes('Kartverket')), 'attribution in status')
     assert.deepStrictEqual(app.providerErrors, [])
+    assert.deepStrictEqual(app.deprecated, [], 'uses setPluginStatus/setPluginError when available')
   } finally {
     calc.stop()
   }
@@ -329,6 +333,27 @@ test('adds observed level from a configured station', async () => {
     assert.strictEqual(obsCall.searchParams.get('lat'), '59.0360')
     assert.strictEqual(v['environment.tide.heightObserved'], 0.643)
     assert.strictEqual(v['environment.tide.heightNow'], v['environment.tide.heightForecast'])
+  } finally {
+    calc.stop()
+  }
+})
+
+test('older servers without setPluginStatus/setPluginError still get status and errors', async () => {
+  const state = { now: '2026-10-12T15:10:00Z' }
+  const app = mockApp(state)
+  app.setPluginError = undefined
+  app.setPluginStatus = undefined
+  const good = mockFetch()
+  let fail = false
+  const fetchText = url => fail ? Promise.reject(new Error('ECONNREFUSED')) : good(url)
+  const calc = kartverket(app, { id: 'tides-api', properties: { tides: { kartverket: true } } }, { fetchText })
+  try {
+    await calc.calculator(FREDRIKSTAD)
+    assert.ok(app.deprecated.some(m => m.includes('Kartverket CD')), 'status via setProviderStatus')
+    fail = true
+    state.now = '2026-10-12T15:45:00Z'
+    await calc.calculator(FREDRIKSTAD)
+    assert.ok(app.deprecated.some(m => m.includes('ECONNREFUSED')), 'error via setProviderError')
   } finally {
     calc.stop()
   }

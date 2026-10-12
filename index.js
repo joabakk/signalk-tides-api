@@ -81,7 +81,7 @@ module.exports = function(app) {
           }
         })
         .catch((err) => {
-          app.setProviderError(err.message);
+          setError(err.message);
           app.error(err.message);
         });
     }
@@ -133,10 +133,19 @@ module.exports = function(app) {
         try {
           sendDeltas(calculation.calculator(position ? position.value : undefined));
         } catch (err) {
-          app.setProviderError(err.message);
+          setError(err.message);
           app.error(err.message);
         }
       });
+    }
+  }
+
+  // setPluginError replaces setProviderError in newer servers
+  function setError(message) {
+    if ( app.setPluginError ) {
+      app.setPluginError(message)
+    } else if ( app.setProviderError ) {
+      app.setProviderError(message)
     }
   }
 

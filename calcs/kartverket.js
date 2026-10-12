@@ -67,7 +67,9 @@ module.exports = function (app, plugin, deps) {
 
   function reportError (what, err) {
     const message = `Kartverket ${what}: ${err && err.message ? err.message : err}`
-    if (app.setProviderError) app.setProviderError(message)
+    // setPluginError/Status replace setProviderError/Status in newer servers
+    if (app.setPluginError) app.setPluginError(message)
+    else if (app.setProviderError) app.setProviderError(message)
     app.error(message)
   }
 
@@ -243,8 +245,9 @@ module.exports = function (app, plugin, deps) {
       })
     }
 
-    if (values.length && app.setProviderStatus) {
-      app.setProviderStatus(`Kartverket ${config().refcode}` +
+    const setStatus = app.setPluginStatus || app.setProviderStatus
+    if (values.length && setStatus) {
+      setStatus.call(app, `Kartverket ${config().refcode}` +
         (source ? `, height now from ${source}` : '') + `. Data: ${ATTRIBUTION}`)
     }
     return values
