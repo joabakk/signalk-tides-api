@@ -22,6 +22,8 @@ Uses the free water level API of Kartverket, the Norwegian Mapping Authority
 (https://vannstand.kartverket.no/tideapi_en.html), queried for the boat's position
 (`tide_request=locationdata`).
 
+![Kartverket tide data for Fredrikstad in the Signal K Data Browser](docs/screenshot-data-browser.png)
+
 Published paths (heights in metres above the chosen reference level, times in UTC ISO 8601):
 
 | Path | Contents |
