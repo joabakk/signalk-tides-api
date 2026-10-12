@@ -128,12 +128,23 @@ module.exports = function(app) {
           skip_function = function(before, after) { return false }
         }
 
-        sendDeltas(calculation.calculator(app.getSelfPath("navigation.position").value));
+        // No position yet (e.g. no GPS fix at startup): providers get undefined and skip.
+        const position = app.getSelfPath("navigation.position")
+        try {
+          sendDeltas(calculation.calculator(position ? position.value : undefined));
+        } catch (err) {
+          app.setProviderError(err.message);
+          app.error(err.message);
+        }
       });
     }
   }
 
   plugin.stop = function() {
+    if ( intervalId ) {
+      clearInterval(intervalId)
+      intervalId = undefined
+    }
     if ( calculations ) {
       calculations.forEach(calc => {
         if ( calc.stop ) {

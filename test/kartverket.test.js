@@ -578,6 +578,29 @@ test('index.js loads the provider and adds its options to the schema', () => {
   assert.ok(plugin.uiSchema().tides['ui:order'].includes('kartverketRefcode'))
 })
 
+test('plugin starts without a position and stop() clears its timers', async () => {
+  const configPath = fs.mkdtempSync(path.join(os.tmpdir(), 'tides-test-'))
+  fs.writeFileSync(path.join(configPath, 'noaastations.json'), '{"stations":[]}')
+  const app = Object.assign(mockApp({ now: '2026-10-12T15:10:00Z' }), { config: { configPath }, use () {} })
+  const live = new Set()
+  const realSet = global.setInterval
+  const realClear = global.clearInterval
+  global.setInterval = (fn, ms) => { const h = realSet(fn, ms); live.add(h); return h }
+  global.clearInterval = h => { live.delete(h); realClear(h) }
+  try {
+    const plugin = require('../index.js')(app)
+    plugin.schema()
+    assert.doesNotThrow(() => plugin.start({ tides: { kartverket: true } }))
+    await new Promise(resolve => setTimeout(resolve, 20))
+    assert.ok(live.size >= 2, 'hourly update and Kartverket re-publish timers running')
+    plugin.stop()
+    assert.strictEqual(live.size, 0, 'no timers left after stop')
+  } finally {
+    global.setInterval = realSet
+    global.clearInterval = realClear
+  }
+})
+
 ;(async () => {
   let failed = 0
   for (const t of tests) {
