@@ -1,10 +1,15 @@
 # signalk-tides-API
 
-[![Build Status](https://travis-ci.org/joabakk/signalk-tides-api.svg?branch=master)](https://travis-ci.org/joabakk/signalk-tides-api)
-
 This is a copy of sbender9's derived-data.
 
 Currently serving worldtide.info API, NOAA free data and Kartverket (Norway) free data, it can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
+
+> **Coming back from signalk-tides?** In 2025 this plugin stopped producing data on newer servers
+> (#67), and [signalk-tides](https://www.npmjs.com/package/signalk-tides) by @bkeepers was published
+> as a rewrite. Version 0.4.0 of this plugin fixes that: providers now update on an interval (#73),
+> it starts without a GPS fix, and it adds a free Kartverket provider for Norway with forecast and
+> observed water levels. Both plugins are maintained; pick the one whose providers suit your area.
+> See the [changelog](CHANGELOG.md).
 
 ## Providers
 
