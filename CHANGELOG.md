@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1
+
+### Changed
+- README: note for users who moved to signalk-tides when this plugin stopped producing data
+  (#67), pointing to the 0.4.0 fixes. Removed the dead Travis CI badge.
+
 ## 0.4.0
 
 ### Added
