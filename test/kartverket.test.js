@@ -179,7 +179,8 @@ test('publishes high, low and height now with the expected request', async () =>
     assert.strictEqual(q.get('lat'), '59.2100')
     assert.strictEqual(q.get('lon'), '10.9500')
     assert.strictEqual(q.get('fromtime'), '2026-10-12T14:00')
-    assert.strictEqual(q.get('totime'), '2026-10-13T21:10')
+    assert.strictEqual(q.get('totime'), '2026-10-19T15:10') // tide table: 7 days
+    assert.strictEqual(fetchText.calls[1].searchParams.get('totime'), '2026-10-13T21:10') // water levels: 30 h
     assert.strictEqual(q.get('refcode'), 'CD')
     assert.strictEqual(q.get('lang'), 'en')
     assert.strictEqual(q.get('interval'), '60')
@@ -253,6 +254,60 @@ test('sends units for the non-standard paths once', async () => {
     assert.ok(metas[0].updates[0].meta.every(m => m.value.units === 'm' && m.value.description))
   } finally {
     calc.stop()
+  }
+})
+
+test('tides resource: coming highs and lows in the signalk-tides shape', async () => {
+  const { calc, state, fetchText } = setup({ overrides: { tab: fixture('kartverket-live-tab.xml'), all: fixture('kartverket-live-all.xml') } })
+  state.now = '2026-10-12T12:00:00Z'
+  try {
+    const forecast = await calc.tideForecast()
+    assert.deepStrictEqual(forecast, {
+      datum: 'CD',
+      units: 'meters',
+      station: { id: 'kartverket/VIK', name: 'Viker', latitude: 59.21, longitude: 10.95 },
+      extremes: [
+        { time: '2026-10-12T16:45:00.000Z', level: 0.771, high: true, low: false, label: 'High' },
+        { time: '2026-10-12T22:21:00.000Z', level: 0.568, high: false, low: true, label: 'Low' },
+        { time: '2026-10-13T05:05:00.000Z', level: 0.721, high: true, low: false, label: 'High' }
+      ]
+    })
+    assert.strictEqual(fetchText.calls.length, 2)
+    await calc.tideForecast()
+    assert.strictEqual(fetchText.calls.length, 2, 'served from the cache')
+  } finally {
+    calc.stop()
+  }
+})
+
+test('tides resource: follows the reference level and falls back to the prediction', async () => {
+  const flagless = fixture('kartverket-tab.xml').replace(/ flag="(high|low)"/g, '')
+  const { calc } = setup({ tides: { kartverketRefcode: 'MSL' }, overrides: { tab: flagless } })
+  try {
+    const forecast = await calc.tideForecast()
+    assert.strictEqual(forecast.datum, 'MSL')
+    assert.strictEqual(forecast.station.name, 'Fredrikstad')
+    assert.ok(forecast.extremes.length >= 2)
+    assert.ok(Math.abs(new Date(forecast.extremes[0].time) - new Date('2026-10-12T18:47:00Z')) <= 10 * 60 * 1000)
+    assert.strictEqual(forecast.extremes[0].label, 'High')
+  } finally {
+    calc.stop()
+  }
+})
+
+test('tides resource: rejects without a position or without data', async () => {
+  const { calc, state } = setup()
+  try {
+    state.position = undefined
+    await assert.rejects(calc.tideForecast(), /No position/)
+  } finally {
+    calc.stop()
+  }
+  const failing = setup({ overrides: { tab: new Error('ECONNREFUSED'), all: new Error('ECONNREFUSED') } })
+  try {
+    await assert.rejects(failing.calc.tideForecast(), /No Kartverket tide table yet/)
+  } finally {
+    failing.calc.stop()
   }
 })
 

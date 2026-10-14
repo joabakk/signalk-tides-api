@@ -106,13 +106,13 @@ module.exports = function (app, plugin, deps) {
     return geolib.getDistance(cache.position, position) > REFETCH_DISTANCE
   }
 
-  function request (cfg, position, datatype, now) {
+  function request (cfg, position, datatype, now, hours) {
     const url = buildUrl(cfg.apiUrl, {
       tide_request: 'locationdata',
       lat: position.latitude.toFixed(4),
       lon: position.longitude.toFixed(4),
       fromtime: moment.utc(now).subtract(1, 'hour').startOf('hour').format('YYYY-MM-DDTHH:mm'),
-      totime: moment.utc(now).add(30, 'hours').format('YYYY-MM-DDTHH:mm'),
+      totime: moment.utc(now).add(hours || 30, 'hours').format('YYYY-MM-DDTHH:mm'),
       datatype: datatype,
       refcode: cfg.refcode,
       lang: 'en',
@@ -134,7 +134,8 @@ module.exports = function (app, plugin, deps) {
     const tabDue = !tab || moved(tab, position) || t >= tab.nextEventTime ||
       tab.refcode !== cfg.refcode
     if (tabDue && t >= failures.tab.retryAt) {
-      jobs.push(() => request(cfg, position, 'tab', now).then(result => {
+      // 7 days of highs and lows for the tides resource; it is a short list.
+      jobs.push(() => request(cfg, position, 'tab', now, 7 * 24).then(result => {
         if (result.nodata) throw noData(result.nodata)
         const points = extremesFrom(result)
         const ext = nextExtremes(points, now)
@@ -145,6 +146,7 @@ module.exports = function (app, plugin, deps) {
         tab = {
           points,
           position,
+          location: result.location,
           refcode: cfg.refcode,
           fetchedAt: t,
           nextEventTime: next.length ? Math.min.apply(null, next) : t + 6 * HOUR
@@ -158,7 +160,7 @@ module.exports = function (app, plugin, deps) {
     if (levelsDue && t >= failures.levels.retryAt) {
       jobs.push(() => request(cfg, position, 'all', now).then(result => {
         if (result.nodata) throw noData(result.nodata)
-        levels = { series: result.series, position, refcode: cfg.refcode, fetchedAt: t }
+        levels = { series: result.series, position, location: result.location, refcode: cfg.refcode, fetchedAt: t }
         succeeded('levels')
       }).catch(err => failed('levels', 'water level', err, cfg, t)))
     }
@@ -288,9 +290,44 @@ module.exports = function (app, plugin, deps) {
     })
   }
 
+  // Coming high and low tides in the shape of the 'tides' resource of signalk-tides.
+  // Uses the cached tide table, fetching only when the provider would anyway.
+  function tideForecast () {
+    const pos = app.getSelfPath('navigation.position')
+    const position = pos && pos.value !== undefined ? pos.value : pos
+    if (!validPosition(position)) return Promise.reject(new Error('No position'))
+    return run(position).then(() => {
+      let points = tab && tab.points.length ? tab.points : null
+      if (!points && levels) points = extremesInSeries(levels.series.prediction)
+      if (!points) throw new Error('No Kartverket tide table yet')
+      const source = tab || levels
+      const loc = source.location || {}
+      const latitude = parseFloat(loc.latitude)
+      const longitude = parseFloat(loc.longitude)
+      const now = currentTime()
+      return {
+        datum: source.refcode,
+        units: 'meters',
+        station: {
+          id: 'kartverket/' + (loc.code || `${source.position.latitude.toFixed(4)},${source.position.longitude.toFixed(4)}`),
+          name: loc.name || 'Kartverket',
+          latitude: isFinite(latitude) ? latitude : source.position.latitude,
+          longitude: isFinite(longitude) ? longitude : source.position.longitude
+        },
+        extremes: points
+          .filter(p => p.time > now)
+          .map(p => {
+            const high = p.flag.startsWith('h')
+            return { time: p.time.toISOString(), level: p.value, high, low: !high, label: high ? 'High' : 'Low' }
+          })
+      }
+    })
+  }
+
   return {
     group: 'tides',
     optionKey: 'kartverket',
+    tideForecast,
     title: 'Kartverket (Norway)',
     derivedFrom: ['navigation.position'],
     properties: {

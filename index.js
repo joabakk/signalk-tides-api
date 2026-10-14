@@ -51,6 +51,34 @@ module.exports = function(app) {
     calculations = load_calcs(app, plugin, 'calcs')
     calculations = [].concat.apply([], calculations)
 
+    // Tide predictions as the Signal K resource /signalk/v2/api/resources/tides, in the same
+    // shape as the signalk-tides plugin. The server merges the answers of all providers of a
+    // type, so this can be turned off when signalk-tides is installed too.
+    if ( props.tidesResource !== false && typeof app.registerResourceProvider === 'function' ) {
+      app.registerResourceProvider({
+        type: 'tides',
+        methods: {
+          listResources: () => tideForecast(),
+          getResource: () => Promise.reject(new Error('Not implemented')),
+          setResource: () => Promise.reject(new Error('Read-only resource')),
+          deleteResource: () => Promise.reject(new Error('Read-only resource'))
+        }
+      })
+    }
+
+    // The forecast comes from the first enabled provider that can make one.
+    function tideForecast() {
+      const tides = props.tides || {}
+      const providers = calculations.filter(calc => calc.tideForecast && tides[calc.optionKey])
+      if ( providers.length === 0 ) {
+        return Promise.reject(new Error('No tide provider with forecasts is enabled (Kartverket or NOAA)'))
+      }
+      return providers.reduce(
+        (previous, calc) => previous.catch(() => calc.tideForecast()),
+        Promise.reject(new Error('No forecast'))
+      )
+    }
+
     intervalId = setInterval(update, updateInterval);
     update();
 
@@ -163,19 +191,6 @@ module.exports = function(app) {
     }
   }
 
-  // HTTP endpoints of the providers, served under /plugins/tides-api/
-  plugin.registerWithRouter = function(router) {
-    if ( !calculations ) {
-      calculations = load_calcs(app, plugin, 'calcs')
-      calculations = [].concat.apply([], calculations)
-    }
-    calculations.forEach(calc => {
-      if ( calc.registerWithRouter ) {
-        calc.registerWithRouter(router)
-      }
-    })
-  }
-
   plugin.id = "tides-api"
   plugin.name = "Tide APIs"
   plugin.description = "Plugin that fetches tide data from online sources"
@@ -213,6 +228,12 @@ module.exports = function(app) {
           type: "number",
           description: "The plugin won't send out duplicate calculation values for this time period (s) (0=no ttl check)",
           default: 0
+        },
+        tidesResource: {
+          title: "Provide tide predictions as the resource /signalk/v2/api/resources/tides",
+          type: "boolean",
+          description: "Turn off when the signalk-tides plugin is installed too: the server merges both answers into one.",
+          default: true
         }/*,
         engine_instances: {
           title: "Engines",
@@ -235,7 +256,7 @@ module.exports = function(app) {
       }
     }
 
-    uiSchema =  { "ui:order": [ "default_ttl"/*, "engine_instances", "battery_instances", "tank_instances"*/ ] }
+    uiSchema =  { "ui:order": [ "default_ttl", "tidesResource"/*, "engine_instances", "battery_instances", "tank_instances"*/ ] }
 
     var groups = {}
 

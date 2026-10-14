@@ -2,14 +2,22 @@
 
 ## Unreleased
 
-### Changed
-- **The NOAA closest-station endpoint moved** from `/signalk/v1/api/resources/tides/closest` to
-  `/plugins/tides-api/closest`. It is now registered through the plugin router (`registerWithRouter`)
-  with read-only access instead of a server-wide `app.use`. Anything calling the old address needs
-  updating.
-
 ### Added
-- Tests for the NOAA endpoint (`test/noaa-endpoint.test.js`), run by `npm test`.
+- Tide predictions as the Signal K resource `tides` (`/signalk/v2/api/resources/tides`), in the same
+  shape as the signalk-tides plugin: the next 7 days of highs and lows from Kartverket or NOAA. Can be
+  turned off in the settings (the server merges the answers when signalk-tides provides it too).
+- Tests for the resource and the NOAA forecast (`test/tides-resource.test.js`), run by `npm test`.
+
+### Changed
+- Kartverket: the tide table request covers 7 days instead of 30 hours (still one request per tide).
+
+### Removed
+- **Breaking:** the NOAA endpoint `/signalk/v1/api/resources/tides/closest`, which the plugin registered
+  with a server-wide `app.use` outside the resources API. Use the `tides` resource instead.
+
+### Fixed
+- NOAA: the next-tide request started from the wrong time: the hour was formatted as the month
+  (`MM:mm`), and in server local time while NOAA was asked for GMT.
 
 ## 0.4.1
 

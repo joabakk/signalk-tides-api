@@ -65,11 +65,38 @@ Attribution: water level data from Kartverket, Norwegian Mapping Authority, Hydr
 licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Credit Kartverket when you show
 or share the data.
 
-## HTTP endpoint
+## Tides resource
 
-`GET /plugins/tides-api/closest` returns NOAA's high and low tide predictions for yesterday and today
-at the NOAA station closest to the boat, grouped by day (US waters only). It needs read access when
-security is enabled. Until version 0.4.1 this endpoint was at `/signalk/v1/api/resources/tides/closest`.
+The plugin provides the coming high and low tides as the Signal K resource `tides`, in the same shape as
+the [signalk-tides](https://www.npmjs.com/package/signalk-tides) plugin, so apps reading one work with the other:
+
+```
+$ curl http://localhost:3000/signalk/v2/api/resources/tides
+```
+
+```json
+{
+  "datum": "CD",
+  "units": "meters",
+  "station": { "id": "kartverket/VIK", "name": "Viker", "latitude": 59.21, "longitude": 10.95 },
+  "extremes": [
+    { "time": "2026-10-12T16:45:00.000Z", "level": 0.771, "high": true, "low": false, "label": "High" },
+    { "time": "2026-10-12T22:21:00.000Z", "level": 0.568, "high": false, "low": true, "label": "Low" }
+  ]
+}
+```
+
+The data comes from the first enabled provider that can forecast: Kartverket (the next 7 days, `datum` is the
+chosen reference level) or NOAA (the next 7 days at the closest NOAA station, `datum` MLLW, cached for an
+hour). worldtides.info does not provide it. The answer uses the data the providers already fetch, so it adds
+no requests to Kartverket.
+
+The Signal K server merges the answers of all plugins that provide the same resource type. If
+signalk-tides is installed too, turn off *Provide tide predictions as the resource* in this plugin's
+settings, so that the two answers are not mixed.
+
+Until version 0.4.1 the NOAA provider served `/signalk/v1/api/resources/tides/closest` (NOAA only, outside
+the resources API). That address is gone; use the resource above.
 
 ## Tests
 
@@ -79,4 +106,5 @@ npm test
 
 Runs the tests offline. The Kartverket provider is tested against XML fixtures in `test/fixtures`:
 `kartverket-live-*.xml` are real responses for Fredrikstad (data: Kartverket, CC BY 4.0); the others are
-synthetic, in the same format. The NOAA endpoint is tested with simulated NOAA responses.
+synthetic, in the same format. The tides resource and the NOAA forecast are tested with simulated NOAA
+responses.

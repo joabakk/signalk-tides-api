@@ -90,80 +90,84 @@ module.exports = function (app, plugin) {
 
   downloadStations()
 
-  // GET /plugins/tides-api/closest: NOAA predictions for the closest station,
-  // mounted by the server through registerWithRouter below.
-  function closestTides(req, res) {
-    let position = app.getSelfPath('navigation.position.value')
+  // Next 7 days of high and low tides at the NOAA station closest to the boat, in the shape
+  // of the 'tides' resource of signalk-tides. Cached for an hour per station.
+  let forecastCache
 
-    if ( !position ) {
-      res.status(401).send('no position')
-      return
-    }
-
-    if ( ! sorted ) {
-      app.debug(position, stations)
-      sorted = sortStations(app, stations, position)
-    }
-
-    let nowS = app.getSelfPath('navigation.datetime.value')
-    let now = nowS ? new Date(nowS) : new Date()
-
-    let station = findClosestStation(app, sorted, position)
-    const endpoint = new URL(dataGetterUrl);
-    const params = endpoint.searchParams;
-    params.set('product', 'predictions');
-    params.set('application', 'signalk.org/node-server');
-    params.set('begin_date', moment(now).subtract(1, 'day').format('YYYYMMDD'));
-    params.set('end_date', moment(now).format('YYYYMMDD'));
-    params.set('datum', datum);
-    params.set('station', station.reference_id);
-    params.set('time_zone', 'gmt');
-    params.set('units', 'metric');
-    params.set('interval', 'hilo');
-    params.set('format', 'json');
-    app.debug(`${endpoint}`)
-
-    request({
-      url: `${endpoint}`,
-      method: "GET",
-      json: true,
-    }, (error, response, body) => {
-      if ( error ) {
-        reportError(error)
-        res.status(404).send('error')
-      } else {
-        //app.debug(JSON.stringify(body, null, 2))
-
-        if ( body.error ) {
-          res.status(404).send(body.error.message)
-        } else {
-          let tides = {
-            name: station.name,
-            id: station.reference_id,
-            position: {
-              latitude: station.lat,
-              longitude: station.lng
-            },
-            date: {}
-          }
-          body.predictions.forEach(p => {
-            let dateString = moment(`${p.t}Z`)
-            let dateKey = dateString.format('YYYYMMDD')
-            let date = tides.date[dateKey]
-            if ( !date ) {
-              date = { height: { values: [] } }
-              tides.date[dateKey] = date
-            }
-
-            let values = date.height.values
-            values.push({
-              value: Number(p.v),
-              time: dateString
-            })
-          })
-          res.json(tides)
-        }
+  function tideForecast() {
+    return new Promise((resolve, reject) => {
+      const position = app.getSelfPath('navigation.position.value')
+      if ( !position ) {
+        reject(new Error('No position'))
+        return
       }
+      if ( !stations || stations.size === 0 ) {
+        reject(new Error('NOAA stations not loaded'))
+        return
+      }
+      const station = sortStations(app, stations, position)[0]
+      const nowS = app.getSelfPath('navigation.datetime.value')
+      const now = nowS ? new Date(nowS) : new Date()
+
+      if ( forecastCache && forecastCache.stationId === station.id &&
+           now.getTime() - forecastCache.fetchedAt < 60 * 60 * 1000 ) {
+        resolve(forecastCache.value)
+        return
+      }
+
+      const endpoint = new URL(dataGetterUrl);
+      const params = endpoint.searchParams;
+      params.set('product', 'predictions');
+      params.set('application', 'signalk.org/node-server');
+      params.set('begin_date', moment.utc(now).format('YYYYMMDD HH:mm'));
+      params.set('range', 7 * 24);
+      params.set('datum', datum);
+      params.set('station', station.id);
+      params.set('time_zone', 'gmt');
+      params.set('units', 'metric');
+      params.set('interval', 'hilo');
+      params.set('format', 'json');
+      app.debug(`${endpoint}`)
+
+      request({
+        url: `${endpoint}`,
+        method: "GET",
+        json: true,
+      }, (error, response, body) => {
+        if ( error ) {
+          reportError(error)
+          reject(error)
+          return
+        }
+        if ( body.error ) {
+          reject(new Error(`error response: ${body.error.message}`))
+          return
+        }
+        const value = {
+          datum,
+          units: 'meters',
+          station: {
+            id: `noaa/${station.id}`,
+            name: station.name,
+            latitude: station.lat,
+            longitude: station.lng
+          },
+          extremes: (body.predictions || [])
+            .map(p => {
+              const high = p.type === 'H'
+              return {
+                time: new Date(moment(`${p.t}Z`)).toISOString(),
+                level: Number(p.v),
+                high,
+                low: !high,
+                label: high ? 'High' : 'Low'
+              }
+            })
+            .filter(e => new Date(e.time) > now)
+        }
+        forecastCache = { stationId: station.id, fetchedAt: now.getTime(), value }
+        resolve(value)
+      })
     })
   }
 
@@ -171,12 +175,7 @@ module.exports = function (app, plugin) {
     group: 'tides',
     optionKey: 'noaa',
     title: 'NOAA (US only)',
-    registerWithRouter: function (router) {
-      // With security on, plugin routes need admin unless given a level: this one only reads.
-      // router.access is missing on older servers.
-      const routes = typeof router.access === 'function' ? router.access('readonly') : router
-      routes.get('/closest', closestTides)
-    },
+    tideForecast,
     derivedFrom: [ 'navigation.position'],
     debounceDelay: 10 * 1000,
     calculator: function (position) {
@@ -204,7 +203,7 @@ module.exports = function (app, plugin) {
         const endpoint = new URL(dataGetterUrl);
         const params = endpoint.searchParams;
         params.set('station', station.id);
-        params.set('begin_date', moment(now).format('YYYYMMDD MM:mm'));
+        params.set('begin_date', moment.utc(now).format('YYYYMMDD HH:mm'));
         params.set('range', 24 * 1);
         params.set('product', 'predictions');
         params.set('application', 'signalk.org/node-server');
