@@ -163,6 +163,19 @@ module.exports = function(app) {
     }
   }
 
+  // HTTP endpoints of the providers, served under /plugins/tides-api/
+  plugin.registerWithRouter = function(router) {
+    if ( !calculations ) {
+      calculations = load_calcs(app, plugin, 'calcs')
+      calculations = [].concat.apply([], calculations)
+    }
+    calculations.forEach(calc => {
+      if ( calc.registerWithRouter ) {
+        calc.registerWithRouter(router)
+      }
+    })
+  }
+
   plugin.id = "tides-api"
   plugin.name = "Tide APIs"
   plugin.description = "Plugin that fetches tide data from online sources"

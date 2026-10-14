@@ -7,12 +7,13 @@
     "/index.js",
     "calcs/",
     "test/kartverket.test.js",
+    "test/noaa-endpoint.test.js",
     "test/fixtures/",
     "docs/",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "node test/kartverket.test.js"
+    "test": "node test/kartverket.test.js && node test/noaa-endpoint.test.js"
   },
   "keywords": [
     "signalk-node-server-plugin",

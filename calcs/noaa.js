@@ -90,7 +90,9 @@ module.exports = function (app, plugin) {
 
   downloadStations()
 
-  app.use('/signalk/v1/api/resources/tides/closest', (req, res, next) => {
+  // GET /plugins/tides-api/closest: NOAA predictions for the closest station,
+  // mounted by the server through registerWithRouter below.
+  function closestTides(req, res) {
     let position = app.getSelfPath('navigation.position.value')
 
     if ( !position ) {
@@ -163,12 +165,18 @@ module.exports = function (app, plugin) {
         }
       }
     })
-  })
+  }
 
   return {
     group: 'tides',
     optionKey: 'noaa',
     title: 'NOAA (US only)',
+    registerWithRouter: function (router) {
+      // With security on, plugin routes need admin unless given a level: this one only reads.
+      // router.access is missing on older servers.
+      const routes = typeof router.access === 'function' ? router.access('readonly') : router
+      routes.get('/closest', closestTides)
+    },
     derivedFrom: [ 'navigation.position'],
     debounceDelay: 10 * 1000,
     calculator: function (position) {

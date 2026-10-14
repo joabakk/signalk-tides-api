@@ -65,11 +65,18 @@ Attribution: water level data from Kartverket, Norwegian Mapping Authority, Hydr
 licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Credit Kartverket when you show
 or share the data.
 
+## HTTP endpoint
+
+`GET /plugins/tides-api/closest` returns NOAA's high and low tide predictions for yesterday and today
+at the NOAA station closest to the boat, grouped by day (US waters only). It needs read access when
+security is enabled. Until version 0.4.1 this endpoint was at `/signalk/v1/api/resources/tides/closest`.
+
 ## Tests
 
 ```
 npm test
 ```
 
-Runs the Kartverket provider tests offline against XML fixtures in `test/fixtures`. `kartverket-live-*.xml`
-are real responses for Fredrikstad (data: Kartverket, CC BY 4.0); the others are synthetic, in the same format.
+Runs the tests offline. The Kartverket provider is tested against XML fixtures in `test/fixtures`:
+`kartverket-live-*.xml` are real responses for Fredrikstad (data: Kartverket, CC BY 4.0); the others are
+synthetic, in the same format. The NOAA endpoint is tested with simulated NOAA responses.

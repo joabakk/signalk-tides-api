@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- **The NOAA closest-station endpoint moved** from `/signalk/v1/api/resources/tides/closest` to
+  `/plugins/tides-api/closest`. It is now registered through the plugin router (`registerWithRouter`)
+  with read-only access instead of a server-wide `app.use`. Anything calling the old address needs
+  updating.
+
+### Added
+- Tests for the NOAA endpoint (`test/noaa-endpoint.test.js`), run by `npm test`.
+
 ## 0.4.1
 
 ### Changed
