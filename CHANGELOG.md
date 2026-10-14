@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.5.0
 
 ### Added
 - Tide predictions as the Signal K resource `tides` (`/signalk/v2/api/resources/tides`), in the same
