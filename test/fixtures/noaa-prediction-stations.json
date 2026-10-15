@@ -1,0 +1,4 @@
+{"_note":"Prediction station list in the mdapi format (stations.json?type=tidepredictions), made from real station ids and positions; not a captured response.","count":3,"stations":[
+{"id":"9414290","name":"San Francisco","lat":37.8063,"lng":-122.4659,"type":"R","reference_id":"9414290"},
+{"id":"9414131","name":"Pillar Point Harbor, Half Moon Bay","lat":37.5025,"lng":-122.4822,"type":"S","reference_id":"9414290"},
+{"id":"8443970","name":"Boston","lat":42.3539,"lng":-71.0503,"type":"R","reference_id":"8443970"}]}

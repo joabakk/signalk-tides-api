@@ -1,298 +1,172 @@
-const superagent = require("superagent")
-const path = require('path')
-const fs = require('fs')
-const geolib = require('geolib')
-const { URL } = require('url');
-const moment = require('moment');
+/*
+ * NOAA CO-OPS (US), Tides & Currents APIs (no key): https://api.tidesandcurrents.noaa.gov
+ *
+ *   mdapi .../stations.json?type=tidepredictions   prediction stations: reference (type R) and
+ *                                                  subordinate (S, highs and lows only)
+ *   mdapi .../stations.json?type=waterlevels       stations with a water level gauge
+ *   datagetter product=predictions interval=hilo   high and low waters
+ *   datagetter product=predictions interval=6      predicted level every 6 minutes (type R)
+ *   datagetter product=water_level                 measured level every 6 minutes (preliminary)
+ * Heights in m above MLLW (the US chart datum), times in GMT. Public domain.
+ *
+ * Requests: the station lists monthly (kept in files), highs and lows for 7 days and the predicted
+ * level for 2 days only when they run out, and the gauge's last 2 hours at the refresh interval
+ * (default 6 min, the gauges' interval) when a gauge is within 5 km of the prediction station.
+ */
 
-const apiUrl = 'https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi'
-const stationsUrl = apiUrl + '/stations.json?type=tidepredictions'
-const dataGetterUrl = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter'
+const createProvider = require('../lib/tide-provider')
+const {
+  http, buildUrl, noData, quiet, nearest, stationList, maxDistance: maxDistanceOption, stationData, runningOut,
+  HOUR, DAY
+} = createProvider
 
-const datum = 'MLLW'
+const META_URL = 'https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi'
+const DATA_URL = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter'
+const DATUM = 'MLLW'
+const GAUGE_MATCH = 5000 // m between a prediction station and its gauge
 
-// Stand-in for the deprecated request module, for the GET + json calls below:
-// callback(error, response, body). Error statuses still deliver their body, and the
-// callback runs outside the promise chain like it did with request.
-function request(options, callback) {
-  superagent
-    .get(options.url)
-    .set('Accept', 'application/json')
-    .then(
-      res => setImmediate(() => callback(null, res, res.body)),
-      err => setImmediate(() => err.response
-        ? callback(null, err.response, err.response.body)
-        : callback(err))
-    )
+const pad = n => String(n).padStart(2, '0')
+// 'yyyyMMdd HH:mm' in GMT
+function noaaTime (t) {
+  const d = new Date(t)
+  return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`
+}
+// '2026-10-15 15:30' (GMT) -> Date
+const readTime = s => new Date(`${String(s).replace(' ', 'T')}:00Z`)
+
+function readStations (body, gauges) {
+  return ((body && body.stations) || [])
+    .filter(s => s && s.id && typeof s.lat === 'number' && typeof s.lng === 'number' && (!gauges || (s.tidal !== false && s.greatlakes !== true)))
+    .map(s => ({ id: String(s.id), name: String(s.name || s.id), latitude: s.lat, longitude: s.lng, type: s.type || null }))
 }
 
-module.exports = function (app, plugin) {
-  const stationsFile = path.join(app.config.configPath, 'noaastations.json')
-  var stations
-  var sorted
-  var downloadingStations = false
-  var lastLowTime
-  var lastHighTime
+module.exports = function (app, plugin, deps) {
+  deps = deps || {}
+  const getJson = deps.getJson || http.getJson
 
-
-  function reportError(error) {
-    // setPluginError replaces setProviderError in newer servers
-    if ( app.setPluginError ) {
-      app.setPluginError(error.message)
-    } else if ( app.setProviderError ) {
-      app.setProviderError(error.message)
+  function data (ctx, params, what) {
+    const url = buildUrl(ctx.options.noaaApiUrl || DATA_URL, Object.assign({
+      application: 'signalk-tides-api', datum: DATUM, time_zone: 'gmt', units: 'metric', format: 'json'
+    }, params))
+    ctx.debug(`GET ${url}`)
+    const fail = message => {
+      // e.g. 'No data was found.', 'The station is not a valid station ...'
+      throw noData(`NOAA: ${String(message || 'no data').trim()} (${what})`)
     }
-    app.error("error: " + error.message)
-  }
-
-  function downloadStations() {
-    downloadingStations = true
-    if ( !fs.existsSync(stationsFile) ) {
-      app.debug('downloading stations...')
-      request({
-        url: stationsUrl,
-        method: "GET",
-        json: true,
-      }, (error, response, body) => {
-        if ( error ) {
-          reportError(error)
-        } else {
-          let stationArray = body.stations
-          stations = new Map(stationArray.map((station) => [station.id, station]));
-          fs.writeFile(stationsFile, JSON.stringify(body, null, 2), err => {
-            if ( err ) {
-              reportError(err)
-            } else {
-              downloadingStations = false
-            }
-          })
-        }
-      })
-    } else {
-      app.debug(`reading stations from ${stationsFile}`)
-      fs.readFile(stationsFile, (err, data) => {
-        if ( err ) {
-          reportError(err)
-        } else {
-          try {
-            let json = JSON.parse(data)
-            let stationArray = json.stations
-            stations = new Map(stationArray.map((station) => [station.id, station]));
-
-            downloadingStations = false
-          } catch ( err ) {
-            reportError(err)
-          }
-        }
-      })
-    }
-  }
-
-  downloadStations()
-
-  // Next 7 days of high and low tides at the NOAA station closest to the boat, in the shape
-  // of the 'tides' resource of signalk-tides. Cached for an hour per station.
-  let forecastCache
-
-  function tideForecast() {
-    return new Promise((resolve, reject) => {
-      const position = app.getSelfPath('navigation.position.value')
-      if ( !position ) {
-        reject(new Error('No position'))
-        return
-      }
-      if ( !stations || stations.size === 0 ) {
-        reject(new Error('NOAA stations not loaded'))
-        return
-      }
-      const station = sortStations(app, stations, position)[0]
-      const nowS = app.getSelfPath('navigation.datetime.value')
-      const now = nowS ? new Date(nowS) : new Date()
-
-      if ( forecastCache && forecastCache.stationId === station.id &&
-           now.getTime() - forecastCache.fetchedAt < 60 * 60 * 1000 ) {
-        resolve(forecastCache.value)
-        return
-      }
-
-      const endpoint = new URL(dataGetterUrl);
-      const params = endpoint.searchParams;
-      params.set('product', 'predictions');
-      params.set('application', 'signalk.org/node-server');
-      params.set('begin_date', moment.utc(now).format('YYYYMMDD HH:mm'));
-      params.set('range', 7 * 24);
-      params.set('datum', datum);
-      params.set('station', station.id);
-      params.set('time_zone', 'gmt');
-      params.set('units', 'metric');
-      params.set('interval', 'hilo');
-      params.set('format', 'json');
-      app.debug(`${endpoint}`)
-
-      request({
-        url: `${endpoint}`,
-        method: "GET",
-        json: true,
-      }, (error, response, body) => {
-        if ( error ) {
-          reportError(error)
-          reject(error)
-          return
-        }
-        if ( body.error ) {
-          reject(new Error(`error response: ${body.error.message}`))
-          return
-        }
-        const value = {
-          datum,
-          units: 'meters',
-          station: {
-            id: `noaa/${station.id}`,
-            name: station.name,
-            latitude: station.lat,
-            longitude: station.lng
-          },
-          extremes: (body.predictions || [])
-            .map(p => {
-              const high = p.type === 'H'
-              return {
-                time: new Date(moment(`${p.t}Z`)).toISOString(),
-                level: Number(p.v),
-                high,
-                low: !high,
-                label: high ? 'High' : 'Low'
-              }
-            })
-            .filter(e => new Date(e.time) > now)
-        }
-        forecastCache = { stationId: station.id, fetchedAt: now.getTime(), value }
-        resolve(value)
-      })
+    return getJson(url).then(body => {
+      if (body && body.error) fail(body.error.message)
+      return body || {}
+    }, err => {
+      const m = /"message"\s*:\s*"([^"]*)"/.exec(err.message)
+      if (/HTTP 400/.test(err.message)) fail(m ? m[1] : err.message)
+      throw err
     })
   }
 
-  return {
-    group: 'tides',
-    optionKey: 'noaa',
-    title: 'NOAA (US only)',
-    tideForecast,
-    derivedFrom: [ 'navigation.position'],
-    debounceDelay: 10 * 1000,
-    calculator: function (position) {
-      if ( !stations || downloadingStations ) {
-        app.debug('skipping ' + downloadingStations)
-        return
-      }
+  // missing values come as "" (which Number() would read as 0)
+  function series (rows) {
+    return (rows || []).map(r => ({ time: readTime(r.t), value: r.v === '' || r.v === null || r.v === undefined ? NaN : Number(r.v), type: r.type }))
+      .filter(p => !isNaN(p.time.getTime()) && isFinite(p.value)).sort((a, b) => a.time - b.time)
+  }
 
-      return new Promise((resolve, reject) => {
-        if ( ! sorted ) {
-          sorted = sortStations(app, stations, position)
-        }
+  function plan (ctx) {
+    const list = ctx.state['stations:noaa-stations']
+    const gauges = ctx.state['stations:noaa-gauges']
+    if (!list || !gauges) return
+    const maxDistance = maxDistanceOption(ctx, 'noaaMaxDistanceKm', 50)
+    const found = nearest(list.stations, ctx.position)
+    if (!found || found.distance > maxDistance) {
+      ctx.state.station = undefined
+      throw quiet(`no NOAA tide station within ${maxDistance / 1000} km`)
+    }
+    const station = ctx.state.station = found.item
+    const g = nearest(gauges.stations, station)
+    const gauge = ctx.state.gauge = g && g.distance <= GAUGE_MATCH ? g.item : null
+    const s = ctx.state
+    const t = ctx.t
+    const mine = key => stationData(s, key, station.id)
 
-        let station = findClosestStation(app, sorted, position)
-
-        let nowS = app.getSelfPath('navigation.datetime.value')
-        let now = nowS ? new Date(nowS) : new Date()
-
-        if ( lastHighTime && lastLowTime && now.getTime() < lastHighTime && now.getTime() < lastLowTime ) {
-          app.debug('waiting for tide change')
-          resolve(undefined)
-          return
-        }
-
-        const endpoint = new URL(dataGetterUrl);
-        const params = endpoint.searchParams;
-        params.set('station', station.id);
-        params.set('begin_date', moment.utc(now).format('YYYYMMDD HH:mm'));
-        params.set('range', 24 * 1);
-        params.set('product', 'predictions');
-        params.set('application', 'signalk.org/node-server');
-        params.set('datum', datum);
-        params.set('time_zone', 'gmt');
-        params.set('units', 'metric');
-        params.set('interval', 'hilo');
-        params.set('format', 'json');
-        app.debug(`${endpoint}`)
-
-        request({
-          url: `${endpoint}`,
-          method: "GET",
-          json: true,
-        }, (error, response, body) => {
-          if ( error ) {
-            reportError(error)
-            reject(error)
-          } else {
-            app.debug(JSON.stringify(body, null, 2))
-
-            if ( body.error ) {
-              reject(new Error(`error response: ${body.error.message}`))
-              return
-            }
-
-            let nextHigh
-            let nextLow
-            body.predictions.forEach(p => {
-              let date = new Date(moment(`${p.t}Z`))
-
-              if ( date.getTime() > now.getTime() ) {
-                if ( !nextHigh && p.type === 'H' ) {
-                  nextHigh = p
-                  p.date = date
-                } else if ( !nextLow && p.type === 'L' ) {
-                  nextLow = p
-                  p.date = date
-                }
-              }
-            })
-
-            let updates = []
-            if ( nextLow ) {
-              lastLowTime = nextLow.date.getTime()
-              updates.push({
-                path: 'environment.tide.heightLow',
-                value: Number(nextLow.v),
-              })
-              updates.push({
-                path: 'environment.tide.timeLow',
-                value: nextLow.date.toISOString()
-              })
-            }
-            if ( nextHigh ) {
-              lastHighTime = nextHigh.date.getTime()
-              updates.push({
-                path: 'environment.tide.heightHigh',
-                value: Number(nextHigh.v),
-              })
-              updates.push({
-                path: 'environment.tide.timeHigh',
-                value: nextHigh.date.toISOString()
-              })
-            }
-            resolve(updates)
-          }
-        })
-      })
+    if (runningOut(mine('extremes'), t, DAY)) {
+      ctx.job('extremes', 'high and low waters', () => data(ctx, {
+        product: 'predictions', interval: 'hilo', station: station.id, begin_date: noaaTime(t - HOUR), range: 7 * 24 + 1
+      }, `high and low waters at ${station.name}`).then(body => {
+        const points = series(body.predictions).map(p => ({ time: p.time, value: p.value, flag: p.type === 'H' ? 'high' : p.type === 'L' ? 'low' : '' }))
+          .filter(p => p.flag)
+        if (points.length === 0) throw noData(`no high and low waters at ${station.name}`)
+        s.extremes = { stationId: station.id, fetchedAt: t, points }
+      }))
+    }
+    // subordinate stations have highs and lows only
+    if (station.type !== 'S' && runningOut(mine('predicted'), t, 6 * HOUR)) {
+      ctx.job('predicted', 'predicted level', () => data(ctx, {
+        product: 'predictions', interval: 6, station: station.id, begin_date: noaaTime(t - HOUR), range: 49
+      }, `predicted level at ${station.name}`).then(body => {
+        s.predicted = { stationId: station.id, fetchedAt: t, points: series(body.predictions) }
+      }))
+    }
+    const observed = mine('observed')
+    if (gauge && (!observed || t - observed.fetchedAt >= ctx.refreshMs)) {
+      ctx.job('observed', 'measured level', () => data(ctx, {
+        product: 'water_level', station: gauge.id, begin_date: noaaTime(t - 2 * HOUR), range: 2
+      }, `water level at ${gauge.name}`).then(body => {
+        s.observed = { stationId: station.id, fetchedAt: t, points: series(body.data) }
+      }))
     }
   }
+
+  const spec = {
+    optionKey: 'noaa',
+    title: 'NOAA (US only)',
+    name: 'NOAA',
+    attribution: 'NOAA CO-OPS (public domain)',
+    refreshKey: 'noaaRefreshMinutes',
+    defaultRefreshMinutes: 6,
+    minRefreshMinutes: 6,
+    maxObservationAgeMinutes: 60,
+    properties: {
+      noaaRefreshMinutes: {
+        type: 'number',
+        title: 'NOAA: minutes between measured level updates (minimum 6)',
+        default: 6
+      },
+      noaaMaxDistanceKm: {
+        type: 'number',
+        title: 'NOAA: use the nearest tide station within this distance (km)',
+        default: 50
+      }
+    },
+    update (ctx) {
+      const meta = (ctx.options.noaaMetaUrl || META_URL).replace(/\/+$/, '')
+      const fetchList = (type, gauges) => () => {
+        const url = `${meta}/stations.json?type=${type}`
+        ctx.debug(`GET ${url}`)
+        return getJson(url).then(body => readStations(body, gauges))
+      }
+      const list = stationList(ctx, 'noaa-stations', 30 * DAY, fetchList('tidepredictions', false))
+      const gauges = stationList(ctx, 'noaa-gauges', 30 * DAY, fetchList('waterlevels', true))
+      if (list && gauges) plan(ctx)
+      else ctx.job('plan', 'station', () => plan(ctx))
+    },
+    view (ctx) {
+      const station = ctx.state.station
+      if (!station) return null
+      const gauge = ctx.state.gauge
+      const points = key => (stationData(ctx.state, key, station.id) || {}).points
+      return {
+        station: { id: station.id, name: station.name, latitude: station.latitude, longitude: station.longitude },
+        datum: DATUM,
+        extremes: points('extremes'),
+        predicted: points('predicted'),
+        observed: points('observed'),
+        attribution: `NOAA CO-OPS (public domain)${gauge && gauge.id !== station.id ? `, measured at ${gauge.name}` : ''}`
+      }
+    }
+  }
+
+  return createProvider(app, plugin, spec, deps)
 }
 
-
-function findClosestStation(app, sorted, position) {
-  let res = findNearStations(app, sorted, position, 1)
-  return res[0]
-}
-
-function sortStations(app, stations, position) {
-  const stationsWithDistances = [...stations.values()].map((station) => ({
-    ...station,
-    distance: geolib.getDistance(position, {latitude: station.lat, longitude: station.lng})
-  }));
-
-  stationsWithDistances.sort((a, b) => a.distance - b.distance);
-  return stationsWithDistances
-}
-
-function findNearStations(app, sorted, position, limit = 10) {
-  return sorted.slice(0, limit)
-}
+module.exports.DATA_URL = DATA_URL
+module.exports.META_URL = META_URL
+module.exports.noaaTime = noaaTime
+module.exports.readStations = readStations
