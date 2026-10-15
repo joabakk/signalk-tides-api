@@ -2,7 +2,7 @@
 
 This is a copy of sbender9's derived-data.
 
-Currently serving worldtide.info API, NOAA free data, Kartverket (Norway) free data and DMI (Denmark) free data, it can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
+Currently serving worldtide.info API, NOAA free data, Kartverket (Norway), DMI (Denmark), Rijkswaterstaat (Netherlands) and CHS (Canada) free data, the Open-Meteo marine model worldwide, and offline harmonic predictions computed on the boat. It can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
 
 > **Coming back from signalk-tides?** In 2025 this plugin stopped producing data on newer servers
 > (#67), and [signalk-tides](https://www.npmjs.com/package/signalk-tides) by @bkeepers was published
@@ -21,10 +21,18 @@ Enable one provider under *Tides* in the plugin configuration.
 | worldtides.info | worldwide | yes, paid |
 | Kartverket | Norway | no |
 | DMI | Denmark, Greenland, Faroe Islands | no |
+| Rijkswaterstaat | Netherlands | no |
+| CHS | Canada | no |
+| Open-Meteo | worldwide (ocean model, not for coastal navigation) | no |
+| Offline predictions | worldwide, no internet (needs the optional `neaps` package) | no |
 
 Kartverket and DMI only publish data where they have it, so a boat sailing between Norway and Denmark
 can enable both. Where both have data (parts of the Skagerrak), both publish to the same paths; enable
-the one for the waters you are in.
+the one for the waters you are in. The same goes for the other national providers.
+
+Open-Meteo and the offline predictions work almost anywhere but are less precise than a national
+service's own station; enable them where no national provider has data, or as a fallback for the
+`tides` resource (see below).
 
 ### Kartverket (Norway)
 
@@ -106,6 +114,101 @@ the nearest station changes, and the latest measurement at the update interval.
 Attribution: data from the Danish Meteorological Institute (DMI), licensed under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
+### Rijkswaterstaat (Netherlands)
+
+Uses the free WaterWebservices of Rijkswaterstaat (DD API 2.0, https://rijkswaterstaatdata.nl/waterdata):
+the astronomical high and low waters, the astronomical tide every 10 minutes, the measured water level and
+the forecast water level, at the nearest location that has tide predictions.
+
+Heights are above **NAP** (Normaal Amsterdams Peil, the Dutch land datum close to mean sea level), not
+chart datum (LAT): low waters are usually negative. `heightNow` is the measured level if one came in the
+last hour, otherwise the forecast, otherwise the astronomical tide; `weatherEffect` is measured minus
+astronomical.
+
+| Option | Default | |
+|---|---|---|
+| Minutes between measured water level updates | 10 | minimum 10 |
+| Use the nearest tide gauge within (km) | 30 | |
+| API address | `https://ddapi20-waterwebservices.rijkswaterstaat.nl` | |
+
+Requests: the catalogue once a month (kept in `rws-stations.json` in the plugin's data folder), highs and
+lows for 7 days and the astronomical tide for 2 days only when they run out, the measured level at the
+update interval and the forecast hourly.
+
+Status: the high/low request follows a working client; the other requests and the tests are built from
+the documented format and have not yet been checked against the live service.
+
+Attribution: Rijkswaterstaat, data CC0. Rijkswaterstaat gives no uptime guarantee; not for critical
+applications.
+
+### CHS (Canada)
+
+Uses the IWLS API of the Canadian Hydrographic Service, Fisheries and Oceans Canada
+(https://api-iwls.dfo-mpo.gc.ca): predicted high and low waters (`wlp-hilo`), the predicted level
+(`wlp`), the measured level (`wlo`) and, at some stations, the forecast (`wlf`). Heights in metres above
+chart datum.
+
+| Option | Default | |
+|---|---|---|
+| Minutes between measured water level updates | 10 | minimum 5 |
+| Use the nearest station within (km) | 50 | only stations with predictions |
+| API address | `https://api-iwls.dfo-mpo.gc.ca/api/v1` | |
+
+Requests: the station list once a month (kept in `chs-stations.json`), highs and lows for 7 days and the
+predicted level for 2 days only when they run out, the measured level at the update interval and the
+forecast hourly, well within CHS's limit of 30 requests a minute.
+
+Status: built from the documented format; not yet checked against the live service.
+
+Attribution: Fisheries and Oceans Canada, Canadian Hydrographic Service. CHS's licence is for
+non-commercial use; the data is not for navigation.
+
+### Open-Meteo (worldwide model)
+
+Uses the Open-Meteo marine API (https://open-meteo.com/en/docs/marine-weather-api): the modelled sea level
+(`sea_level_height_msl`, tide plus the effect of air pressure) and the air pressure part
+(`invert_barometer_height`) for the model grid cell at the boat's position, hourly for the past day and
+the next 7 days.
+
+| Path | Contents |
+|---|---|
+| `environment.tide.heightForecast`, `environment.tide.heightNow` | modelled sea level now |
+| `environment.tide.weatherEffect` | its air pressure part |
+| `environment.tide.heightPredicted` | sea level without the air pressure part |
+| high and low | from the hourly series (times to about 15 minutes) |
+
+Heights are above global mean sea level, not chart datum. The model has a resolution of about 8 km and
+Open-Meteo says it is **not suitable for coastal navigation**: in fjords, estuaries and between islands it
+can be far off. Use it at sea or where no national provider has data.
+
+| Option | Default | |
+|---|---|---|
+| Minutes between updates | 60 | minimum 30; also asked again after a move of 4 km |
+| API address | `https://marine-api.open-meteo.com/v1/marine` | change only for a commercial plan or your own server |
+
+Attribution: [Open-Meteo](https://open-meteo.com) (CC BY 4.0), based on Copernicus Marine data. The free
+API is for non-commercial use under 10,000 requests a day.
+
+### Offline predictions (worldwide, no internet)
+
+Computes the astronomical tide on the boat from harmonic constants, with no internet connection, using
+[Neaps](https://neaps.js.org) (MIT) and its station database: TICON-4 tide gauges worldwide and NOAA
+stations in the US. Only the astronomical tide: no wind, air pressure or measurements.
+
+Neaps is an optional dependency of about 57 MB. If it was not installed, the plugin status says so; install
+it in the server's folder with `npm install neaps`.
+
+| Option | Default | |
+|---|---|---|
+| Reference level | station's own | usually the station's chart datum; `LAT`, `MLLW` or `MSL` where the station has it |
+| Use the nearest station within (km) | 50 | stations are sparse in places: the nearest to Fredrikstad is Brofjorden in Sweden, 100 km away |
+
+Predictions are computed again after 6 hours, a move of 1 km or a change of reference level.
+
+Attribution and licence are shown per station in the plugin status: TICON-4 data is mostly
+[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) (no commercial use); NOAA data is public
+domain.
+
 ## Tides resource
 
 The plugin provides the coming high and low tides as the Signal K resource `tides`, in the same shape as
@@ -127,11 +230,12 @@ $ curl http://localhost:3000/signalk/v2/api/resources/tides
 }
 ```
 
-The data comes from the first enabled provider that has data for the boat's position, in the order DMI
-(the next 7 days at the nearest DMI station, `datum` DVR90 or LAT), Kartverket (the next 7 days, `datum` is
-the chosen reference level) and NOAA (the next 7 days at the closest NOAA station, `datum` MLLW, cached for
-an hour). worldtides.info does not provide it. The answer uses the data the providers already fetch, so it
-adds no requests to DMI or Kartverket.
+The data comes from the first enabled provider that has data for the boat's position: the station-based
+providers first (CHS `datum` CD, DMI DVR90 or LAT, Kartverket the chosen reference level, NOAA MLLW,
+Rijkswaterstaat NAP), then the fallbacks, the offline predictions and Open-Meteo (`datum` MSL).
+worldtides.info does not provide it. Each answer has the next 7 days of highs and lows, and says its
+`datum`: check it, as it differs between providers. The answer uses the data the providers already fetch,
+so it adds no requests, except for NOAA (cached for an hour).
 
 The Signal K server merges the answers of all plugins that provide the same resource type. If
 signalk-tides is installed too, turn off *Provide tide predictions as the resource* in this plugin's
@@ -151,3 +255,9 @@ Runs the tests offline. The Kartverket provider is tested against XML fixtures i
 synthetic, in the same format. The DMI provider is tested against real DMI responses for Esbjerg in
 `test/fixtures/dmi-*.json`, recorded by [open-tides](https://github.com/gerrowadat/open-tides) (data: DMI,
 CC BY 4.0). The tides resource and the NOAA forecast are tested with simulated NOAA responses.
+
+The Rijkswaterstaat, CHS and Open-Meteo tests use answers built in each service's documented format, not
+recorded responses. `tools/capture-fixtures.mjs` (Node 18 or newer) fetches real sample responses from
+these services and from SMHI and FMI into `test/fixtures/captured/`, to check the providers against.
+The offline provider is tested with a stand-in for Neaps, and also against the real Neaps database when
+the `neaps` package is installed.

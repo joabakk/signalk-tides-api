@@ -51,6 +51,7 @@ module.exports = function (app, plugin, deps) {
 
   const spec = {
     optionKey: 'openmeteo',
+    fallback: true, // used by the tides resource only when no station-based provider answers
     title: 'Open-Meteo (worldwide model, not for coastal navigation)',
     name: 'Open-Meteo',
     attribution: 'Open-Meteo.com (CC BY 4.0), sea level from Copernicus Marine Service; model data, not for coastal navigation',

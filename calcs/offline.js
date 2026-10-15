@@ -60,6 +60,7 @@ module.exports = function (app, plugin, deps) {
 
   const spec = {
     optionKey: 'offline',
+    fallback: true, // used by the tides resource only when no station-based provider answers
     title: 'Offline predictions (worldwide, no internet)',
     name: 'Offline',
     attribution: 'Neaps tide database',

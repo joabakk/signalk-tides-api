@@ -66,12 +66,12 @@ module.exports = function(app) {
       })
     }
 
-    // The forecast comes from the first enabled provider that can make one.
+    // The forecast comes from the first enabled provider that can make one: station-based
+    // providers first, then the fallbacks (model grid, offline harmonics).
     function tideForecast() {
-      const tides = props.tides || {}
-      const providers = calculations.filter(calc => calc.tideForecast && tides[calc.optionKey])
+      const providers = forecastOrder(calculations, props.tides || {})
       if ( providers.length === 0 ) {
-        return Promise.reject(new Error('No tide provider with forecasts is enabled (Kartverket or NOAA)'))
+        return Promise.reject(new Error('No tide provider with forecasts is enabled'))
       }
       return providers.reduce(
         (previous, calc) => previous.catch(() => calc.tideForecast()),
@@ -325,6 +325,12 @@ module.exports = function(app) {
 
   return plugin;
 }
+
+function forecastOrder (calcs, tides) {
+  const enabled = calcs.filter(calc => calc.tideForecast && tides[calc.optionKey])
+  return enabled.filter(calc => !calc.fallback).concat(enabled.filter(calc => calc.fallback))
+}
+module.exports.forecastOrder = forecastOrder
 
 function load_calcs (app, plugin, dir) {
   fpath = path.join(__dirname, dir)

@@ -1,5 +1,29 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Rijkswaterstaat provider (Netherlands): astronomical high and low waters, astronomical tide, measured
+  and forecast water level at the nearest Rijkswaterstaat location with tide predictions. Heights above
+  NAP. Free, no API key. Data CC0.
+- CHS provider (Canada): predicted high and low waters, predicted, measured and forecast water level from
+  the IWLS API of Fisheries and Oceans Canada. Heights above chart datum. Free, no API key;
+  non-commercial licence.
+- Open-Meteo provider (worldwide): modelled sea level with its air pressure part, for the model grid cell
+  at the boat. Not for coastal navigation. Free for non-commercial use, CC BY 4.0.
+- Offline provider (worldwide, no internet): astronomical tide computed on the boat with Neaps from
+  TICON-4 and NOAA harmonic constants. Neaps is an optional dependency.
+- A shared base for providers (`lib/tide-provider.js`): request queue, back-off, caching of station
+  lists, deltas, status and the `tides` resource, with its own tests.
+- `tools/capture-fixtures.mjs` to record real sample responses for the tests.
+
+### Changed
+- The `tides` resource asks station-based providers before the fallbacks (offline, Open-Meteo).
+
+### Not yet checked live
+- The Rijkswaterstaat, CHS and Open-Meteo providers are tested with answers built from each service's
+  documented format, not with recorded responses.
+
 ## 0.6.0
 
 ### Added
