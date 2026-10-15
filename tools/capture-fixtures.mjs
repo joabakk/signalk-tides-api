@@ -219,9 +219,18 @@ async function ioc () {
   const items = (Array.isArray(list) ? list : []).filter(s => isFinite(Number(s.Lat)) && isFinite(Number(s.Lon)))
   for (const [name, lat, lon] of [['fredrikstad', 59.21, 10.95], ['reykjavik', 64.15, -21.94]]) {
     items.sort((a, b) => distance({ lat, lon }, { lat: Number(a.Lat), lon: Number(a.Lon) }) - distance({ lat, lon }, { lat: Number(b.Lat), lon: Number(b.Lon) }))
-    const s = items[0]
+    // a water level sensor that reported in the last two days (the list has one row per sensor)
+    const recent = items.filter(i => /^(rad|ra2|prs|prt|pr1|pr2|flt|bub|enc|pwl|wls|aqu)$/.test(i.sensor) &&
+      Date.parse(String(i.lasttime).replace(' ', 'T') + 'Z') > now.getTime() - 2 * 24 * 3600e3)
+    const s = recent[0]
     if (!s) continue
-    await get(`ioc-${name}-${s.Code}`, `${base}?query=data&code=${encodeURIComponent(s.Code)}&timestart=${iso(hours(-3))}&timestop=${iso(now)}&format=json`)
+    // 'Invalid date provided' for ISO times with Z: try the forms the service may want
+    const day = d => d.toISOString().slice(0, 19)
+    const code = encodeURIComponent(s.Code)
+    await get(`ioc-${name}-${s.Code}-a`, `${base}?query=data&code=${code}&timestart=${day(hours(-3))}&timestop=${day(now)}&format=json`)
+    await get(`ioc-${name}-${s.Code}-b`, `${base}?query=data&code=${code}&timestart=${day(hours(-3)).replace('T', '%20')}&timestop=${day(now).replace('T', '%20')}&format=json`)
+    await get(`ioc-${name}-${s.Code}-c`, `${base}?query=data&code=${code}&period=0.125&format=json`)
+    await get(`ioc-${name}-${s.Code}-d`, `${base}?query=data&code=${code}&period=0.125&endtime=${day(now)}&format=json`)
   }
 }
 
@@ -241,10 +250,18 @@ async function noaa () {
 
 // --- LINZ (New Zealand): yearly tide prediction tables --------------------------------------
 async function linz () {
-  const page = await get('linz-page', 'https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions')
-  const links = [...new Set((page.body.match(/https?:[^"'\s<>]+\.csv/gi) || []))]
-  const pick = links.filter(l => /auckland|wellington/i.test(l)).slice(0, 2)
-  for (const [i, link] of (pick.length ? pick : links.slice(0, 2)).entries()) await get(`linz-csv-${i + 1}`, link)
+  const site = 'https://www.linz.govt.nz'
+  const abs = l => l.startsWith('http') ? l : site + l
+  const links = body => [...new Set((body.match(/href="([^"]+)"/gi) || []).map(h => h.slice(6, -1)))]
+  // the standard ports are on the list view page, one file per port and year
+  const list = await get('linz-list-view', `${site}/products-services/tides-and-tidal-streams/tide-predictions/tide-predictions-list-view`)
+  const files = links(list.body).filter(l => /\.(csv|txt|xlsx?|pdf)(\?|$)/i.test(l))
+  const pick = files.filter(l => /auckland|wellington/i.test(l) && /csv/i.test(l)).slice(0, 2)
+  for (const [i, link] of (pick.length ? pick : files.filter(l => /csv/i.test(l)).slice(0, 2)).entries()) await get(`linz-port-${i + 1}`, abs(link))
+  // harmonic constants (could be used to compute predictions on the boat)
+  const constituents = await get('linz-constituents-page', `${site}/products-services/data/types-linz-data/sea-level-data/tide-constituents`)
+  const data = links(constituents.body).filter(l => /\.(csv|txt|zip)(\?|$)/i.test(l)).slice(0, 1)
+  for (const link of data) await get('linz-constituents', abs(link))
 }
 
 const SOURCES = {
