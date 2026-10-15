@@ -2,7 +2,7 @@
 
 This is a copy of sbender9's derived-data.
 
-Currently serving worldtide.info API, NOAA free data and Kartverket (Norway) free data, it can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
+Currently serving worldtide.info API, NOAA free data, Kartverket (Norway) free data and DMI (Denmark) free data, it can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
 
 > **Coming back from signalk-tides?** In 2025 this plugin stopped producing data on newer servers
 > (#67), and [signalk-tides](https://www.npmjs.com/package/signalk-tides) by @bkeepers was published
@@ -20,6 +20,11 @@ Enable one provider under *Tides* in the plugin configuration.
 | NOAA | US only | no |
 | worldtides.info | worldwide | yes, paid |
 | Kartverket | Norway | no |
+| DMI | Denmark, Greenland, Faroe Islands | no |
+
+Kartverket and DMI only publish data where they have it, so a boat sailing between Norway and Denmark
+can enable both. Where both have data (parts of the Skagerrak), both publish to the same paths; enable
+the one for the waters you are in.
 
 ### Kartverket (Norway)
 
@@ -65,6 +70,42 @@ Attribution: water level data from Kartverket, Norwegian Mapping Authority, Hydr
 licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Credit Kartverket when you show
 or share the data.
 
+### DMI (Denmark, Greenland, Faroe Islands)
+
+Uses the free oceanographic API of DMI, the Danish Meteorological Institute
+(https://www.dmi.dk/friedata/dokumentation/apis/oceanographic-observation-and-tidewater-api): tide
+predictions for about 220 stations, and sea level measured every 10 minutes at DMI's tide gauges.
+The provider uses the nearest prediction station and the tide gauge at the same place.
+
+| Path | Contents |
+|---|---|
+| `environment.tide.heightHigh`, `environment.tide.timeHigh` | next high tide at the station |
+| `environment.tide.heightLow`, `environment.tide.timeLow` | next low tide at the station |
+| `environment.tide.heightNow` | measured water level if the gauge reported in the last hour, otherwise the prediction |
+| `environment.tide.heightPredicted` | astronomical tide now (not in the Signal K specification) |
+| `environment.tide.heightObserved` | latest measured water level at the gauge (not in the specification) |
+| `environment.tide.weatherEffect` | measured minus predicted at the time of the measurement: the effect of wind and air pressure (not in the specification) |
+
+In the Baltic the astronomical tide is a few centimetres to a few decimetres, and wind and air pressure
+change the water level far more; `heightObserved` and `weatherEffect` show that. At Esbjerg on the North
+Sea coast the tide range is close to 2 m.
+
+Options:
+
+| Option | Default | |
+|---|---|---|
+| Reference level | DVR90 | `DVR90` is the Danish height datum (a land datum close to mean sea level, so low tides are often negative). `LAT` gives heights above the station's lowest astronomical tide, as published by DMI for each station. |
+| Minutes between measured water level updates | 10 | minimum 10, DMI's measuring interval |
+| Use the nearest tide station within (km) | 50 | outside this distance the provider publishes nothing |
+| API address | `https://opendataapi.dmi.dk/v2/oceanObs/collections` | |
+
+Requests: the station lists once a month (kept in `dmi-stations.json` in the plugin's data folder), the
+highs and lows for 7 days and the 10-minute prediction for 2 days only when they are about to run out or
+the nearest station changes, and the latest measurement at the update interval.
+
+Attribution: data from the Danish Meteorological Institute (DMI), licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
 ## Tides resource
 
 The plugin provides the coming high and low tides as the Signal K resource `tides`, in the same shape as
@@ -86,10 +127,11 @@ $ curl http://localhost:3000/signalk/v2/api/resources/tides
 }
 ```
 
-The data comes from the first enabled provider that can forecast: Kartverket (the next 7 days, `datum` is the
-chosen reference level) or NOAA (the next 7 days at the closest NOAA station, `datum` MLLW, cached for an
-hour). worldtides.info does not provide it. The answer uses the data the providers already fetch, so it adds
-no requests to Kartverket.
+The data comes from the first enabled provider that has data for the boat's position, in the order DMI
+(the next 7 days at the nearest DMI station, `datum` DVR90 or LAT), Kartverket (the next 7 days, `datum` is
+the chosen reference level) and NOAA (the next 7 days at the closest NOAA station, `datum` MLLW, cached for
+an hour). worldtides.info does not provide it. The answer uses the data the providers already fetch, so it
+adds no requests to DMI or Kartverket.
 
 The Signal K server merges the answers of all plugins that provide the same resource type. If
 signalk-tides is installed too, turn off *Provide tide predictions as the resource* in this plugin's
@@ -106,5 +148,6 @@ npm test
 
 Runs the tests offline. The Kartverket provider is tested against XML fixtures in `test/fixtures`:
 `kartverket-live-*.xml` are real responses for Fredrikstad (data: Kartverket, CC BY 4.0); the others are
-synthetic, in the same format. The tides resource and the NOAA forecast are tested with simulated NOAA
-responses.
+synthetic, in the same format. The DMI provider is tested against real DMI responses for Esbjerg in
+`test/fixtures/dmi-*.json`, recorded by [open-tides](https://github.com/gerrowadat/open-tides) (data: DMI,
+CC BY 4.0). The tides resource and the NOAA forecast are tested with simulated NOAA responses.

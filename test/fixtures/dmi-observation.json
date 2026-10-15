@@ -1,0 +1,136 @@
+{
+ "_note": "Real DMI oceanObs API response (Esbjerg, 2026-09-14), recorded by open-tides (github.com/gerrowadat/open-tides, MIT) and trimmed. Data: Danish Meteorological Institute (DMI), CC BY 4.0.",
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": "fbe02c93-b405-4088-b961-d30ccd46d9e1",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4431,
+     55.4606
+    ]
+   },
+   "properties": {
+    "parameterId": "sealev_dvr",
+    "qcStatus": "auto",
+    "created": "2026-09-14T13:31:43.709723Z",
+    "value": 53.0,
+    "observed": "2026-09-14T13:30:00Z",
+    "stationId": "25149"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "a4b7e3b5-6318-0be4-5303-e3ab82b8353d",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4431,
+     55.4606
+    ]
+   },
+   "properties": {
+    "parameterId": "sealev_dvr",
+    "qcStatus": "auto",
+    "created": "2026-09-14T13:21:43.547625Z",
+    "value": 46.0,
+    "observed": "2026-09-14T13:20:00Z",
+    "stationId": "25149"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "09b40e9f-b1ba-853d-0d7f-8d02bbe764fe",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4431,
+     55.4606
+    ]
+   },
+   "properties": {
+    "parameterId": "sealev_dvr",
+    "qcStatus": "auto",
+    "created": "2026-09-14T13:11:43.349499Z",
+    "value": 39.0,
+    "observed": "2026-09-14T13:10:00Z",
+    "stationId": "25149"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "45e9d29d-57df-1df9-b224-e5214a42b534",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4431,
+     55.4606
+    ]
+   },
+   "properties": {
+    "parameterId": "sealev_dvr",
+    "qcStatus": "auto",
+    "created": "2026-09-14T13:01:44.086894Z",
+    "value": 33.0,
+    "observed": "2026-09-14T13:00:00Z",
+    "stationId": "25149"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "903065f3-4cff-af44-d8df-932bd9bd4252",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4431,
+     55.4606
+    ]
+   },
+   "properties": {
+    "parameterId": "sealev_dvr",
+    "qcStatus": "auto",
+    "created": "2026-09-14T12:51:43.538454Z",
+    "value": 27.0,
+    "observed": "2026-09-14T12:50:00Z",
+    "stationId": "25149"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "ab9ae1d8-6900-1b98-447d-fbb6193bc834",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4431,
+     55.4606
+    ]
+   },
+   "properties": {
+    "parameterId": "sealev_dvr",
+    "qcStatus": "auto",
+    "created": "2026-09-14T12:41:43.6518Z",
+    "value": 21.0,
+    "observed": "2026-09-14T12:40:00Z",
+    "stationId": "25149"
+   }
+  }
+ ],
+ "timeStamp": "2026-09-14T13:35:19Z",
+ "numberReturned": 6,
+ "links": [
+  {
+   "href": "https://opendataapi.dmi.dk/v2/oceanObs/collections/observation/items?limit=10000&stationId=25149&parameterId=sealev_dvr&period=latest-hour",
+   "rel": "self",
+   "type": "application/geo+json",
+   "title": "This document"
+  },
+  {
+   "href": "https://opendataapi.dmi.dk/v2/oceanObs/collections/observation/items?limit=10000&stationId=25149&parameterId=sealev_dvr&period=latest-hour&offset=6",
+   "rel": "next",
+   "type": "application/geo+json",
+   "title": "Next set of results"
+  }
+ ]
+}

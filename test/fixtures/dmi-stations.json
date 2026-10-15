@@ -1,0 +1,366 @@
+{
+ "_note": "Real DMI oceanObs API response (Esbjerg, 2026-09-14), recorded by open-tides (github.com/gerrowadat/open-tides, MIT) and trimmed. Data: Danish Meteorological Institute (DMI), CC BY 4.0.",
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": "67bbe1a4-f77d-a8dc-eedd-214d99a88cf7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4397,
+     55.4602
+    ]
+   },
+   "properties": {
+    "owner": "DMI",
+    "country": "DNK",
+    "wmoCountryCode": null,
+    "operationFrom": "1889-01-01T00:00:00Z",
+    "parameterId": [
+     "sea_reg",
+     "sealev_ln"
+    ],
+    "instrumentParameter": [],
+    "created": "2025-12-22T08:30:30Z",
+    "validFrom": "1889-01-01T00:00:00Z",
+    "type": "Tide-gauge-primary",
+    "regionId": null,
+    "name": "Esbjerg Havn",
+    "wmoStationId": null,
+    "operationTo": "1990-01-26T00:00:00Z",
+    "updated": null,
+    "stationId": "25148",
+    "validTo": "1990-01-26T00:00:00Z",
+    "status": "Active"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "69e3ff6a-e13a-dd10-222b-1d69b3c1cfe1",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4397,
+     55.4602
+    ]
+   },
+   "properties": {
+    "owner": "DMI",
+    "country": "DNK",
+    "wmoCountryCode": null,
+    "operationFrom": "1889-01-01T00:00:00Z",
+    "parameterId": [
+     "sea_reg",
+     "sealev_ln"
+    ],
+    "instrumentParameter": [],
+    "created": "2025-12-22T08:30:30Z",
+    "validFrom": "1990-01-26T00:00:00Z",
+    "type": "Tide-gauge-primary",
+    "regionId": null,
+    "name": "Esbjerg Havn",
+    "wmoStationId": null,
+    "operationTo": "1990-01-26T00:00:00Z",
+    "updated": null,
+    "stationId": "25148",
+    "validTo": null,
+    "status": "Inactive"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "0051c61d-70bc-57c5-9877-6c39d2744e6d",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4397,
+     55.4602
+    ]
+   },
+   "properties": {
+    "owner": "DMI",
+    "country": "DNK",
+    "wmoCountryCode": null,
+    "operationFrom": "1990-01-01T00:00:00Z",
+    "parameterId": [
+     "sea_reg",
+     "sealev_dvr",
+     "sealev_ln",
+     "tw"
+    ],
+    "instrumentParameter": [],
+    "created": "2025-12-22T08:30:30Z",
+    "validFrom": "1990-01-01T00:00:00Z",
+    "type": "Tide-gauge-primary",
+    "regionId": null,
+    "name": "Esbjerg Havn I",
+    "wmoStationId": null,
+    "operationTo": null,
+    "updated": null,
+    "stationId": "25149",
+    "validTo": "2021-04-27T09:03:37Z",
+    "status": "Active"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "4a62c9cc-4abe-ca8d-5e74-19d830cee564",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4431,
+     55.4606
+    ]
+   },
+   "properties": {
+    "owner": "DMI",
+    "country": "DNK",
+    "wmoCountryCode": null,
+    "operationFrom": "1990-01-01T00:00:00Z",
+    "parameterId": [
+     "sea_reg",
+     "sealev_dvr",
+     "sealev_ln",
+     "tw"
+    ],
+    "instrumentParameter": [],
+    "created": "2025-12-22T08:30:30Z",
+    "validFrom": "2021-04-27T09:03:37Z",
+    "type": "Tide-gauge-primary",
+    "regionId": null,
+    "name": "Esbjerg Havn I",
+    "wmoStationId": null,
+    "operationTo": null,
+    "updated": null,
+    "stationId": "25149",
+    "validTo": null,
+    "status": "Active"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "5789ecef-92d3-696e-254e-57bd0df33ad9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4431,
+     55.4606
+    ]
+   },
+   "properties": {
+    "owner": "DMI",
+    "country": "DNK",
+    "wmoCountryCode": null,
+    "operationFrom": "2021-04-15T00:00:00Z",
+    "parameterId": [
+     "sea_reg",
+     "tw"
+    ],
+    "instrumentParameter": [],
+    "created": "2025-12-22T08:30:30Z",
+    "validFrom": "2021-04-13T09:57:12Z",
+    "type": "Tide-gauge-secondary",
+    "regionId": null,
+    "name": "Esbjerg Havn II",
+    "wmoStationId": "25151",
+    "operationTo": null,
+    "updated": null,
+    "stationId": "25151",
+    "validTo": null,
+    "status": "Active"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "93d5a06b-14b9-27e6-0ac8-2242cd960073",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.5988,
+     55.7042
+    ]
+   },
+   "properties": {
+    "owner": "DMI",
+    "country": "DNK",
+    "wmoCountryCode": "6080",
+    "operationFrom": "1999-06-24T00:00:00Z",
+    "parameterId": [
+     "sea_reg",
+     "sealev_dvr",
+     "sealev_ln",
+     "tw"
+    ],
+    "instrumentParameter": [],
+    "created": "2025-12-22T08:30:30Z",
+    "validFrom": "1999-06-24T00:00:00Z",
+    "type": "Tide-gauge-primary",
+    "regionId": "6",
+    "name": "Københavns Havn",
+    "wmoStationId": "30336",
+    "operationTo": null,
+    "updated": null,
+    "stationId": "30336",
+    "validTo": "2001-04-06T00:00:00Z",
+    "status": "Active"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "d6aa7eda-fc23-8b59-4074-ef8503109f34",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.599,
+     55.7044
+    ]
+   },
+   "properties": {
+    "owner": "DMI",
+    "country": "DNK",
+    "wmoCountryCode": "6080",
+    "operationFrom": "1999-06-24T00:00:00Z",
+    "parameterId": [
+     "sea_reg",
+     "sealev_dvr",
+     "sealev_ln",
+     "tw"
+    ],
+    "instrumentParameter": [],
+    "created": "2025-12-22T08:30:30Z",
+    "validFrom": "2001-04-06T00:00:00Z",
+    "type": "Tide-gauge-primary",
+    "regionId": "6",
+    "name": "Københavns Havn",
+    "wmoStationId": "30336",
+    "operationTo": null,
+    "updated": null,
+    "stationId": "30336",
+    "validTo": "2011-01-19T00:00:00Z",
+    "status": "Active"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "e0a7291e-094f-38f4-03a2-2f3cbfb87191",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.5989,
+     55.7043
+    ]
+   },
+   "properties": {
+    "owner": "DMI",
+    "country": "DNK",
+    "wmoCountryCode": "6080",
+    "operationFrom": "1999-06-24T00:00:00Z",
+    "parameterId": [
+     "sea_reg",
+     "sealev_dvr",
+     "sealev_ln",
+     "tw"
+    ],
+    "instrumentParameter": [],
+    "created": "2025-12-22T08:30:30Z",
+    "validFrom": "2011-01-19T00:00:00Z",
+    "type": "Tide-gauge-primary",
+    "regionId": "6",
+    "name": "Københavns Havn",
+    "wmoStationId": "30336",
+    "operationTo": null,
+    "updated": null,
+    "stationId": "30336",
+    "validTo": "2023-12-19T13:24:41Z",
+    "status": "Active"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "6ed43653-7157-d276-50a4-8211d29c0d47",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.5989,
+     55.7043
+    ]
+   },
+   "properties": {
+    "owner": "DMI",
+    "country": "DNK",
+    "wmoCountryCode": "6080",
+    "operationFrom": "1999-06-24T00:00:00Z",
+    "parameterId": [
+     "sea_reg",
+     "sealev_dvr",
+     "sealev_ln",
+     "tw"
+    ],
+    "instrumentParameter": [],
+    "created": "2025-12-22T08:30:30Z",
+    "validFrom": "2023-12-19T13:36:40Z",
+    "type": "Tide-gauge-primary",
+    "regionId": "6",
+    "name": "Københavns Havn",
+    "wmoStationId": "30336",
+    "operationTo": null,
+    "updated": null,
+    "stationId": "30336",
+    "validTo": "2023-12-19T13:38:20Z",
+    "status": "Active"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "1bfccd88-5fe7-fc2f-3ea9-8dce7e51737d",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.5997,
+     55.6894
+    ]
+   },
+   "properties": {
+    "owner": "DMI",
+    "country": "DNK",
+    "wmoCountryCode": "6080",
+    "operationFrom": "1999-06-24T00:00:00Z",
+    "parameterId": [
+     "sea_reg",
+     "sealev_dvr",
+     "sealev_ln",
+     "tw"
+    ],
+    "instrumentParameter": [],
+    "created": "2025-12-22T08:30:30Z",
+    "validFrom": "2023-12-19T13:38:20Z",
+    "type": "Tide-gauge-primary",
+    "regionId": "6",
+    "name": "Københavns Havn",
+    "wmoStationId": "30336",
+    "operationTo": null,
+    "updated": null,
+    "stationId": "30336",
+    "validTo": null,
+    "status": "Active"
+   }
+  }
+ ],
+ "timeStamp": "2026-09-14T13:35:18Z",
+ "numberReturned": 10,
+ "links": [
+  {
+   "href": "https://opendataapi.dmi.dk/v2/oceanObs/collections/station/items?limit=10000",
+   "rel": "self",
+   "type": "application/geo+json",
+   "title": "This document"
+  },
+  {
+   "href": "https://opendataapi.dmi.dk/v2/oceanObs/collections/station/items?limit=10000&offset=201",
+   "rel": "next",
+   "type": "application/geo+json",
+   "title": "Next set of results"
+  }
+ ]
+}

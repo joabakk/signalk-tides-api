@@ -1,0 +1,79 @@
+{
+ "_note": "Real DMI oceanObs API response (Esbjerg, 2026-09-14), recorded by open-tides (github.com/gerrowadat/open-tides, MIT) and trimmed. Data: Danish Meteorological Institute (DMI), CC BY 4.0.",
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": "dff67769-5b95-7f52-93cc-63cf49684b10",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -44.287,
+     60.1462
+    ]
+   },
+   "properties": {
+    "country": "GRL",
+    "created": "2026-03-13T14:52:57Z",
+    "name": "Aappilattoq",
+    "lowAstronomicalTide": -150.4,
+    "meanLowWaterSpring": -122.9,
+    "stationId": "2991115"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "9b40bd43-99d4-655d-1d9d-57e674477dbf",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.4397,
+     55.4602
+    ]
+   },
+   "properties": {
+    "country": "DNK",
+    "created": "2026-03-13T14:52:57Z",
+    "name": "Esbjerg Havn",
+    "lowAstronomicalTide": -120.8,
+    "meanLowWaterSpring": -97.6,
+    "stationId": "25149"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "8087f93f-1e44-b94b-f970-58a75177c22d",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     12.5989,
+     55.7043
+    ]
+   },
+   "properties": {
+    "country": "DNK",
+    "created": "2026-03-13T14:52:57Z",
+    "name": "Københavns Havn",
+    "lowAstronomicalTide": -15.2,
+    "meanLowWaterSpring": -7.8,
+    "stationId": "30336"
+   }
+  }
+ ],
+ "timeStamp": "2026-09-14T13:35:18Z",
+ "numberReturned": 3,
+ "links": [
+  {
+   "href": "https://opendataapi.dmi.dk/v2/oceanObs/collections/tidewaterstation/items?limit=10000",
+   "rel": "self",
+   "type": "application/geo+json",
+   "title": "This document"
+  },
+  {
+   "href": "https://opendataapi.dmi.dk/v2/oceanObs/collections/tidewaterstation/items?limit=10000&offset=220",
+   "rel": "next",
+   "type": "application/geo+json",
+   "title": "Next set of results"
+  }
+ ]
+}

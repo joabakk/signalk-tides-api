@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- DMI provider (Denmark, Greenland, Faroe Islands): next high and low tide at the nearest of DMI's
+  about 220 prediction stations, the astronomical tide now, the water level measured every 10 minutes
+  at the station's tide gauge, and the weather effect (measured minus predicted). Heights relative to
+  DVR90 or above the station's lowest astronomical tide. Free, no API key. Also feeds the `tides`
+  resource. Data: Danish Meteorological Institute (DMI), CC BY 4.0.
+- Tests for the DMI provider (`test/dmi.test.js`) against real DMI responses.
+
 ## 0.5.0
 
 ### Added
