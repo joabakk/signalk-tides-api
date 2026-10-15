@@ -15,7 +15,7 @@
  */
 
 const createProvider = require('../lib/tide-provider')
-const { http, buildUrl, noData, quiet, nearest, stationList, maxDistance: maxDistanceOption, stationData, lastTime, HOUR, DAY } = createProvider
+const { http, buildUrl, noData, quiet, nearest, stationList, maxDistance: maxDistanceOption, stationData, runningOut, HOUR, DAY } = createProvider
 
 const DEFAULT_API_URL = 'https://api-iwls.dfo-mpo.gc.ca/api/v1'
 const STATIONS_MAX_AGE = 30 * DAY
@@ -72,16 +72,16 @@ module.exports = function (app, plugin, deps) {
     const t = ctx.t
     const mine = key => stationData(s, key, station.id)
 
-    if (station.series.includes('wlp-hilo') && lastTime(mine('extremes')) - t < DAY) {
+    if (station.series.includes('wlp-hilo') && runningOut(mine('extremes'), t, DAY)) {
       ctx.job('extremes', 'high and low waters', () => series(ctx, station, 'wlp-hilo', t - HOUR, t + 7 * DAY).then(points => {
         if (points.length === 0) throw noData(`no predicted high and low waters for ${station.name}`)
-        s.extremes = { stationId: station.id, points: typeExtremes(points) }
+        s.extremes = { stationId: station.id, fetchedAt: t, points: typeExtremes(points) }
       }))
     }
-    if (station.series.includes('wlp') && lastTime(mine('predicted')) - t < 6 * HOUR) {
+    if (station.series.includes('wlp') && runningOut(mine('predicted'), t, 6 * HOUR)) {
       ctx.job('predicted', 'predicted water level', () => series(ctx, station, 'wlp', t - HOUR, t + 2 * DAY).then(points => {
         if (points.length === 0) throw noData(`no predicted water level for ${station.name}`)
-        s.predicted = { stationId: station.id, points }
+        s.predicted = { stationId: station.id, fetchedAt: t, points }
       }))
     }
     const observed = mine('observed')

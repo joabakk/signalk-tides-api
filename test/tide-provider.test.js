@@ -310,6 +310,18 @@ test('a fallback publishes nothing while a station provider does, but still serv
   }
 })
 
+test('runningOut: asked again when data ends soon, at most once an hour', () => {
+  const t = Date.parse('2026-10-12T16:30:00Z')
+  const d = (endsIn, fetchedAgo) => ({ points: [{ time: new Date(t + endsIn), value: 0 }], fetchedAt: t - fetchedAgo })
+  const H = 3600e3
+  assert.strictEqual(createProvider.runningOut(undefined, t, 24 * H), true)
+  assert.strictEqual(createProvider.runningOut(d(30 * H, 0), t, 24 * H), false)
+  assert.strictEqual(createProvider.runningOut(d(20 * H, 2 * H), t, 24 * H), true)
+  assert.strictEqual(createProvider.runningOut(d(20 * H, 0.5 * H), t, 24 * H), false, 'fetched half an hour ago')
+  assert.strictEqual(createProvider.runningOut({ points: [], fetchedAt: t - 0.5 * H }, t, 24 * H), false)
+  assert.strictEqual(createProvider.runningOut({ points: [] }, t, 24 * H), true)
+})
+
 test('requests run one at a time', async () => {
   let inFlight = 0
   let max = 0

@@ -1,0 +1,1 @@
+{"table":{"columnNames":["time","tide_time_category","Water_Level_ODMalin"],"columnTypes":["String","String","String"],"columnUnits":["UTC",null,"metres"],"rows":[["2026-10-15T19:50:00Z","LOW",-1.228],["2026-10-16T02:30:00Z","HIGH",1.188],["2026-10-16T08:10:00Z","LOW",-1.062],["2026-10-16T14:40:00Z","HIGH",1.298]]}}

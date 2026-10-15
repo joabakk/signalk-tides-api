@@ -22,7 +22,7 @@
  */
 
 const createProvider = require('../lib/tide-provider')
-const { http, noData, quiet, nearest, stationList, maxDistance: maxDistanceOption, stationData, lastTime, HOUR, DAY } = createProvider
+const { http, noData, quiet, nearest, stationList, maxDistance: maxDistanceOption, stationData, runningOut, HOUR, DAY } = createProvider
 
 const DEFAULT_API_URL = 'https://ddapi20-waterwebservices.rijkswaterstaat.nl'
 const STATIONS_MAX_AGE = 30 * DAY
@@ -148,20 +148,20 @@ module.exports = function (app, plugin, deps) {
     const mine = key => stationData(s, key, station.id)
     const height = { Grootheid: { Code: 'WATHTE' }, Hoedanigheid: { Code: 'NAP' } }
 
-    if (lastTime(mine('extremes')) - t < DAY) {
+    if (runningOut(mine('extremes'), t, DAY)) {
       ctx.job('extremes', 'high and low waters', () => observations(ctx, station,
         { ProcesType: 'astronomisch', Groepering: { Code: 'GETETBRKD2' } }, t - HOUR, t + 7 * DAY).then(lists => {
         const points = readHighLow(lists)
         if (points.length === 0) throw noData(`no high and low waters for ${station.name}`)
-        s.extremes = { stationId: station.id, points }
+        s.extremes = { stationId: station.id, fetchedAt: t, points }
       }))
     }
-    if (lastTime(mine('predicted')) - t < 6 * HOUR) {
+    if (runningOut(mine('predicted'), t, 6 * HOUR)) {
       ctx.job('predicted', 'astronomical tide', () => observations(ctx, station,
         Object.assign({ ProcesType: 'astronomisch' }, height), t - HOUR, t + 2 * DAY).then(lists => {
         const points = readLevels(lists)
         if (points.length === 0) throw noData(`no astronomical tide series for ${station.name}`)
-        s.predicted = { stationId: station.id, points }
+        s.predicted = { stationId: station.id, fetchedAt: t, points }
       }))
     }
     const observed = mine('observed')
