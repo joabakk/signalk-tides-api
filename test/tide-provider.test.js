@@ -77,7 +77,8 @@ function setup (opts) {
     },
     view (ctx) { return ctx.state.fetchedAt || opts.update ? data : null }
   }
-  const plugin = { id: 'tides-api', properties: { tides: Object.assign({ fake: true }, opts.tides) } }
+  Object.assign(spec, opts.spec)
+  const plugin = opts.plugin || { id: 'tides-api', properties: { tides: Object.assign({ fake: true }, opts.tides) } }
   const calc = createProvider(app, plugin, spec, { republishInterval: opts.republishInterval })
   return { state, app, calc, calls, data }
 }
@@ -224,6 +225,88 @@ test('no data for the position waits a whole interval; quiet errors are not repo
     assert.ok(outside.app.debugs.some(m => m.includes('outside the area')))
   } finally {
     outside.calc.stop()
+  }
+})
+
+test('jobs queued before update() throws still run (e.g. a station list refresh)', async () => {
+  const ran = []
+  const { calc, app } = setup({
+    update: ctx => {
+      ctx.job('stations', 'station list', () => { ran.push('stations') })
+      throw createProvider.quiet('no station within 30 km')
+    }
+  })
+  try {
+    assert.strictEqual(await calc.calculator(POS), undefined)
+    assert.deepStrictEqual(ran, ['stations'])
+    assert.deepStrictEqual(app.pluginErrors, [])
+  } finally {
+    calc.stop()
+  }
+})
+
+test('quiet job errors do not delay the next try', async () => {
+  let near = false
+  const { calc, state, calls } = setup({
+    update: (ctx, calls) => ctx.job('compute', 'prediction', () => {
+      calls.push(ctx.now.toISOString())
+      if (!near) throw createProvider.quiet('no station within 50 km')
+    })
+  })
+  try {
+    await calc.calculator(POS)
+    state.now = '2026-10-12T16:31:00Z'
+    near = true
+    await calc.calculator(POS)
+    assert.strictEqual(calls.length, 2, 'asked again a minute later')
+  } finally {
+    calc.stop()
+  }
+})
+
+test('a failure at one station does not delay requests for another', async () => {
+  const { calc, state, calls } = setup({
+    update: (ctx, calls) => {
+      ctx.state.station = { id: state.stationId }
+      ctx.job('extremes', 'high and low waters', () => {
+        calls.push(state.stationId)
+        if (state.stationId === 'A') throw createProvider.noData('no highs and lows at A')
+      })
+    }
+  })
+  state.stationId = 'A'
+  try {
+    await calc.calculator(POS)
+    state.now = '2026-10-12T16:31:00Z'
+    await calc.calculator(POS)
+    assert.deepStrictEqual(calls, ['A'], 'A waits')
+    state.stationId = 'B'
+    await calc.calculator(POS)
+    assert.deepStrictEqual(calls, ['A', 'B'], 'B is asked at once')
+  } finally {
+    calc.stop()
+  }
+})
+
+test('a fallback publishes nothing while a station provider does, but still serves the resource', async () => {
+  const plugin = { id: 'tides-api', properties: { tides: { fake: true, station: true } } }
+  const fallback = setup({ plugin, spec: { fallback: true } })
+  const station = setup({ plugin, spec: { optionKey: 'station' } })
+  try {
+    assert.ok((await fallback.calc.calculator(POS)).length > 0, 'alone, the fallback publishes')
+    assert.ok((await station.calc.calculator(POS)).length > 0)
+    assert.ok(plugin.tideDeltasAt.station > 0)
+    assert.strictEqual(plugin.tideDeltasAt.fake, undefined)
+    assert.strictEqual(await fallback.calc.calculator(POS), undefined)
+    const statuses = fallback.app.statuses.length
+    await fallback.calc.calculator(POS)
+    assert.strictEqual(fallback.app.statuses.length, statuses, 'no status from a quiet fallback')
+    assert.strictEqual((await fallback.calc.tideForecast()).datum, 'MSL')
+    plugin.tideDeltasAt.station = Date.now() - 11 * 60e3
+    assert.ok((await fallback.calc.calculator(POS)).length > 0, 'publishes again 10 min after the station provider stopped')
+  } finally {
+    fallback.calc.stop()
+    station.calc.stop()
   }
 })
 

@@ -164,6 +164,21 @@ test('old measurements are not used; an FMI error is reported', async () => {
   }
 })
 
+test('N2000 without an offset: the gauge is not named, as nothing from it is published', async () => {
+  // N2000 values one second off the MW values: no offset to convert the measurement with
+  const shifted = fixture('fmi-live-forecast-helsinki.xml')
+    .replace(/:00:00Z(<\/BsWfs:Time>\s*<BsWfs:ParameterName>SeaLevelN2000<)/g, ':00:01Z$1')
+  const { calc, app } = setup({ tides: { fmiDatum: 'N2000' }, answer: url => /forecast/.test(url) ? shifted : answer(url) })
+  try {
+    const v = byPath(await calc.calculator(HELSINKI))
+    assert.strictEqual(v['environment.tide.heightObserved'], undefined)
+    assert.ok(typeof v['environment.tide.heightForecast'] === 'number')
+    assert.ok(app.statuses[0].startsWith('FMI forecast point (N2000)'), app.statuses[0])
+  } finally {
+    calc.stop()
+  }
+})
+
 ;(async () => {
   let failed = 0
   for (const t of tests) {

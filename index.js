@@ -23,6 +23,8 @@ const defaultBatteries =   '0'
 const defaultTanks = 'fuel.0, fuel.1'
 */
 
+const { markPublishing } = require('./lib/tide-provider')
+
 module.exports = function(app) {
   var plugin = {};
   var schema
@@ -82,12 +84,16 @@ module.exports = function(app) {
     intervalId = setInterval(update, updateInterval);
     update();
 
-    function sendDeltas(promise) {
+    function sendDeltas(promise, calculation) {
       if (!promise) return;
 
       promise
         .then((values) => {
           if (typeof values !== "undefined" && values.length > 0) {
+            // station-based tide providers keep the fallbacks (model, offline) quiet
+            if (calculation && calculation.group === 'tides' && !calculation.fallback) {
+              markPublishing(plugin, calculation.optionKey)
+            }
             if (values[0].context) {
               values.forEach((delta) => {
                 app.handleMessage(plugin.id, delta);
@@ -159,7 +165,7 @@ module.exports = function(app) {
         // No position yet (e.g. no GPS fix at startup): providers get undefined and skip.
         const position = app.getSelfPath("navigation.position")
         try {
-          sendDeltas(calculation.calculator(position ? position.value : undefined));
+          sendDeltas(calculation.calculator(position ? position.value : undefined), calculation);
         } catch (err) {
           setError(err.message);
           app.error(err.message);

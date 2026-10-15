@@ -103,7 +103,7 @@ test('caches: data at the refresh interval, the 404 remembered, one station list
   }
 })
 
-test('an empty latest hour uses the hourly values without giving up on minute values', async () => {
+test('an empty latest hour: hourly values for an hour, then minute values again', async () => {
   const { calc, state, urls } = setup({
     tides: { smhiDatum: 'MW' },
     answer: url => /\/14\/.*latest-hour/.test(url) ? { value: [] } : /\/12\/station\/2130\/period\/latest-day/.test(url)
@@ -114,7 +114,11 @@ test('an empty latest hour uses the hourly values without giving up on minute va
     assert.strictEqual(v['environment.tide.heightNow'], 0.151)
     state.now = '2026-10-15T16:29:00Z'
     await calc.calculator(STROMSTAD)
-    assert.strictEqual(urls.filter(u => u.includes('/14/')).length, 2)
+    assert.strictEqual(urls.filter(u => u.includes('/14/')).length, 1, 'one request per update for an hour')
+    assert.strictEqual(urls.filter(u => u.includes('/12/station')).length, 2)
+    state.now = '2026-10-15T17:19:00Z'
+    await calc.calculator(STROMSTAD)
+    assert.strictEqual(urls.filter(u => u.includes('/14/')).length, 2, 'minute values tried again after an hour')
   } finally {
     calc.stop()
   }

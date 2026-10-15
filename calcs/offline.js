@@ -4,7 +4,7 @@
  * (TICON-4 tide gauges worldwide, NOAA stations in the US, and others).
  *
  * Only the astronomical tide: no wind, air pressure or measurements. Accuracy depends on the
- * station's data and on the distance to it. Neaps is an optional dependency (about 57 MB with its
+ * station's data and on the distance to it. Neaps is an optional peer dependency (about 57 MB with its
  * database); without it the provider reports that it is missing and does nothing else.
  *
  * Licences differ per station and are shown in the plugin status: TICON-4 data is mostly
@@ -12,10 +12,8 @@
  */
 
 const createProvider = require('../lib/tide-provider')
-const { quiet, HOUR } = createProvider
+const { quiet, HOUR, DAY } = createProvider
 
-const DAY = 24 * HOUR
-const RECOMPUTE_AFTER = 6 * HOUR
 const MOVE_LIMIT = 1 // km before another station may be nearest
 
 module.exports = function (app, plugin, deps) {
@@ -64,8 +62,7 @@ module.exports = function (app, plugin, deps) {
     title: 'Offline predictions (worldwide, no internet)',
     name: 'Offline',
     attribution: 'Neaps tide database',
-    refreshKey: 'offlineRecomputeMinutes',
-    defaultRefreshMinutes: 360,
+    defaultRefreshMinutes: 360, // computed again after 6 hours (no option)
     properties: {
       offlineDatum: {
         type: 'string',
@@ -84,7 +81,7 @@ module.exports = function (app, plugin, deps) {
       const cfg = settings(ctx)
       if (!ctx.state.neaps) {
         ctx.job('load', 'tide database', () => loadNeaps().then(m => { ctx.state.neaps = m }, err => {
-          throw new Error(`could not load Neaps (${err.message}). Install it in the plugin folder with: npm install neaps`)
+          throw new Error(`could not load Neaps (${err.message}). Install it in the Signal K server folder with: npm install neaps`)
         }))
       }
       ctx.job('compute', 'prediction', () => {
@@ -92,7 +89,7 @@ module.exports = function (app, plugin, deps) {
         if (!neaps) return
         const r = ctx.state.result
         const moved = r && require('geolib').getDistance(r.position, ctx.position) / 1000 > MOVE_LIMIT
-        const fresh = r && !moved && r.key.endsWith(`|${cfg.datum || ''}`) && ctx.t - r.computedAt < RECOMPUTE_AFTER &&
+        const fresh = r && !moved && r.key.endsWith(`|${cfg.datum || ''}`) && ctx.t - r.computedAt < ctx.refreshMs &&
           r.extremes.some(e => e.time.getTime() > ctx.t + DAY)
         if (fresh) return
         ctx.state.result = undefined

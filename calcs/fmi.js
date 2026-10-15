@@ -187,7 +187,7 @@ module.exports = function (app, plugin, deps) {
         if (s.observed && !gauge && !f) throw quiet(`no FMI tide gauge within ${maxDistance / 1000} km`)
         return null
       }
-      const station = gauge
+      const station = observed
         ? { id: `${gauge.latitude},${gauge.longitude}`, name: gaugeName(gauge), latitude: gauge.latitude, longitude: gauge.longitude }
         : { id: `${f.at.latitude},${f.at.longitude}`, name: 'forecast point', latitude: f.at.latitude, longitude: f.at.longitude }
       return { station, datum: d, forecast, observed }

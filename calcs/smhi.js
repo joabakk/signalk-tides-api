@@ -13,11 +13,11 @@
  *
  * Requests: the station list weekly (kept in a file), and the latest hour of minute values at the
  * refresh interval (default 10 min). If a station has no minute values, the latest day of hourly
- * values is used for it instead.
+ * values is used for it instead (for an hour when the latest hour is still empty).
  */
 
 const createProvider = require('../lib/tide-provider')
-const { http, noData, quiet, nearest, stationList, DAY } = createProvider
+const { http, noData, quiet, nearest, stationList, HOUR, DAY } = createProvider
 
 const DEFAULT_API_URL = 'https://opendata-download-ocobs.smhi.se/api/version/1.0'
 const STATIONS_MAX_AGE = 7 * DAY
@@ -78,14 +78,16 @@ module.exports = function (app, plugin, deps) {
     const t = ctx.t
     const observed = s.observed && s.observed.stationId === station.id && s.observed.datum === d ? s.observed : null
     if (observed && t - observed.fetchedAt < ctx.refreshMs) return
-    const hourlyOnly = s.hourlyOnly || (s.hourlyOnly = {})
+    // until when to skip minute values: for good after a 404 (none at this station), for an hour
+    // after an empty latest hour (SMHI's delay), so that each update makes one request
+    const hourlyUntil = s.hourlyUntil || (s.hourlyUntil = {})
     const key = `${d}:${station.id}`
     ctx.job('observed', 'measured sea level', () => {
       const hourly = () => values(ctx, PARAMETERS[d].hourly, station, 'latest-day')
-      const fetch = hourlyOnly[key] ? hourly() : values(ctx, PARAMETERS[d].minute, station, 'latest-hour').then(points => {
+      const fetch = t < (hourlyUntil[key] || 0) ? hourly() : values(ctx, PARAMETERS[d].minute, station, 'latest-hour').then(points => {
         if (points && points.length) return points
-        if (!points) hourlyOnly[key] = true // no minute values at this station (404)
-        return hourly() // or none in the latest hour yet
+        hourlyUntil[key] = points ? t + HOUR : Infinity
+        return hourly()
       })
       return fetch.then(points => {
         if (!points || points.length === 0) throw noData(`no recent sea level at ${station.name}`)

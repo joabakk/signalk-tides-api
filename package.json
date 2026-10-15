@@ -67,7 +67,15 @@
     "type": "git",
     "url": "git+https://github.com/joabakk/signalk-tides-api.git"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
+    "neaps": "^0.8.0"
+  },
+  "peerDependenciesMeta": {
+    "neaps": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
     "neaps": "^0.8.0"
   }
 }

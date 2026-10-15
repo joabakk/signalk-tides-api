@@ -17,7 +17,8 @@
 - Open-Meteo provider (worldwide): modelled sea level with its air pressure part, for the model grid cell
   at the boat. Not for coastal navigation. Free for non-commercial use, CC BY 4.0.
 - Offline provider (worldwide, no internet): astronomical tide computed on the boat with Neaps from
-  TICON-4 and NOAA harmonic constants. Neaps is an optional dependency.
+  TICON-4 and NOAA harmonic constants. Neaps (about 57 MB) is an optional peer dependency, not installed
+  with the plugin: `npm install neaps` in the server folder.
 - A shared base for providers (`lib/tide-provider.js`): request queue, back-off, caching of station
   lists, deltas, status and the `tides` resource, with its own tests.
 - `tools/capture-fixtures.mjs` to record real sample responses for the tests; the new providers are
@@ -26,6 +27,7 @@
 ### Changed
 - The `tides` resource asks station-based providers before the fallbacks (offline, Open-Meteo).
 - Providers with measurements only (SMHI, FMI) don't serve the `tides` resource.
+- The fallbacks (offline, Open-Meteo) publish no tide values while a station-based provider does.
 
 ### Fixed (before release)
 - Rijkswaterstaat: grouped measured series (measured extremes, monthly extremes) no longer count as a

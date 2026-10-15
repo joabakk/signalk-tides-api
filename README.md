@@ -33,8 +33,10 @@ can enable both. Where both have data (parts of the Skagerrak), both publish to 
 the one for the waters you are in. The same goes for the other national providers.
 
 Open-Meteo and the offline predictions work almost anywhere but are less precise than a national
-service's own station; enable them where no national provider has data, or as a fallback for the
-`tides` resource (see below).
+service's own station. They can be enabled together with a national provider: while a station-based
+provider publishes tide values, the fallbacks publish none (so the two don't take turns on the same paths)
+and only answer the `tides` resource when the station-based providers can't; 10 minutes after the
+station-based providers stop (e.g. out of their area), the fallbacks publish again.
 
 ### Kartverket (Norway)
 
@@ -241,8 +243,9 @@ Computes the astronomical tide on the boat from harmonic constants, with no inte
 [Neaps](https://neaps.js.org) (MIT) and its station database: TICON-4 tide gauges worldwide and NOAA
 stations in the US. Only the astronomical tide: no wind, air pressure or measurements.
 
-Neaps is an optional dependency of about 57 MB. If it was not installed, the plugin status says so; install
-it in the server's folder with `npm install neaps`.
+Neaps (about 57 MB with its database) is not installed with the plugin. Install it in the Signal K
+server's folder (usually `~/.signalk`) with `npm install neaps`; until then the plugin status says it is
+missing.
 
 | Option | Default | |
 |---|---|---|
