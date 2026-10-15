@@ -129,7 +129,8 @@ async function chs () {
 async function openMeteo () {
   const base = 'https://marine-api.open-meteo.com/v1/marine'
   for (const [name, lat, lon] of [['fredrikstad', 59.21, 10.95], ['esbjerg', 55.46, 8.44], ['far-inland', 61.0, 9.0]]) {
-    await get(`openmeteo-${name}`, `${base}?latitude=${lat}&longitude=${lon}&hourly=sea_level_height_msl,invert_barometer_height&past_days=1&forecast_days=3&timezone=GMT&cell_selection=sea`)
+    // the request the provider sends
+    await get(`openmeteo-${name}`, `${base}?latitude=${lat.toFixed(3)}&longitude=${lon.toFixed(3)}&hourly=sea_level_height_msl,invert_barometer_height&past_days=1&forecast_days=7&timezone=GMT&timeformat=unixtime`)
   }
 }
 

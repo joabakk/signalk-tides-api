@@ -325,7 +325,7 @@ test('HTTP helpers: User-Agent, GET text and JSON, POST JSON, empty answer', asy
     assert.deepStrictEqual(await getJson(`${base}/json`), { ok: true, echo: null })
     assert.deepStrictEqual(await postJson(`${base}/post`, { a: 1 }), { ok: true, echo: { a: 1 } })
     assert.strictEqual(await postJson(`${base}/empty`, {}), null)
-    await assert.rejects(getJson(`${base}/fail`))
+    await assert.rejects(getJson(`${base}/fail`), /HTTP 500: oops/)
     assert.ok(seen.every(s => /^signalk-tides-api\//.test(s.ua)))
     assert.ok(seen.find(s => s.method === 'POST').type.startsWith('application/json'))
   } finally {
