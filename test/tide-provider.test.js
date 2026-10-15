@@ -249,6 +249,68 @@ test('requests run one at a time', async () => {
   }
 })
 
+test('a request can queue more requests in the same pass', async () => {
+  const order = []
+  const { calc } = setup({
+    update (ctx, calls) {
+      ctx.job('first', 'first', () => {
+        order.push('first')
+        ctx.job('second', 'second', () => { order.push('second') })
+      })
+    }
+  })
+  try {
+    await calc.calculator(POS)
+    assert.deepStrictEqual(order, ['first', 'second'])
+  } finally {
+    calc.stop()
+  }
+})
+
+test('station lists: fetched when missing or old, kept in a file, old list used on failure', async () => {
+  const fs = require('fs')
+  const os = require('os')
+  const path = require('path')
+  const { stationList } = createProvider
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'stations-'))
+  let fetches = 0
+  let fail = false
+  const make = (now) => {
+    const state = { now, position: POS }
+    const app = Object.assign(mockApp(state), { getDataDirPath: () => dir })
+    let seen
+    const calc = createProvider(app, { id: 'x', properties: { tides: {} } }, {
+      optionKey: 'fake', name: 'Fake', attribution: '',
+      update (ctx) {
+        stationList(ctx, 'fake-stations', 30 * 24 * 3600e3, () => {
+          fetches++
+          return fail ? Promise.reject(new Error('down')) : [{ id: 'S1', latitude: 1, longitude: 2 }]
+        })
+        ctx.job('read', 'read', () => { seen = ctx.state['stations:fake-stations'] })
+      },
+      view () { return null }
+    })
+    return { calc, app, seen: () => seen }
+  }
+  const a = make('2026-10-01T00:00:00Z')
+  await a.calc.calculator(POS)
+  a.calc.stop()
+  assert.strictEqual(fetches, 1)
+  assert.deepStrictEqual(a.seen().stations, [{ id: 'S1', latitude: 1, longitude: 2 }])
+  await wait(30)
+  const b = make('2026-10-20T00:00:00Z') // within a month: read from the file
+  await b.calc.calculator(POS)
+  b.calc.stop()
+  assert.strictEqual(fetches, 1)
+  fail = true
+  const c = make('2026-11-05T00:00:00Z') // over a month: fetched again, fails, old list kept
+  await c.calc.calculator(POS)
+  c.calc.stop()
+  assert.strictEqual(fetches, 2)
+  assert.deepStrictEqual(c.seen().stations, [{ id: 'S1', latitude: 1, longitude: 2 }])
+  assert.ok(c.app.pluginErrors.some(m => m.includes('station list: down')))
+})
+
 test('skips without a position', async () => {
   const { calc, calls } = setup()
   try {
