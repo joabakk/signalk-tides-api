@@ -1,0 +1,51 @@
+{ 
+  "@context" : "http://environment.data.gov.uk/flood-monitoring/meta/context.jsonld" ,
+  "meta" : { 
+    "publisher" : "Environment Agency" ,
+    "licence" : "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" ,
+    "documentation" : "http://environment.data.gov.uk/flood-monitoring/doc/reference" ,
+    "version" : "0.9" ,
+    "comment" : "Status: Beta service" ,
+    "hasFormat" : [ "http://environment.data.gov.uk/flood-monitoring/id/stations/E71624.rdf", "http://environment.data.gov.uk/flood-monitoring/id/stations/E71624.ttl", "http://environment.data.gov.uk/flood-monitoring/id/stations/E71624.html" ]
+  }
+   ,
+  "items" : { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/E71624" ,
+    "eaRegionName" : "Anglian" ,
+    "easting" : 632639 ,
+    "gridReference" : "TR 32639 40260" ,
+    "label" : "Dover" ,
+    "lat" : 51.11438 ,
+    "long" : 1.32249 ,
+    "measures" : { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/E71624-level-tidal_level-Mean-15_min-m" ,
+      "label" : "Dover - level-tidal_level-Mean-15_min-m" ,
+      "latestReading" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/data/readings/E71624-level-tidal_level-Mean-15_min-m/2026-10-15T16-45-00Z" ,
+        "date" : "2026-10-15" ,
+        "dateTime" : "2026-10-15T16:45:00Z" ,
+        "measure" : "http://environment.data.gov.uk/flood-monitoring/id/measures/E71624-level-tidal_level-Mean-15_min-m" ,
+        "value" : 4.368
+      }
+       ,
+      "notation" : "E71624-level-tidal_level-Mean-15_min-m" ,
+      "ordnanceDatumMeasure" : "http://environment.data.gov.uk/flood-monitoring/id/measures/E71639-level-tidal_level-Mean-15_min-mAOD" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Tidal Level" ,
+      "station" : "http://environment.data.gov.uk/flood-monitoring/id/stations/E71624" ,
+      "stationReference" : "E71624" ,
+      "type" : [ "http://environment.data.gov.uk/flood-monitoring/def/core/Measure", "http://environment.data.gov.uk/flood-monitoring/def/core/WaterLevel" ] ,
+      "unit" : "http://qudt.org/1.1/vocab/unit#Meter" ,
+      "unitName" : "m" ,
+      "valueType" : "mean"
+    }
+     ,
+    "northing" : 140260 ,
+    "notation" : "E71624" ,
+    "stationReference" : "E71624" ,
+    "type" : [ "http://environment.data.gov.uk/flood-monitoring/def/core/Station", "http://environment.data.gov.uk/flood-monitoring/def/core/TideGauge" ]
+  }
+}
+

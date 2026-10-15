@@ -1,0 +1,73 @@
+{ 
+  "@context" : "http://environment.data.gov.uk/flood-monitoring/meta/context.jsonld" ,
+  "meta" : { 
+    "publisher" : "Environment Agency" ,
+    "licence" : "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" ,
+    "documentation" : "http://environment.data.gov.uk/flood-monitoring/doc/reference" ,
+    "version" : "0.9" ,
+    "comment" : "Status: Beta service" ,
+    "hasFormat" : [ "http://environment.data.gov.uk/flood-monitoring/id/stations/E72239.rdf", "http://environment.data.gov.uk/flood-monitoring/id/stations/E72239.ttl", "http://environment.data.gov.uk/flood-monitoring/id/stations/E72239.html" ]
+  }
+   ,
+  "items" : { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/E72239" ,
+    "RLOIid" : "3156" ,
+    "catchmentName" : "England - South Coast" ,
+    "dateOpened" : "1994-07-06" ,
+    "eaAreaName" : "Anglian - Devon and Cornwall" ,
+    "eaRegionName" : "Anglian" ,
+    "easting" : 146759 ,
+    "gridReference" : "SW 4676 2856" ,
+    "label" : "Newlyn" ,
+    "lat" : 50.103007 ,
+    "long" : -5.542779 ,
+    "measures" : { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/E72239-level-tidal_level-Mean-15_min-mAOD" ,
+      "datumType" : "http://environment.data.gov.uk/flood-monitoring/def/core/datumAOD" ,
+      "label" : "Newlyn - level-tidal_level-Mean-15_min-mAOD" ,
+      "latestReading" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/data/readings/E72239-level-tidal_level-Mean-15_min-mAOD/2026-10-15T16-45-00Z" ,
+        "date" : "2026-10-15" ,
+        "dateTime" : "2026-10-15T16:45:00Z" ,
+        "measure" : "http://environment.data.gov.uk/flood-monitoring/id/measures/E72239-level-tidal_level-Mean-15_min-mAOD" ,
+        "value" : 0.758
+      }
+       ,
+      "localDatumMeasure" : "http://environment.data.gov.uk/flood-monitoring/id/measures/E72224-level-tidal_level-Mean-15_min-m" ,
+      "notation" : "E72239-level-tidal_level-Mean-15_min-mAOD" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Tidal Level" ,
+      "station" : "http://environment.data.gov.uk/flood-monitoring/id/stations/E72239" ,
+      "stationReference" : "E72239" ,
+      "type" : [ "http://environment.data.gov.uk/flood-monitoring/def/core/Measure", "http://environment.data.gov.uk/flood-monitoring/def/core/WaterLevel" ] ,
+      "unit" : "http://qudt.org/1.1/vocab/unit#Meter" ,
+      "unitName" : "mAOD" ,
+      "valueType" : "mean"
+    }
+     ,
+    "northing" : 28559 ,
+    "notation" : "E72239" ,
+    "riverName" : "Tide" ,
+    "stageScale" : { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/E72239/stageScale" ,
+      "datum" : 0 ,
+      "maxOnRecord" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/E72239/stageScale/maxOnRecord" ,
+        "dateTime" : "2015-03-24T07:30:00" ,
+        "value" : 3.392
+      }
+       ,
+      "scaleMax" : 5
+    }
+     ,
+    "stationReference" : "E72239" ,
+    "status" : "http://environment.data.gov.uk/flood-monitoring/def/core/statusActive" ,
+    "statusDate" : "2023-11-21T15:42:00" ,
+    "town" : "Newlyn" ,
+    "type" : [ "http://environment.data.gov.uk/flood-monitoring/def/core/Coastal", "http://environment.data.gov.uk/flood-monitoring/def/core/Station", "http://environment.data.gov.uk/flood-monitoring/def/core/TideGauge" ] ,
+    "wiskiID" : "T21599_FW"
+  }
+}
+

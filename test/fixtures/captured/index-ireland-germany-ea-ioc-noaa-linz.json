@@ -1,0 +1,336 @@
+{
+ "captured": "2026-10-15T17:30:47.973Z",
+ "node": "v24.19.0",
+ "requests": [
+  {
+   "name": "ireland-search-tide",
+   "file": "ireland-search-tide.json",
+   "url": "https://erddap.marine.ie/erddap/search/index.json?page=1&itemsPerPage=200&searchFor=tide",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 59137,
+   "ms": 614
+  },
+  {
+   "name": "ireland-info-IrishNationalTideGaugeNetwork",
+   "file": "ireland-info-IrishNationalTideGaugeNetwork.json",
+   "url": "https://erddap.marine.ie/erddap/info/IrishNationalTideGaugeNetwork/index.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 17383,
+   "ms": 90
+  },
+  {
+   "name": "ireland-data-IrishNationalTideGaugeNetwork",
+   "file": "ireland-data-IrishNationalTideGaugeNetwork.json",
+   "url": "https://erddap.marine.ie/erddap/tabledap/IrishNationalTideGaugeNetwork.json?&time>=now-2hours&time<=now%2B1day",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 48603,
+   "ms": 218
+  },
+  {
+   "name": "ireland-info-IrishNationalTideGaugeNetworkRiverGauges",
+   "file": "ireland-info-IrishNationalTideGaugeNetworkRiverGauges.json",
+   "url": "https://erddap.marine.ie/erddap/info/IrishNationalTideGaugeNetworkRiverGauges/index.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 6168,
+   "ms": 105
+  },
+  {
+   "name": "ireland-data-IrishNationalTideGaugeNetworkRiverGauges",
+   "file": "ireland-data-IrishNationalTideGaugeNetworkRiverGauges.json",
+   "url": "https://erddap.marine.ie/erddap/tabledap/IrishNationalTideGaugeNetworkRiverGauges.json?&time>=now-2hours&time<=now%2B1day",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 8875,
+   "ms": 2320
+  },
+  {
+   "name": "ireland-info-imiTidePrediction",
+   "file": "ireland-info-imiTidePrediction.json",
+   "url": "https://erddap.marine.ie/erddap/info/imiTidePrediction/index.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 6198,
+   "ms": 94
+  },
+  {
+   "name": "ireland-data-imiTidePrediction",
+   "file": "ireland-data-imiTidePrediction.json",
+   "url": "https://erddap.marine.ie/erddap/tabledap/imiTidePrediction.json?&time>=now-2hours&time<=now%2B1day",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 980919,
+   "ms": 757
+  },
+  {
+   "name": "ireland-info-IMI_TidePrediction_HighLow",
+   "file": "ireland-info-IMI_TidePrediction_HighLow.json",
+   "url": "https://erddap.marine.ie/erddap/info/IMI_TidePrediction_HighLow/index.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 5780,
+   "ms": 72
+  },
+  {
+   "name": "ireland-data-IMI_TidePrediction_HighLow",
+   "file": "ireland-data-IMI_TidePrediction_HighLow.json",
+   "url": "https://erddap.marine.ie/erddap/tabledap/IMI_TidePrediction_HighLow.json?&time>=now-2hours&time<=now%2B1day",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 12308,
+   "ms": 620
+  },
+  {
+   "name": "ireland-info-IMI-TidePrediction",
+   "file": "ireland-info-IMI-TidePrediction.json",
+   "url": "https://erddap.marine.ie/erddap/info/IMI-TidePrediction/index.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 6215,
+   "ms": 90
+  },
+  {
+   "name": "ireland-data-IMI-TidePrediction",
+   "file": "ireland-data-IMI-TidePrediction.json",
+   "url": "https://erddap.marine.ie/erddap/tabledap/IMI-TidePrediction.json?&time>=now-2hours&time<=now%2B1day",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 980919,
+   "ms": 660
+  },
+  {
+   "name": "ireland-info-imiTidePredictionEpa",
+   "file": "ireland-info-imiTidePredictionEpa.json",
+   "url": "https://erddap.marine.ie/erddap/info/imiTidePredictionEpa/index.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 5903,
+   "ms": 91
+  },
+  {
+   "name": "ireland-data-imiTidePredictionEpa",
+   "file": "ireland-data-imiTidePredictionEpa.json",
+   "url": "https://erddap.marine.ie/erddap/tabledap/imiTidePredictionEpa.json?&time>=now-2hours&time<=now%2B1day",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 3145491,
+   "ms": 1564
+  },
+  {
+   "name": "germany-stations",
+   "file": "germany-stations.json",
+   "url": "https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations.json?includeTimeseries=true&includeCurrentMeasurement=true",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 753447,
+   "ms": 627
+  },
+  {
+   "name": "germany-cuxhaven-station",
+   "file": "germany-cuxhaven-station.json",
+   "url": "https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/aad49293-242a-43ad-a8b1-e91d7792c4b2.json?includeTimeseries=true&includeCharacteristicValues=true",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 1746,
+   "ms": 101
+  },
+  {
+   "name": "germany-cuxhaven-W",
+   "file": "germany-cuxhaven-W.json",
+   "url": "https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/aad49293-242a-43ad-a8b1-e91d7792c4b2/W/measurements.json?start=P1D",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 106266,
+   "ms": 133
+  },
+  {
+   "name": "germany-kiel-station",
+   "file": "germany-kiel-station.json",
+   "url": "https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/3ad4013f-644b-47f5-a641-44b332bfecb2.json?includeTimeseries=true&includeCharacteristicValues=true",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 1957,
+   "ms": 88
+  },
+  {
+   "name": "germany-kiel-W",
+   "file": "germany-kiel-W.json",
+   "url": "https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/3ad4013f-644b-47f5-a641-44b332bfecb2/W/measurements.json?start=P1D",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 106340,
+   "ms": 154
+  },
+  {
+   "name": "ea-tide-gauges",
+   "file": "ea-tide-gauges.json",
+   "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?type=TideGauge",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 62824,
+   "ms": 223
+  },
+  {
+   "name": "ea-dover-station",
+   "file": "ea-dover-station.json",
+   "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/E71624",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 2506,
+   "ms": 1327
+  },
+  {
+   "name": "ea-dover-readings",
+   "file": "ea-dover-readings.json",
+   "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/E71624/readings?_sorted&_limit=100",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 33859,
+   "ms": 1034
+  },
+  {
+   "name": "ea-newlyn-station",
+   "file": "ea-newlyn-station.json",
+   "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/E72239",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 3442,
+   "ms": 48
+  },
+  {
+   "name": "ea-newlyn-readings",
+   "file": "ea-newlyn-readings.json",
+   "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/E72239/readings?_sorted&_limit=100",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 34505,
+   "ms": 8108
+  },
+  {
+   "name": "ioc-stations",
+   "file": "ioc-stations.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=stationlist&showall=all",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 2431011,
+   "ms": 4941
+  },
+  {
+   "name": "ioc-fredrikstad-vike",
+   "file": "ioc-fredrikstad-vike.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=data&code=vike&timestart=2026-10-15T14:30:47Z&timestop=2026-10-15T17:30:47Z&format=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 35,
+   "ms": 43
+  },
+  {
+   "name": "ioc-reykjavik-reyk",
+   "file": "ioc-reykjavik-reyk.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=data&code=reyk&timestart=2026-10-15T14:30:47Z&timestop=2026-10-15T17:30:47Z&format=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 35,
+   "ms": 52
+  },
+  {
+   "name": "noaa-stations-waterlevels",
+   "file": "noaa-stations-waterlevels.json",
+   "url": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json?type=waterlevels",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 777395,
+   "ms": 1665
+  },
+  {
+   "name": "noaa-9414290-water-level",
+   "file": "noaa-9414290-water-level.json",
+   "url": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_level&station=9414290&begin_date=20261015%2015:30&end_date=20261015%2017:30&datum=MLLW&units=metric&time_zone=gmt&format=json&application=signalk-tides-api",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 1596,
+   "ms": 161
+  },
+  {
+   "name": "noaa-9414290-predictions-hilo",
+   "file": "noaa-9414290-predictions-hilo.json",
+   "url": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&station=9414290&begin_date=20261015%2016:30&end_date=20261022%2017:30&datum=MLLW&units=metric&time_zone=gmt&format=json&application=signalk-tides-api&interval=hilo",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 1372,
+   "ms": 249
+  },
+  {
+   "name": "noaa-9414290-predictions-6min",
+   "file": "noaa-9414290-predictions-6min.json",
+   "url": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&station=9414290&begin_date=20261015%2016:30&end_date=20261017%2017:30&datum=MLLW&units=metric&time_zone=gmt&format=json&application=signalk-tides-api&interval=6",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 18626,
+   "ms": 216
+  },
+  {
+   "name": "noaa-unknown-station",
+   "file": "noaa-unknown-station.json",
+   "url": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_level&station=1234567&begin_date=20261015%2015:30&end_date=20261015%2017:30&datum=MLLW&units=metric&time_zone=gmt&format=json&application=signalk-tides-api",
+   "method": "GET",
+   "status": 400,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 90,
+   "ms": 229
+  },
+  {
+   "name": "linz-page",
+   "file": "linz-page.html",
+   "url": "https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/html; charset=utf-8",
+   "bytes": 99856,
+   "ms": 2492
+  },
+  {
+   "name": "linz-csv-1",
+   "file": "linz-csv-1.csv",
+   "url": "https://www.linz.govt.nz/sites/default/files/2026-06/NZNA_Secondary-ports-2026-27.csv",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/csv",
+   "bytes": 35519,
+   "ms": 349
+  }
+ ]
+}

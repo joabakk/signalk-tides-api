@@ -1,0 +1,76 @@
+{
+  "uuid": "3ad4013f-644b-47f5-a641-44b332bfecb2",
+  "number": "9610066",
+  "shortname": "KIEL-HOLTENAU",
+  "longname": "KIEL-HOLTENAU",
+  "km": 150.0,
+  "agency": "STANDORT LÜBECK",
+  "longitude": 10.157050,
+  "latitude": 54.372087,
+  "voiceServiceNumber": "+49 228 286527 524",
+  "water": {
+    "shortname": "OSTSEE",
+    "longname": "OSTSEE"
+  },
+  "timeseries": [
+    {
+      "shortname": "W",
+      "longname": "WASSERSTAND ROHDATEN",
+      "unit": "cm",
+      "equidistance": 1,
+      "gaugeZero": {
+        "unit": "m. ü. NHN",
+        "value": -4.997,
+        "validFrom": "2019-11-01"
+      },
+      "characteristicValues": [
+        {
+          "shortname": "MNW",
+          "longname": "Mittel der Niedrigwasserstände ",
+          "unit": "cm",
+          "value": 392.0,
+          "timespanStart": "2010-11-01",
+          "timespanEnd": "2020-10-31"
+        },
+        {
+          "shortname": "NW",
+          "longname": "Niedrigster Tageswasserstand ",
+          "unit": "cm",
+          "value": 333.0,
+          "occurrences": [
+            "2013-12-06"
+          ],
+          "timespanStart": "2010-11-01",
+          "timespanEnd": "2020-10-31"
+        },
+        {
+          "shortname": "MW",
+          "longname": "Mittel der Tageswasserstände ",
+          "unit": "cm",
+          "value": 504.0,
+          "timespanStart": "2010-11-01",
+          "timespanEnd": "2020-10-31"
+        },
+        {
+          "shortname": "MHW",
+          "longname": "Mittel der Hochwasserstände ",
+          "unit": "cm",
+          "value": 626.0,
+          "timespanStart": "2010-11-01",
+          "timespanEnd": "2020-10-31"
+        },
+        {
+          "shortname": "HW",
+          "longname": "Höchster Momentanwasserstand ",
+          "unit": "cm",
+          "value": 669.0,
+          "occurrences": [
+            "2017-01-05"
+          ],
+          "timespanStart": "2010-11-01",
+          "timespanEnd": "2020-10-31"
+        }
+      ]
+    }
+  ]
+}

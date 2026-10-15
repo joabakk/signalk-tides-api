@@ -1,0 +1,68 @@
+{
+  "uuid": "aad49293-242a-43ad-a8b1-e91d7792c4b2",
+  "number": "5990020",
+  "shortname": "CUXHAVEN STEUBENHÖFT",
+  "longname": "CUXHAVEN STEUBENHÖFT",
+  "km": 724.0,
+  "agency": "STANDORT CUXHAVEN",
+  "longitude": 8.717425,
+  "latitude": 53.867686,
+  "voiceServiceNumber": "+49 228 286527 133",
+  "water": {
+    "shortname": "ELBE",
+    "longname": "ELBE"
+  },
+  "timeseries": [
+    {
+      "shortname": "W",
+      "longname": "WASSERSTAND ROHDATEN",
+      "unit": "cm",
+      "equidistance": 1,
+      "gaugeZero": {
+        "unit": "m. ü. NHN",
+        "value": -5.033,
+        "validFrom": "2019-11-01"
+      },
+      "characteristicValues": [
+        {
+          "shortname": "MThw",
+          "longname": "Mittlerer Tidehochwasserstand",
+          "unit": "cm",
+          "value": 655.0,
+          "timespanStart": "2010-11-01",
+          "timespanEnd": "2020-10-31"
+        },
+        {
+          "shortname": "MTnw",
+          "longname": "Mittlerer Tideniedrigwasserstand",
+          "unit": "cm",
+          "value": 363.0,
+          "timespanStart": "2010-11-01",
+          "timespanEnd": "2020-10-31"
+        },
+        {
+          "shortname": "HThw",
+          "longname": "Höchster Tidehochwasserstand",
+          "unit": "cm",
+          "value": 966.0,
+          "occurrences": [
+            "2013-12-06"
+          ],
+          "timespanStart": "2010-11-01",
+          "timespanEnd": "2020-10-31"
+        },
+        {
+          "shortname": "NTnw",
+          "longname": "Niedrigster Tideniedrigwasserstand",
+          "unit": "cm",
+          "value": 193.0,
+          "occurrences": [
+            "2018-03-17"
+          ],
+          "timespanStart": "2010-11-01",
+          "timespanEnd": "2020-10-31"
+        }
+      ]
+    }
+  ]
+}
