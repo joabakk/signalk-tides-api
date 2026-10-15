@@ -290,6 +290,27 @@ test('never rejects: errors are reported and retries back off', async () => {
   }
 })
 
+test('an empty answer is retried with back-off, not on every pass', async () => {
+  const empty = { type: 'FeatureCollection', features: [] }
+  const { calc, fetchJson, state, app } = setup({ overrides: { 'tidewater:10minutes': empty } })
+  try {
+    const v = byPath(await calc.calculator(ESBJERG))
+    assert.strictEqual(v['environment.tide.timeHigh'], '2026-09-14T15:38:00.000Z', 'the rest still works')
+    assert.strictEqual(v['environment.tide.heightNow'], 0.53)
+    assert.ok(app.pluginErrors.some(m => m.includes('no 10-minute predictions')))
+    state.now = '2026-09-14T13:36:00Z'
+    await calc.calculator(ESBJERG)
+    state.now = '2026-09-14T13:37:00Z'
+    await calc.calculator(ESBJERG)
+    assert.strictEqual(fetchJson.of('tidewater:10minutes').length, 1, 'not asked again within 5 min')
+    state.now = '2026-09-14T13:41:00Z'
+    await calc.calculator(ESBJERG)
+    assert.strictEqual(fetchJson.of('tidewater:10minutes').length, 2)
+  } finally {
+    calc.stop()
+  }
+})
+
 test('measurements over an hour old are not used for height now', async () => {
   const stale = setup()
   stale.state.now = '2026-09-14T14:45:00Z' // the latest measurement in the fixture is from 13:30

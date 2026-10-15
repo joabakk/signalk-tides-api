@@ -248,6 +248,7 @@ module.exports = function (app, plugin, deps) {
         }).then(features => {
           // 10-minute predictions come back newest first
           const points = features.map(f => toPoint(f.properties)).filter(Boolean).sort((a, b) => a.time - b.time)
+          if (points.length === 0) throw new Error(`no 10-minute predictions for station ${sid}`)
           curve = { stationId: sid, points, fetchedAt: t }
           succeeded('curve')
         }).catch(err => failed('curve', 'prediction', err, cfg, t)))
