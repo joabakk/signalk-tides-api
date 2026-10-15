@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.7.0
 
 ### Added
 - Rijkswaterstaat provider (Netherlands): astronomical high and low waters, astronomical tide, measured
@@ -28,10 +28,7 @@
 - The `tides` resource asks station-based providers before the fallbacks (offline, Open-Meteo).
 - Providers with measurements only (SMHI, FMI) don't serve the `tides` resource.
 - The fallbacks (offline, Open-Meteo) publish no tide values while a station-based provider does.
-
-### Fixed (before release)
-- Rijkswaterstaat: grouped measured series (measured extremes, monthly extremes) no longer count as a
-  measured water level when choosing what to ask a location for.
+- Kartverket, DMI and the new providers share their helpers instead of copying them.
 
 ## 0.6.0
 
