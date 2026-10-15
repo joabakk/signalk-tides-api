@@ -237,6 +237,22 @@ test('plugin: the resource comes from an enabled provider', async () => {
   }
 })
 
+test('plugin: station-based providers come before the model and offline fallbacks', () => {
+  const { forecastOrder } = require('../index.js')
+  const calc = (optionKey, fallback) => ({ optionKey, fallback, tideForecast () {} })
+  const calcs = [calc('chs'), calc('kartverket'), calc('offline', true), calc('openmeteo', true), calc('rws'), { optionKey: 'worldtides' }]
+  const keys = tides => forecastOrder(calcs, tides).map(c => c.optionKey)
+  assert.deepStrictEqual(keys({ offline: true, openmeteo: true, kartverket: true, rws: true, worldtides: true }),
+    ['kartverket', 'rws', 'offline', 'openmeteo'])
+  assert.deepStrictEqual(keys({ openmeteo: true }), ['openmeteo'])
+  assert.deepStrictEqual(keys({}), [])
+  // the real providers say which are fallbacks
+  const loaded = fs.readdirSync(path.join(__dirname, '..', 'calcs'))
+    .map(f => require(path.join('..', 'calcs', f))({ config: { configPath: configDir() }, debug () {}, error () {} }, { properties: {} }))
+  const fallbacks = loaded.filter(c => c && c.fallback).map(c => c.optionKey).sort()
+  assert.deepStrictEqual(fallbacks, ['offline', 'openmeteo'])
+})
+
 test('plugin: the resource can be turned off', () => {
   const { plugin, providers } = pluginSetup({ tidesResource: false, tides: { kartverket: true } })
   try {

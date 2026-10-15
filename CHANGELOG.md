@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.7.0
+
+### Added
+- Rijkswaterstaat provider (Netherlands): astronomical high and low waters, astronomical tide, measured
+  and forecast water level at the nearest Rijkswaterstaat location with tide predictions. Heights above
+  NAP. Free, no API key. Data CC0.
+- CHS provider (Canada): predicted high and low waters, predicted, measured and forecast water level from
+  the IWLS API of Fisheries and Oceans Canada. Heights above chart datum. Free, no API key;
+  non-commercial licence.
+- SMHI provider (Sweden): measured sea level at the nearest SMHI gauge, in RH2000 or relative to mean
+  water level. No predictions. Free, CC BY 4.0.
+- FMI provider (Finland): sea level forecast for the boat's position and the measured level at the
+  nearest FMI tide gauge, relative to mean water level or N2000. No highs and lows (the Baltic has hardly
+  any tide). Free, CC BY 4.0.
+- Open-Meteo provider (worldwide): modelled sea level with its air pressure part, for the model grid cell
+  at the boat. Not for coastal navigation. Free for non-commercial use, CC BY 4.0.
+- Offline provider (worldwide, no internet): astronomical tide computed on the boat with Neaps from
+  TICON-4 and NOAA harmonic constants. Neaps (about 57 MB) is an optional peer dependency, not installed
+  with the plugin: `npm install neaps` in the server folder.
+- A shared base for providers (`lib/tide-provider.js`): request queue, back-off, caching of station
+  lists, deltas, status and the `tides` resource, with its own tests.
+- `tools/capture-fixtures.mjs` to record real sample responses for the tests; the new providers are
+  tested against responses captured on 2026-10-15.
+
+### Changed
+- The `tides` resource asks station-based providers before the fallbacks (offline, Open-Meteo).
+- Providers with measurements only (SMHI, FMI) don't serve the `tides` resource.
+- The fallbacks (offline, Open-Meteo) publish no tide values while a station-based provider does.
+- Kartverket, DMI and the new providers share their helpers instead of copying them.
+
 ## 0.6.0
 
 ### Added

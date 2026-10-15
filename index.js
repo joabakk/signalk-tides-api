@@ -23,6 +23,8 @@ const defaultBatteries =   '0'
 const defaultTanks = 'fuel.0, fuel.1'
 */
 
+const { markPublishing } = require('./lib/tide-provider')
+
 module.exports = function(app) {
   var plugin = {};
   var schema
@@ -66,12 +68,12 @@ module.exports = function(app) {
       })
     }
 
-    // The forecast comes from the first enabled provider that can make one.
+    // The forecast comes from the first enabled provider that can make one: station-based
+    // providers first, then the fallbacks (model grid, offline harmonics).
     function tideForecast() {
-      const tides = props.tides || {}
-      const providers = calculations.filter(calc => calc.tideForecast && tides[calc.optionKey])
+      const providers = forecastOrder(calculations, props.tides || {})
       if ( providers.length === 0 ) {
-        return Promise.reject(new Error('No tide provider with forecasts is enabled (Kartverket or NOAA)'))
+        return Promise.reject(new Error('No tide provider with forecasts is enabled'))
       }
       return providers.reduce(
         (previous, calc) => previous.catch(() => calc.tideForecast()),
@@ -82,12 +84,16 @@ module.exports = function(app) {
     intervalId = setInterval(update, updateInterval);
     update();
 
-    function sendDeltas(promise) {
+    function sendDeltas(promise, calculation) {
       if (!promise) return;
 
       promise
         .then((values) => {
           if (typeof values !== "undefined" && values.length > 0) {
+            // station-based tide providers keep the fallbacks (model, offline) quiet
+            if (calculation && calculation.group === 'tides' && !calculation.fallback) {
+              markPublishing(plugin, calculation.optionKey)
+            }
             if (values[0].context) {
               values.forEach((delta) => {
                 app.handleMessage(plugin.id, delta);
@@ -159,7 +165,7 @@ module.exports = function(app) {
         // No position yet (e.g. no GPS fix at startup): providers get undefined and skip.
         const position = app.getSelfPath("navigation.position")
         try {
-          sendDeltas(calculation.calculator(position ? position.value : undefined));
+          sendDeltas(calculation.calculator(position ? position.value : undefined), calculation);
         } catch (err) {
           setError(err.message);
           app.error(err.message);
@@ -325,6 +331,12 @@ module.exports = function(app) {
 
   return plugin;
 }
+
+function forecastOrder (calcs, tides) {
+  const enabled = calcs.filter(calc => calc.tideForecast && tides[calc.optionKey])
+  return enabled.filter(calc => !calc.fallback).concat(enabled.filter(calc => calc.fallback))
+}
+module.exports.forecastOrder = forecastOrder
 
 function load_calcs (app, plugin, dir) {
   fpath = path.join(__dirname, dir)
