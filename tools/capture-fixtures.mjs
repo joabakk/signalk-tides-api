@@ -80,7 +80,6 @@ async function fmi () {
   await get('fmi-describe-sealevel-forecast', `${wfs}&request=describeStoredQueries&storedquery_id=fmi::forecast::sealevel::point::simple`)
   await get('fmi-describe-mareograph', `${wfs}&request=describeStoredQueries&storedquery_id=fmi::observations::mareograph::simple`)
   await get('fmi-forecast-helsinki', `${wfs}&request=getFeature&storedquery_id=fmi::forecast::sealevel::point::simple&latlon=60.15,24.95&starttime=${iso(hours(-1))}&endtime=${iso(hours(48))}`)
-  await get('fmi-stations-mareograph', `${wfs}&request=getFeature&storedquery_id=fmi::ef::stations&networkid=128`)
   await get('fmi-mareograph-no-station', `${wfs}&request=getFeature&storedquery_id=fmi::observations::mareograph::simple&parameters=watlev&starttime=${iso(hours(-1))}&endtime=${iso(now)}`)
   await get('fmi-mareograph-kaivopuisto', `${wfs}&request=getFeature&storedquery_id=fmi::observations::mareograph::simple&fmisid=132310&parameters=watlev&starttime=${iso(hours(-2))}&endtime=${iso(now)}`)
 }

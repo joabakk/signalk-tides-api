@@ -16,13 +16,14 @@
     "test/chs.test.js",
     "test/rws.test.js",
     "test/smhi.test.js",
+    "test/fmi.test.js",
     "test/fixtures/*.json",
     "test/fixtures/*.xml",
     "docs/",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "node test/kartverket.test.js && node test/dmi.test.js && node test/tides-resource.test.js && node test/tide-provider.test.js && node test/openmeteo.test.js && node test/offline.test.js && node test/chs.test.js && node test/rws.test.js && node test/smhi.test.js"
+    "test": "node test/kartverket.test.js && node test/dmi.test.js && node test/tides-resource.test.js && node test/tide-provider.test.js && node test/openmeteo.test.js && node test/offline.test.js && node test/chs.test.js && node test/rws.test.js && node test/smhi.test.js && node test/fmi.test.js"
   },
   "keywords": [
     "signalk-node-server-plugin",
@@ -36,7 +37,8 @@
     "chs",
     "neaps",
     "offline",
-    "smhi"
+    "smhi",
+    "fmi"
   ],
   "author": {
     "name": "Joachim Bakke"

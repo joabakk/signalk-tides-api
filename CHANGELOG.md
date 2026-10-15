@@ -9,20 +9,27 @@
 - CHS provider (Canada): predicted high and low waters, predicted, measured and forecast water level from
   the IWLS API of Fisheries and Oceans Canada. Heights above chart datum. Free, no API key;
   non-commercial licence.
+- SMHI provider (Sweden): measured sea level at the nearest SMHI gauge, in RH2000 or relative to mean
+  water level. No predictions. Free, CC BY 4.0.
+- FMI provider (Finland): sea level forecast for the boat's position and the measured level at the
+  nearest FMI tide gauge, relative to mean water level or N2000. No highs and lows (the Baltic has hardly
+  any tide). Free, CC BY 4.0.
 - Open-Meteo provider (worldwide): modelled sea level with its air pressure part, for the model grid cell
   at the boat. Not for coastal navigation. Free for non-commercial use, CC BY 4.0.
 - Offline provider (worldwide, no internet): astronomical tide computed on the boat with Neaps from
   TICON-4 and NOAA harmonic constants. Neaps is an optional dependency.
 - A shared base for providers (`lib/tide-provider.js`): request queue, back-off, caching of station
   lists, deltas, status and the `tides` resource, with its own tests.
-- `tools/capture-fixtures.mjs` to record real sample responses for the tests.
+- `tools/capture-fixtures.mjs` to record real sample responses for the tests; the new providers are
+  tested against responses captured on 2026-10-15.
 
 ### Changed
 - The `tides` resource asks station-based providers before the fallbacks (offline, Open-Meteo).
+- Providers with measurements only (SMHI, FMI) don't serve the `tides` resource.
 
-### Not yet checked live
-- The Rijkswaterstaat, CHS and Open-Meteo providers are tested with answers built from each service's
-  documented format, not with recorded responses.
+### Fixed (before release)
+- Rijkswaterstaat: grouped measured series (measured extremes, monthly extremes) no longer count as a
+  measured water level when choosing what to ask a location for.
 
 ## 0.6.0
 
