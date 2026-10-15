@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.6.0
 
 ### Added
 - DMI provider (Denmark, Greenland, Faroe Islands): next high and low tide at the nearest of DMI's
@@ -11,6 +11,8 @@
 - Tests for the DMI provider (`test/dmi.test.js`) against real DMI responses.
 
 ## 0.5.0
+
+Not published to npm; these changes are released in 0.6.0.
 
 ### Added
 - Tide predictions as the Signal K resource `tides` (`/signalk/v2/api/resources/tides`), in the same
