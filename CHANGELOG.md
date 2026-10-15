@@ -1,5 +1,24 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Marine Institute provider (Ireland): high and low waters, the predicted level and the measured level
+  at the nearest gauge, above LAT or OD Malin. Free, CC BY 4.0.
+- Admiralty provider (UK and Ireland): high and low waters above chart datum from the UKHO's UK Tidal
+  API, with your own free key. Not yet checked against a real response.
+- Environment Agency provider (England): measured tide level at the nearest gauge, in mAOD or the
+  gauge's local datum. Free, Open Government Licence.
+- PEGELONLINE provider (Germany): measured water level at the nearest WSV gauge, above NHN or the gauge
+  zero. Free, dl-de/zero-2-0.
+
+### Changed
+- NOAA: rebuilt on the shared base. Adds the 6-minute prediction and the measured water level from a
+  gauge within 5 km (`heightNow`, `heightObserved`, `weatherEffect`); high and low waters as before. The
+  station list moves from `noaastations.json` in the config folder to `noaa-stations.json` in the plugin's
+  data folder, and NOAA's errors now show in the plugin status.
+- Providers ask again for predictions that end too soon at most once an hour.
+
 ## 0.7.0
 
 ### Added

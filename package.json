@@ -17,13 +17,18 @@
     "test/rws.test.js",
     "test/smhi.test.js",
     "test/fmi.test.js",
+    "test/ireland.test.js",
+    "test/germany.test.js",
+    "test/ea.test.js",
+    "test/admiralty.test.js",
+    "test/noaa.test.js",
     "test/fixtures/*.json",
     "test/fixtures/*.xml",
     "docs/",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "node test/kartverket.test.js && node test/dmi.test.js && node test/tides-resource.test.js && node test/tide-provider.test.js && node test/openmeteo.test.js && node test/offline.test.js && node test/chs.test.js && node test/rws.test.js && node test/smhi.test.js && node test/fmi.test.js"
+    "test": "node test/kartverket.test.js && node test/dmi.test.js && node test/tides-resource.test.js && node test/tide-provider.test.js && node test/openmeteo.test.js && node test/offline.test.js && node test/chs.test.js && node test/rws.test.js && node test/smhi.test.js && node test/fmi.test.js && node test/ireland.test.js && node test/germany.test.js && node test/ea.test.js && node test/admiralty.test.js && node test/noaa.test.js"
   },
   "keywords": [
     "signalk-node-server-plugin",
@@ -38,7 +43,11 @@
     "neaps",
     "offline",
     "smhi",
-    "fmi"
+    "fmi",
+    "marine-institute",
+    "admiralty",
+    "environment-agency",
+    "pegelonline"
   ],
   "author": {
     "name": "Joachim Bakke"

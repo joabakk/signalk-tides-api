@@ -2,7 +2,7 @@
 
 This is a copy of sbender9's derived-data.
 
-Currently serving worldtide.info API, NOAA free data, Kartverket (Norway), DMI (Denmark), Rijkswaterstaat (Netherlands) and CHS (Canada) free data, measured and forecast sea level from SMHI (Sweden) and FMI (Finland), the Open-Meteo marine model worldwide, and offline harmonic predictions computed on the boat. It can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
+Currently serving worldtide.info API, NOAA (US), Kartverket (Norway), DMI (Denmark), Rijkswaterstaat (Netherlands), CHS (Canada) and the Marine Institute (Ireland) free data, the Admiralty UK Tidal API (with your own key), measured and forecast sea level from SMHI (Sweden), FMI (Finland), PEGELONLINE (Germany) and the Environment Agency (England), the Open-Meteo marine model worldwide, and offline harmonic predictions computed on the boat. It can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
 
 > **Coming back from signalk-tides?** In 2025 this plugin stopped producing data on newer servers
 > (#67), and [signalk-tides](https://www.npmjs.com/package/signalk-tides) by @bkeepers was published
@@ -17,7 +17,7 @@ Enable one provider under *Tides* in the plugin configuration.
 
 | Provider | Area | Key needed |
 |---|---|---|
-| NOAA | US only | no |
+| NOAA | US only (predictions and measured water level) | no |
 | worldtides.info | worldwide | yes, paid |
 | Kartverket | Norway | no |
 | DMI | Denmark, Greenland, Faroe Islands | no |
@@ -25,6 +25,10 @@ Enable one provider under *Tides* in the plugin configuration.
 | CHS | Canada | no |
 | SMHI | Sweden (measured sea level only) | no |
 | FMI | Finland (sea level forecast and measurements) | no |
+| Marine Institute | Ireland | no |
+| Admiralty | UK and Ireland (high and low waters) | yes, free (Discovery tier) |
+| Environment Agency | England (measured tide level only) | no |
+| PEGELONLINE | Germany (measured water level only) | no |
 | Open-Meteo | worldwide (ocean model, not for coastal navigation) | no |
 | Offline predictions | worldwide, no internet (needs the optional `neaps` package) | no |
 
@@ -211,6 +215,90 @@ interval.
 
 Attribution: Finnish Meteorological Institute, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
+### NOAA (US)
+
+Uses NOAA CO-OPS (https://api.tidesandcurrents.noaa.gov): high and low waters and, at reference
+stations, the predicted level every 6 minutes at the nearest prediction station, and the measured water
+level (preliminary, every 6 minutes) from a NOAA gauge within 5 km of it. Heights in m above MLLW (the US
+chart datum). Subordinate stations have high and low waters only.
+
+| Option | Default | |
+|---|---|---|
+| Minutes between measured level updates | 6 | minimum 6 |
+| Use the nearest tide station within (km) | 50 | |
+
+Requests: the two station lists monthly (kept in `noaa-stations.json` and `noaa-gauges.json`), highs and
+lows for 7 days and the 6-minute prediction for 2 days when they run out, and the gauge's last 2 hours at
+the update interval. Status: checked against real responses for San Francisco (October 2026). Data: NOAA,
+public domain.
+
+### Marine Institute (Ireland)
+
+Uses the Marine Institute's ERDDAP server (https://erddap.marine.ie): high and low waters and the
+predicted level every 5 minutes at the nearest of its about 40 prediction stations (some from its
+model), and the measured level from a gauge of the Irish National Tide Gauge Network within 5 km.
+
+| Option | Default | |
+|---|---|---|
+| Reference level | LAT | lowest astronomical tide (chart datum); `ODM` gives heights above Ordnance Datum Malin |
+| Minutes between measured level updates | 10 | minimum 5 |
+| Use the nearest tide station within (km) | 30 | |
+| API address | `https://erddap.marine.ie/erddap/tabledap` | |
+
+The Marine Institute gives high and low waters above OD Malin only; above LAT the plugin adds each
+station's LAT − OD Malin difference, taken from the predicted level (2.46 m at Dublin Port). Measurements
+with a bad quality flag are left out. Status: checked against real responses for Dublin Port (October
+2026). Data: Marine Institute, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+### Admiralty (UK, API key needed)
+
+Uses the UK Hydrographic Office's Admiralty UK Tidal API: high and low waters for 7 days at the nearest of
+about 600 ports in the UK and Ireland, above chart datum. It needs your own key: subscribe to "UK Tidal
+API - Discovery" (free) at https://admiraltyapi.portal.azure-api.net and enter the key in the settings.
+The key is sent to the Admiralty only, in a request header. The Discovery tier has a monthly call limit;
+the plugin asks once a day. Only high and low waters: `heightNow` comes from another provider, e.g. the
+Environment Agency's measurements.
+
+| Option | Default | |
+|---|---|---|
+| API key | empty | without it the provider reports that it needs one, once |
+| Use the nearest tide station within (km) | 30 | |
+| API address | `https://admiraltyapi.azure-api.net/uktidalapi/api/V1` | |
+
+Status: built from the API's documentation; not yet checked against a real response.
+
+### Environment Agency (England)
+
+Uses the Environment Agency's flood monitoring API (https://environment.data.gov.uk/flood-monitoring):
+the 15-minute mean level measured at the nearest of its about 45 tide gauges. No predictions. Readings
+arrive about 45 minutes late; values older than 2 hours are not published.
+
+| Option | Default | |
+|---|---|---|
+| Reference level | AOD | Ordnance Datum Newlyn (mAOD); `local` gives the gauge's local datum, which the EA doesn't name (at Dover it matches chart datum) |
+| Minutes between updates | 15 | minimum 15, the gauges' interval |
+| Use the nearest tide gauge within (km) | 15 | |
+| API address | `https://environment.data.gov.uk/flood-monitoring` | |
+
+Status: checked against real responses for Dover and Newlyn (October 2026). Data: Environment Agency,
+Open Government Licence v3 (the service is marked beta).
+
+### PEGELONLINE (Germany)
+
+Uses PEGELONLINE of the Federal Waterways and Shipping Administration (https://www.pegelonline.wsv.de):
+the water level measured every minute at the nearest gauge, on the coast and the rivers. No predictions
+(the BSH's tide predictions have no open API).
+
+| Option | Default | |
+|---|---|---|
+| Reference level | NHN | the German height datum, close to mean sea level; `gauge` gives the level above the gauge zero (PNP), about 5 m below NHN on the coast. Neither is chart datum |
+| Minutes between updates | 10 | minimum 5 |
+| Use the nearest gauge within (km) | 10 | |
+| API address | `https://www.pegelonline.wsv.de/webservices/rest-api/v2` | |
+
+Status: checked against real responses for Cuxhaven and Kiel (October 2026). Data: WSV,
+[Data licence Germany – Zero 2.0](https://www.govdata.de/dl-de/zero-2-0).
+
 ### Open-Meteo (worldwide model)
 
 Uses the Open-Meteo marine API (https://open-meteo.com/en/docs/marine-weather-api): the modelled sea level
@@ -280,11 +368,12 @@ $ curl http://localhost:3000/signalk/v2/api/resources/tides
 ```
 
 The data comes from the first enabled provider that has data for the boat's position: the station-based
-providers first (CHS `datum` CD, DMI DVR90 or LAT, Kartverket the chosen reference level, NOAA MLLW,
-Rijkswaterstaat NAP), then the fallbacks, the offline predictions and Open-Meteo (`datum` MSL).
-worldtides.info, SMHI and FMI (no predictions) do not provide it. Each answer has the next 7 days of highs and lows, and says its
-`datum`: check it, as it differs between providers. The answer uses the data the providers already fetch,
-so it adds no requests, except for NOAA (cached for an hour).
+providers first (Admiralty `datum` CD, CHS CD, DMI DVR90 or LAT, Kartverket the chosen reference level,
+Marine Institute LAT or OD Malin, NOAA MLLW, Rijkswaterstaat NAP), then the fallbacks, the offline
+predictions and Open-Meteo (`datum` MSL). worldtides.info, SMHI, FMI, PEGELONLINE and the Environment
+Agency (no predictions) do not provide it. Each answer has the next 7 days of highs and lows, and says
+its `datum`: check it, as it differs between providers. The answer uses the data the providers already
+fetch, so it adds no requests.
 
 The Signal K server merges the answers of all plugins that provide the same resource type. If
 signalk-tides is installed too, turn off *Provide tide predictions as the resource* in this plugin's
