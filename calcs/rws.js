@@ -17,8 +17,8 @@
  *
  * Requests: the catalogue once a month (kept in a file), highs and lows for 7 days and the
  * astronomical tide for 2 days only when they run out, the measured level at the refresh interval
- * (default 10 min) and the forecast hourly. The high/low request follows a working client; the
- * other three are built the same way and have not been checked against the live service.
+ * (default 10 min) and the forecast hourly. All four requests and the catalogue were checked
+ * against real responses (test/fixtures/rws-live-*.json).
  */
 
 const createProvider = require('../lib/tide-provider')
@@ -55,8 +55,10 @@ module.exports = function (app, plugin, deps) {
     for (const m of metadata) {
       let kind = null
       if (m.ProcesType === 'astronomisch' && code(m, 'Groepering') === 'GETETBRKD2' && isHeight(m)) kind = 'highLow'
-      else if (m.ProcesType === 'meting' && isHeight(m)) kind = 'measured'
-      else if (m.ProcesType === 'verwachting' && isHeight(m)) kind = 'forecast'
+      // measured and forecast: the continuous series only, not grouped ones such as measured
+      // extremes (GETETM2) or monthly extremes (EXTMWTHTE2)
+      else if (m.ProcesType === 'meting' && isHeight(m) && !code(m, 'Groepering')) kind = 'measured'
+      else if (m.ProcesType === 'verwachting' && isHeight(m) && !code(m, 'Groepering')) kind = 'forecast'
       if (kind) kinds[m.AquoMetadata_MessageID] = kind
     }
     const has = {}

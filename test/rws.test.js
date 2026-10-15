@@ -2,7 +2,8 @@
  * Offline tests for calcs/rws.js. Run with: node test/rws.test.js
  * Answers are generated here in the DD API 2.0 format (field names as used by working clients:
  * AquoMetadataLijst, AquoMetadataLocatieLijst, LocatieLijst; WaarnemingenLijst, MetingenLijst,
- * Tijdstip with +01:00, Meetwaarde.Waarde_Numeriek in cm, Waarde_Alfanumeriek hoogwater/laagwater).
+ * Tijdstip with +01:00, Meetwaarde.Waarde_Numeriek in cm, Waarde_Alfanumeriek hoogwater/laagwater),
+ * and real responses for Hoek van Holland in fixtures/rws-live-*.json (data: Rijkswaterstaat, CC0).
  */
 const assert = require('assert')
 const fs = require('fs')
@@ -66,8 +67,8 @@ const cm = (t, v, quality) => ({
   WaarnemingMetadata: { Kwaliteitswaardecode: quality || '00' }
 })
 
-function answer (url, body, overrides) {
-  if (url.endsWith('/OphalenCatalogus')) return CATALOGUE
+function answer (url, body, overrides, catalogue) {
+  if (url.endsWith('/OphalenCatalogus')) return catalogue || CATALOGUE
   const meta = body.AquoPlusWaarnemingMetadata.AquoMetadata
   const kind = meta.Groepering ? 'highLow' : meta.ProcesType
   if (overrides && overrides[kind] !== undefined) return overrides[kind]
@@ -120,7 +121,7 @@ function setup (opts) {
   const requests = []
   const postJson = (url, body) => {
     requests.push({ url, body })
-    const a = answer(url, body, opts.overrides)
+    const a = answer(url, body, opts.overrides, opts.catalogue)
     return a instanceof Error ? Promise.reject(a) : Promise.resolve(a)
   }
   const plugin = { id: 'tides-api', properties: { tides: Object.assign({ rws: true }, opts.tides) } }
@@ -278,6 +279,57 @@ test('tides resource', async () => {
   } finally {
     calc.stop()
   }
+})
+
+test('real responses (Hoek van Holland, 2026-10-15T16:18Z)', async () => {
+  const live = name => JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', `rws-live-${name}.json`), 'utf8'))
+  const app = {
+    selfId: 'x', statuses: [], pluginErrors: [], debug () {}, error () {}, handleMessage () {},
+    setPluginError (m) { this.pluginErrors.push(m) }, setPluginStatus (m) { this.statuses.push(m) },
+    getDataDirPath: () => fs.mkdtempSync(path.join(os.tmpdir(), 'rws-')),
+    getSelfPath: p => p === 'navigation.datetime' ? { value: now } : undefined
+  }
+  let now = '2026-10-15T16:18:31Z'
+  const asked = []
+  const postJson = (url, body) => {
+    if (url.endsWith('/OphalenCatalogus')) return Promise.resolve(live('catalogue'))
+    const m = body.AquoPlusWaarnemingMetadata.AquoMetadata
+    asked.push(body.Locatie.Code)
+    return Promise.resolve(live(m.Groepering ? 'highlow' : { astronomisch: 'astronomical', meting: 'measured', verwachting: 'forecast' }[m.ProcesType]))
+  }
+  const calc = rws(app, { id: 'tides-api', properties: { tides: { rws: true } } }, { postJson })
+  try {
+    const v = byPath(await calc.calculator({ latitude: 51.9769, longitude: 4.1198 }))
+    assert.deepStrictEqual([...new Set(asked)], ['hoekvanholland'])
+    assert.strictEqual(asked.length, 4, 'high/low, astronomical, measured and forecast')
+    assert.strictEqual(v['environment.tide.timeHigh'], '2026-10-15T16:27:00.000Z')
+    assert.strictEqual(v['environment.tide.heightHigh'], 1.33)
+    assert.strictEqual(v['environment.tide.timeLow'], '2026-10-16T00:12:00.000Z')
+    assert.strictEqual(v['environment.tide.heightLow'], -0.39)
+    // latest measurement 17:00+01:00 = 16:00Z
+    assert.strictEqual(v['environment.tide.heightObserved'], 1.42)
+    assert.strictEqual(v['environment.tide.heightNow'], 1.42)
+    assert.ok(v['environment.tide.heightPredicted'] > 1.2 && v['environment.tide.heightPredicted'] < 1.4, String(v['environment.tide.heightPredicted']))
+    // the captured forecast starts at 16:20Z (it was asked from the capture time)
+    now = '2026-10-15T16:25:00Z'
+    const later = byPath(await calc.calculator({ latitude: 51.9769, longitude: 4.1198 }))
+    assert.strictEqual(asked.length, 4, 'nothing asked again')
+    assert.ok(later['environment.tide.heightForecast'] > 1.2 && later['environment.tide.heightForecast'] < 1.6, String(later['environment.tide.heightForecast']))
+    assert.ok(Math.abs(v['environment.tide.weatherEffect'] - 0.17) < 0.03, String(v['environment.tide.weatherEffect']))
+    assert.deepStrictEqual(app.pluginErrors, [])
+  } finally {
+    calc.stop()
+  }
+})
+
+test('catalogue: grouped measured series (extremes, monthly) do not count as a measured level', () => {
+  const metadata = CATALOGUE.AquoMetadataLijst.concat([aquo(6, 'meting', 'WATHTE', 'NAP', 'GETETM2'), aquo(7, 'meting', 'WATHTE', 'NAP', 'EXTMWTHTE2')])
+  const links = CATALOGUE.AquoMetadataLocatieLijst.filter(l => l.Locatie_MessageID !== 11 || l.AquoMetaData_MessageID === 1)
+    .concat([{ AquoMetaData_MessageID: 6, Locatie_MessageID: 11 }, { AquoMetaData_MessageID: 7, Locatie_MessageID: 11 }])
+  const { calc, requests, kindOf } = setup({ catalogue: Object.assign({}, CATALOGUE, { AquoMetadataLijst: metadata, AquoMetadataLocatieLijst: links }) })
+  return calc.calculator({ latitude: 51.44, longitude: 3.58 }).then(() => {
+    assert.deepStrictEqual(requests.map(kindOf), ['catalogue', 'highLow', 'astronomisch'])
+  }).finally(() => calc.stop())
 })
 
 ;(async () => {

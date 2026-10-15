@@ -1,7 +1,8 @@
 /*
  * Offline tests for calcs/chs.js. Run with: node test/chs.test.js
  * Answers are generated here in the IWLS format (field names as used by working clients:
- * id, code, officialName, latitude, longitude, timeSeries[].code; eventDate, value).
+ * id, code, officialName, latitude, longitude, timeSeries[].code; eventDate, value), and real
+ * responses for Victoria Harbour in fixtures/chs-live-*.json (data: Fisheries and Oceans Canada).
  */
 const assert = require('assert')
 const fs = require('fs')
@@ -213,6 +214,40 @@ test('tides resource', async () => {
     assert.deepStrictEqual(f.station, { id: 'chs/07120', name: 'Victoria Harbour', latitude: 48.424666, longitude: -123.370782 })
     assert.deepStrictEqual(f.extremes[0], { time: '2026-10-15T12:12:36.000Z', level: 0.7, high: false, low: true, label: 'Low' })
     assert.ok(f.extremes.length >= 12)
+  } finally {
+    calc.stop()
+  }
+})
+
+test('real responses (Victoria Harbour, 2026-10-15T16:18Z)', async () => {
+  const live = name => JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', `chs-live-${name}.json`), 'utf8'))
+  const app = {
+    selfId: 'x', statuses: [], pluginErrors: [], debug () {}, error () {}, handleMessage () {},
+    setPluginError (m) { this.pluginErrors.push(m) }, setPluginStatus (m) { this.statuses.push(m) },
+    getDataDirPath: () => fs.mkdtempSync(path.join(os.tmpdir(), 'chs-')),
+    getSelfPath: p => p === 'navigation.datetime' ? { value: '2026-10-15T16:18:31Z' } : undefined
+  }
+  const asked = []
+  const getJson = url => {
+    const u = new URL(url)
+    if (u.pathname.endsWith('/stations')) return Promise.resolve(live('stations'))
+    asked.push(u.pathname.split('/')[4] + ' ' + u.searchParams.get('time-series-code'))
+    return Promise.resolve(live(u.searchParams.get('time-series-code')))
+  }
+  const calc = chs(app, { id: 'tides-api', properties: { tides: { chs: true } } }, { getJson })
+  try {
+    const v = byPath(await calc.calculator({ latitude: 48.4244, longitude: -123.3708 }))
+    assert.deepStrictEqual(asked, ['5cebf1df3d0f4a073c4bbd1e wlp-hilo', '5cebf1df3d0f4a073c4bbd1e wlp', '5cebf1df3d0f4a073c4bbd1e wlo'])
+    assert.strictEqual(v['environment.tide.timeHigh'], '2026-10-15T22:07:00.000Z')
+    assert.strictEqual(v['environment.tide.heightHigh'], 2.583)
+    assert.strictEqual(v['environment.tide.timeLow'], '2026-10-16T08:14:00.000Z')
+    assert.strictEqual(v['environment.tide.heightLow'], 0.695)
+    assert.strictEqual(v['environment.tide.heightObserved'], 2.375) // 16:18Z
+    assert.strictEqual(v['environment.tide.heightNow'], 2.375)
+    assert.ok(Math.abs(v['environment.tide.heightPredicted'] - 2.379) < 0.005, String(v['environment.tide.heightPredicted']))
+    assert.ok(Math.abs(v['environment.tide.weatherEffect']) < 0.01)
+    assert.ok(app.statuses[0].includes('CHS Victoria Harbour (CD)'))
+    assert.deepStrictEqual(app.pluginErrors, [])
   } finally {
     calc.stop()
   }

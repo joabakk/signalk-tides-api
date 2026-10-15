@@ -1,6 +1,7 @@
 /*
  * Offline tests for calcs/openmeteo.js. Run with: node test/openmeteo.test.js
- * The fixtures are synthetic answers in Open-Meteo's documented format (see their _note).
+ * openmeteo-fredrikstad.json and openmeteo-land.json are synthetic answers in Open-Meteo's format (see
+ * their _note); openmeteo-live-*.json are real responses (Open-Meteo.com, CC BY 4.0).
  */
 const assert = require('assert')
 const fs = require('fs')
@@ -153,6 +154,31 @@ test('tides resource from the grid cell', async () => {
     assert.ok(f.extremes.every(e => e.time > '2026-10-16T14:30:00.000Z'))
   } finally {
     calc.stop()
+  }
+})
+
+test('real responses (2026-10-15T16:18Z): Fredrikstad, and a position inland', async () => {
+  const at = setup({ answer: fixture('openmeteo-live-fredrikstad.json') })
+  at.state.now = '2026-10-15T16:18:31Z'
+  try {
+    const v = byPath(await at.calc.calculator(FREDRIKSTAD))
+    assert.strictEqual(v['environment.tide.heightForecast'], 0.049)
+    assert.strictEqual(v['environment.tide.weatherEffect'], -0.02)
+    assert.strictEqual(v['environment.tide.heightPredicted'], 0.069)
+    assert.strictEqual(v['environment.tide.heightNow'], 0.049)
+    assert.ok(Math.abs(new Date(v['environment.tide.timeHigh']) - Date.parse('2026-10-15T18:30:00Z')) < 60e3, v['environment.tide.timeHigh'])
+    assert.strictEqual(v['environment.tide.heightHigh'], 0.155)
+    assert.deepStrictEqual(at.app.pluginErrors, [])
+  } finally {
+    at.calc.stop()
+  }
+  const inland = setup({ answer: fixture('openmeteo-live-far-inland.json') })
+  inland.state.now = '2026-10-15T16:18:31Z'
+  try {
+    assert.strictEqual(await inland.calc.calculator({ latitude: 61, longitude: 9 }), undefined)
+    assert.ok(inland.app.pluginErrors.some(m => m.includes('no sea level for this position')))
+  } finally {
+    inland.calc.stop()
   }
 })
 
