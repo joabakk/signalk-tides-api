@@ -50,5 +50,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/joabakk/signalk-tides-api.git"
+  },
+  "optionalDependencies": {
+    "neaps": "^0.8.0"
   }
 }
