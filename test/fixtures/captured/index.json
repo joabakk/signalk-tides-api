@@ -1,0 +1,381 @@
+{
+ "captured": "2026-10-15T16:18:31.480Z",
+ "node": "v24.19.0",
+ "requests": [
+  {
+   "name": "smhi-version",
+   "file": "smhi-version.json",
+   "url": "https://opendata-download-ocobs.smhi.se/api/version/1.0.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 11413,
+   "ms": 307
+  },
+  {
+   "name": "smhi-parameter-6",
+   "file": "smhi-parameter-6.json",
+   "url": "https://opendata-download-ocobs.smhi.se/api/version/1.0/parameter/6.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 52216,
+   "ms": 31
+  },
+  {
+   "name": "smhi-parameter-6-station-2130",
+   "file": "smhi-parameter-6-station-2130.json",
+   "url": "https://opendata-download-ocobs.smhi.se/api/version/1.0/parameter/6/station/2130.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 1924,
+   "ms": 27
+  },
+  {
+   "name": "smhi-parameter-6-station-2130-latest-day",
+   "file": "smhi-parameter-6-station-2130-latest-day.json",
+   "url": "https://opendata-download-ocobs.smhi.se/api/version/1.0/parameter/6/station/2130/period/latest-day/data.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 2820,
+   "ms": 25
+  },
+  {
+   "name": "smhi-parameter-14",
+   "file": "smhi-parameter-14.json",
+   "url": "https://opendata-download-ocobs.smhi.se/api/version/1.0/parameter/14.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 52780,
+   "ms": 24
+  },
+  {
+   "name": "smhi-parameter-14-station-2130",
+   "file": "smhi-parameter-14-station-2130.json",
+   "url": "https://opendata-download-ocobs.smhi.se/api/version/1.0/parameter/14/station/2130.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 2528,
+   "ms": 26
+  },
+  {
+   "name": "smhi-parameter-14-station-2130-latest-day",
+   "file": "smhi-parameter-14-station-2130-latest-day.json",
+   "url": "https://opendata-download-ocobs.smhi.se/api/version/1.0/parameter/14/station/2130/period/latest-day/data.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 92555,
+   "ms": 30
+  },
+  {
+   "name": "smhi-parameter-12",
+   "file": "smhi-parameter-12.json",
+   "url": "https://opendata-download-ocobs.smhi.se/api/version/1.0/parameter/12.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 52632,
+   "ms": 27
+  },
+  {
+   "name": "smhi-parameter-12-station-2130",
+   "file": "smhi-parameter-12-station-2130.json",
+   "url": "https://opendata-download-ocobs.smhi.se/api/version/1.0/parameter/12/station/2130.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 1946,
+   "ms": 33
+  },
+  {
+   "name": "smhi-parameter-12-station-2130-latest-day",
+   "file": "smhi-parameter-12-station-2130-latest-day.json",
+   "url": "https://opendata-download-ocobs.smhi.se/api/version/1.0/parameter/12/station/2130/period/latest-day/data.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json;charset=UTF-8",
+   "bytes": 2839,
+   "ms": 49
+  },
+  {
+   "name": "fmi-describe-sealevel-forecast",
+   "file": "fmi-describe-sealevel-forecast.xml",
+   "url": "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=describeStoredQueries&storedquery_id=fmi::forecast::sealevel::point::simple",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/xml; charset=UTF-8",
+   "bytes": 3545,
+   "ms": 384
+  },
+  {
+   "name": "fmi-describe-mareograph",
+   "file": "fmi-describe-mareograph.xml",
+   "url": "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=describeStoredQueries&storedquery_id=fmi::observations::mareograph::simple",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/xml; charset=UTF-8",
+   "bytes": 3066,
+   "ms": 27
+  },
+  {
+   "name": "fmi-forecast-helsinki",
+   "file": "fmi-forecast-helsinki.xml",
+   "url": "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::forecast::sealevel::point::simple&latlon=60.15,24.95&starttime=2026-10-15T15:18:31Z&endtime=2026-10-17T16:18:31Z",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/xml; charset=UTF-8",
+   "bytes": 61268,
+   "ms": 36
+  },
+  {
+   "name": "fmi-stations-mareograph",
+   "file": "fmi-stations-mareograph.xml",
+   "url": "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::ef::stations&networkid=128",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/xml; charset=UTF-8",
+   "bytes": 43236,
+   "ms": 87
+  },
+  {
+   "name": "fmi-mareograph-no-station",
+   "file": "fmi-mareograph-no-station.xml",
+   "url": "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::observations::mareograph::simple&parameters=watlev&starttime=2026-10-15T15:18:31Z&endtime=2026-10-15T16:18:31Z",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/xml; charset=UTF-8",
+   "bytes": 9199,
+   "ms": 71
+  },
+  {
+   "name": "fmi-mareograph-kaivopuisto",
+   "file": "fmi-mareograph-kaivopuisto.xml",
+   "url": "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::observations::mareograph::simple&fmisid=132310&parameters=watlev&starttime=2026-10-15T14:18:31Z&endtime=2026-10-15T16:18:31Z",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/xml; charset=UTF-8",
+   "bytes": 1819,
+   "ms": 95
+  },
+  {
+   "name": "rws-catalogue",
+   "file": "rws-catalogue.json",
+   "url": "https://ddapi20-waterwebservices.rijkswaterstaat.nl/METADATASERVICES/OphalenCatalogus",
+   "method": "POST",
+   "request": {
+    "CatalogusFilter": {
+     "Grootheden": true,
+     "Groeperingen": true,
+     "Hoedanigheden": true,
+     "ProcesTypes": true
+    }
+   },
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 2163782,
+   "ms": 1705
+  },
+  {
+   "name": "rws-highlow-hoekvanholland",
+   "file": "rws-highlow-hoekvanholland.json",
+   "url": "https://ddapi20-waterwebservices.rijkswaterstaat.nl/ONLINEWAARNEMINGENSERVICES/OphalenWaarnemingen",
+   "method": "POST",
+   "request": {
+    "Locatie": {
+     "Code": "hoekvanholland"
+    },
+    "AquoPlusWaarnemingMetadata": {
+     "AquoMetadata": {
+      "ProcesType": "astronomisch",
+      "Groepering": {
+       "Code": "GETETBRKD2"
+      }
+     }
+    },
+    "Periode": {
+     "Begindatumtijd": "2026-10-15T15:18:31.480+00:00",
+     "Einddatumtijd": "2026-10-22T16:18:31.480+00:00"
+    }
+   },
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 18762,
+   "ms": 110
+  },
+  {
+   "name": "rws-astronomical-hoekvanholland",
+   "file": "rws-astronomical-hoekvanholland.json",
+   "url": "https://ddapi20-waterwebservices.rijkswaterstaat.nl/ONLINEWAARNEMINGENSERVICES/OphalenWaarnemingen",
+   "method": "POST",
+   "request": {
+    "Locatie": {
+     "Code": "hoekvanholland"
+    },
+    "AquoPlusWaarnemingMetadata": {
+     "AquoMetadata": {
+      "ProcesType": "astronomisch",
+      "Grootheid": {
+       "Code": "WATHTE"
+      },
+      "Hoedanigheid": {
+       "Code": "NAP"
+      }
+     }
+    },
+    "Periode": {
+     "Begindatumtijd": "2026-10-15T15:18:31.480+00:00",
+     "Einddatumtijd": "2026-10-17T16:18:31.480+00:00"
+    }
+   },
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 87863,
+   "ms": 122
+  },
+  {
+   "name": "rws-measured-hoekvanholland",
+   "file": "rws-measured-hoekvanholland.json",
+   "url": "https://ddapi20-waterwebservices.rijkswaterstaat.nl/ONLINEWAARNEMINGENSERVICES/OphalenWaarnemingen",
+   "method": "POST",
+   "request": {
+    "Locatie": {
+     "Code": "hoekvanholland"
+    },
+    "AquoPlusWaarnemingMetadata": {
+     "AquoMetadata": {
+      "ProcesType": "meting",
+      "Grootheid": {
+       "Code": "WATHTE"
+      },
+      "Hoedanigheid": {
+       "Code": "NAP"
+      }
+     }
+    },
+    "Periode": {
+     "Begindatumtijd": "2026-10-15T14:18:31.480+00:00",
+     "Einddatumtijd": "2026-10-15T16:18:31.480+00:00"
+    }
+   },
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 4560,
+   "ms": 163
+  },
+  {
+   "name": "rws-forecast-hoekvanholland",
+   "file": "rws-forecast-hoekvanholland.json",
+   "url": "https://ddapi20-waterwebservices.rijkswaterstaat.nl/ONLINEWAARNEMINGENSERVICES/OphalenWaarnemingen",
+   "method": "POST",
+   "request": {
+    "Locatie": {
+     "Code": "hoekvanholland"
+    },
+    "AquoPlusWaarnemingMetadata": {
+     "AquoMetadata": {
+      "ProcesType": "verwachting",
+      "Grootheid": {
+       "Code": "WATHTE"
+      },
+      "Hoedanigheid": {
+       "Code": "NAP"
+      }
+     }
+    },
+    "Periode": {
+     "Begindatumtijd": "2026-10-15T16:18:31.480+00:00",
+     "Einddatumtijd": "2026-10-17T16:18:31.480+00:00"
+    }
+   },
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 83200,
+   "ms": 157
+  },
+  {
+   "name": "chs-stations",
+   "file": "chs-stations.json",
+   "url": "https://api-iwls.dfo-mpo.gc.ca/api/v1/stations",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 849540,
+   "ms": 1334
+  },
+  {
+   "name": "chs-station-07120",
+   "file": "chs-station-07120.json",
+   "url": "https://api-iwls.dfo-mpo.gc.ca/api/v1/stations/5cebf1df3d0f4a073c4bbd1e/metadata",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 2194,
+   "ms": 129
+  },
+  {
+   "name": "chs-07120-wlp-hilo",
+   "file": "chs-07120-wlp-hilo.json",
+   "url": "https://api-iwls.dfo-mpo.gc.ca/api/v1/stations/5cebf1df3d0f4a073c4bbd1e/data?time-series-code=wlp-hilo&from=2026-10-15T15:18:31Z&to=2026-10-22T16:18:31Z",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 2032,
+   "ms": 120
+  },
+  {
+   "name": "chs-07120-wlp",
+   "file": "chs-07120-wlp.json",
+   "url": "https://api-iwls.dfo-mpo.gc.ca/api/v1/stations/5cebf1df3d0f4a073c4bbd1e/data?time-series-code=wlp&from=2026-10-15T15:18:31Z&to=2026-10-17T16:18:31Z",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 373041,
+   "ms": 597
+  },
+  {
+   "name": "chs-07120-wlo",
+   "file": "chs-07120-wlo.json",
+   "url": "https://api-iwls.dfo-mpo.gc.ca/api/v1/stations/5cebf1df3d0f4a073c4bbd1e/data?time-series-code=wlo&from=2026-10-15T14:18:31Z&to=2026-10-15T16:18:31Z",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 15226,
+   "ms": 228
+  },
+  {
+   "name": "openmeteo-fredrikstad",
+   "file": "openmeteo-fredrikstad.json",
+   "url": "https://marine-api.open-meteo.com/v1/marine?latitude=59.210&longitude=10.950&hourly=sea_level_height_msl,invert_barometer_height&past_days=1&forecast_days=7&timezone=GMT&timeformat=unixtime",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json; charset=utf-8",
+   "bytes": 4711,
+   "ms": 320
+  },
+  {
+   "name": "openmeteo-esbjerg",
+   "file": "openmeteo-esbjerg.json",
+   "url": "https://marine-api.open-meteo.com/v1/marine?latitude=55.460&longitude=8.440&hourly=sea_level_height_msl,invert_barometer_height&past_days=1&forecast_days=7&timezone=GMT&timeformat=unixtime",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json; charset=utf-8",
+   "bytes": 4699,
+   "ms": 42
+  },
+  {
+   "name": "openmeteo-far-inland",
+   "file": "openmeteo-far-inland.json",
+   "url": "https://marine-api.open-meteo.com/v1/marine?latitude=61.000&longitude=9.000&hourly=sea_level_height_msl,invert_barometer_height&past_days=1&forecast_days=7&timezone=GMT&timeformat=unixtime",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json; charset=utf-8",
+   "bytes": 4368,
+   "ms": 43
+  }
+ ]
+}
