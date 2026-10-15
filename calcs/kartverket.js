@@ -23,6 +23,7 @@ const ATTRIBUTION = 'Kartverket, Norwegian Mapping Authority, Hydrographic Servi
 
 const HOUR = 60 * 60 * 1000
 const MINUTE = 60 * 1000
+const DAY = 24 * HOUR
 const REPUBLISH_INTERVAL = MINUTE
 const MIN_REFRESH_MINUTES = 10
 const ERROR_BACKOFF = 5 * MINUTE // doubled after each failure, up to the refresh interval (at least 30 min)
@@ -565,7 +566,7 @@ function latestObservation (series, now, maxAge) {
 }
 
 function validPosition (p) {
-  return p && typeof p.latitude === 'number' && typeof p.longitude === 'number' &&
+  return !!p && typeof p.latitude === 'number' && typeof p.longitude === 'number' &&
     isFinite(p.latitude) && isFinite(p.longitude)
 }
 
@@ -580,3 +581,11 @@ module.exports.defaultFetchText = defaultFetchText
 module.exports.DEFAULT_API_URL = DEFAULT_API_URL
 module.exports.USER_AGENT = USER_AGENT
 module.exports.ATTRIBUTION = ATTRIBUTION
+// shared with calcs/dmi.js and lib/tide-provider.js
+module.exports.round = round
+module.exports.validPosition = validPosition
+module.exports.MINUTE = MINUTE
+module.exports.HOUR = HOUR
+module.exports.DAY = DAY
+module.exports.ERROR_BACKOFF = ERROR_BACKOFF
+module.exports.REQUEST_TIMEOUT = REQUEST_TIMEOUT

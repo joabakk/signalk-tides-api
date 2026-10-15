@@ -17,7 +17,7 @@
  */
 
 const createProvider = require('../lib/tide-provider')
-const { http, noData, quiet, nearest, stationList, HOUR, DAY } = createProvider
+const { http, noData, quiet, nearest, stationList, maxDistance: maxDistanceOption, HOUR, DAY } = createProvider
 
 const DEFAULT_API_URL = 'https://opendata-download-ocobs.smhi.se/api/version/1.0'
 const STATIONS_MAX_AGE = 7 * DAY
@@ -66,8 +66,7 @@ module.exports = function (app, plugin, deps) {
     const d = datum(ctx)
     const list = ctx.state[`stations:smhi-stations-${d}`]
     if (!list) return
-    const maxKm = Number(ctx.options.smhiMaxDistanceKm)
-    const maxDistance = (isFinite(maxKm) && maxKm > 0 ? maxKm : 30) * 1000
+    const maxDistance = maxDistanceOption(ctx, 'smhiMaxDistanceKm', 30)
     const found = nearest(list.stations, ctx.position)
     if (!found || found.distance > maxDistance) {
       ctx.state.station = undefined

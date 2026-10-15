@@ -15,7 +15,7 @@
  */
 
 const createProvider = require('../lib/tide-provider')
-const { http, buildUrl, noData } = createProvider
+const { http, buildUrl, noData, distance } = createProvider
 
 const DEFAULT_API_URL = 'https://marine-api.open-meteo.com/v1/marine'
 const REFETCH_DISTANCE = 4000 // half a grid cell, metres
@@ -72,7 +72,7 @@ module.exports = function (app, plugin, deps) {
     },
     update (ctx) {
       const cached = ctx.state.data
-      const moved = cached && require('geolib').getDistance(cached.position, ctx.position) > REFETCH_DISTANCE
+      const moved = cached && distance(cached.position, ctx.position) > REFETCH_DISTANCE
       if (cached && !moved && ctx.t - cached.fetchedAt < ctx.refreshMs) return
       ctx.job('data', 'sea level', () => {
         const url = buildUrl(ctx.options.openmeteoApiUrl || DEFAULT_API_URL, {

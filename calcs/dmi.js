@@ -22,21 +22,19 @@ const path = require('path')
 const superagent = require('superagent')
 const moment = require('moment')
 const geolib = require('geolib')
-const { valueAt, latestObservation, nextExtremes, buildUrl, USER_AGENT } = require('./kartverket')
+const {
+  valueAt, latestObservation, nextExtremes, buildUrl, validPosition, USER_AGENT,
+  MINUTE, HOUR, DAY, ERROR_BACKOFF, REQUEST_TIMEOUT
+} = require('./kartverket')
 
 const DEFAULT_API_URL = 'https://opendataapi.dmi.dk/v2/oceanObs/collections'
 const ATTRIBUTION = 'Danish Meteorological Institute (DMI), CC BY 4.0'
 
-const HOUR = 60 * 60 * 1000
-const MINUTE = 60 * 1000
-const DAY = 24 * HOUR
 const REPUBLISH_INTERVAL = MINUTE
 const MIN_REFRESH_MINUTES = 10
 const STATIONS_MAX_AGE = 30 * DAY
-const ERROR_BACKOFF = 5 * MINUTE
 const GAUGE_MATCH_DISTANCE = 1000 // metres between a prediction station and its gauge
 const MAX_OBSERVATION_AGE = HOUR
-const REQUEST_TIMEOUT = { response: 20 * 1000, deadline: 60 * 1000 }
 const PAGE_LIMIT = 10000
 
 const META = [
@@ -456,11 +454,6 @@ function defaultFetchJson (url) {
         throw new Error('bad JSON: ' + String(res.body).slice(0, 120))
       }
     })
-}
-
-function validPosition (p) {
-  return p && typeof p.latitude === 'number' && typeof p.longitude === 'number' &&
-    isFinite(p.latitude) && isFinite(p.longitude)
 }
 
 module.exports.defaultFetchJson = defaultFetchJson

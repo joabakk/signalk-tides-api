@@ -18,7 +18,7 @@
  */
 
 const createProvider = require('../lib/tide-provider')
-const { http, buildUrl, noData, quiet, nearest, HOUR } = createProvider
+const { http, buildUrl, noData, quiet, nearest, maxDistance: maxDistanceOption, distance, HOUR } = createProvider
 
 const DEFAULT_API_URL = 'https://opendata.fmi.fi/wfs'
 const MOVE_LIMIT = 5000 // m
@@ -137,7 +137,7 @@ module.exports = function (app, plugin, deps) {
       const t = ctx.t
       const pos = ctx.position
       const f = s.forecast
-      const moved = f && nearest([f.at], pos).distance > MOVE_LIMIT
+      const moved = f && distance(f.at, pos) > MOVE_LIMIT
       if (!f || moved || t - f.fetchedAt >= HOUR) {
         const at = { latitude: Math.round(pos.latitude * 100) / 100, longitude: Math.round(pos.longitude * 100) / 100 }
         ctx.job('forecast', 'sea level forecast', () => query(ctx, 'fmi::forecast::sealevel::point::simple', {
@@ -175,8 +175,7 @@ module.exports = function (app, plugin, deps) {
       const s = ctx.state
       const d = datum(ctx)
       const f = s.forecast
-      const maxKm = Number(ctx.options.fmiMaxDistanceKm)
-      const maxDistance = (isFinite(maxKm) && maxKm > 0 ? maxKm : 50) * 1000
+      const maxDistance = maxDistanceOption(ctx, 'fmiMaxDistanceKm', 50)
       const found = s.observed && nearest(s.observed.gauges, ctx.position)
       const gauge = found && found.distance <= maxDistance ? found.item : null
       let observed

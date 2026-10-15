@@ -22,7 +22,7 @@
  */
 
 const createProvider = require('../lib/tide-provider')
-const { http, noData, quiet, nearest, stationList, HOUR, DAY } = createProvider
+const { http, noData, quiet, nearest, stationList, maxDistance: maxDistanceOption, stationData, lastTime, HOUR, DAY } = createProvider
 
 const DEFAULT_API_URL = 'https://ddapi20-waterwebservices.rijkswaterstaat.nl'
 const STATIONS_MAX_AGE = 30 * DAY
@@ -136,8 +136,7 @@ module.exports = function (app, plugin, deps) {
   function plan (ctx) {
     const list = ctx.state['stations:rws-stations']
     if (!list) return
-    const maxKm = Number(ctx.options.rwsMaxDistanceKm)
-    const maxDistance = (isFinite(maxKm) && maxKm > 0 ? maxKm : 30) * 1000
+    const maxDistance = maxDistanceOption(ctx, 'rwsMaxDistanceKm', 30)
     const found = nearest(list.stations, ctx.position)
     if (!found || found.distance > maxDistance) {
       ctx.state.station = undefined
@@ -146,8 +145,7 @@ module.exports = function (app, plugin, deps) {
     const station = ctx.state.station = found.item
     const s = ctx.state
     const t = ctx.t
-    const mine = key => s[key] && s[key].stationId === station.id ? s[key] : null
-    const lastTime = d => d && d.points.length ? d.points[d.points.length - 1].time.getTime() : 0
+    const mine = key => stationData(s, key, station.id)
     const height = { Grootheid: { Code: 'WATHTE' }, Hoedanigheid: { Code: 'NAP' } }
 
     if (lastTime(mine('extremes')) - t < DAY) {
@@ -221,7 +219,7 @@ module.exports = function (app, plugin, deps) {
     view (ctx) {
       const station = ctx.state.station
       if (!station) return null
-      const mine = key => ctx.state[key] && ctx.state[key].stationId === station.id ? ctx.state[key].points : undefined
+      const mine = key => (stationData(ctx.state, key, station.id) || {}).points
       return {
         station: { id: station.id, name: station.name, latitude: station.latitude, longitude: station.longitude },
         datum: 'NAP',

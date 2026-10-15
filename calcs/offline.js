@@ -12,7 +12,7 @@
  */
 
 const createProvider = require('../lib/tide-provider')
-const { quiet, HOUR, DAY } = createProvider
+const { quiet, maxDistance, distance, HOUR, DAY } = createProvider
 
 const MOVE_LIMIT = 1 // km before another station may be nearest
 
@@ -21,9 +21,8 @@ module.exports = function (app, plugin, deps) {
   const loadNeaps = deps.loadNeaps || (() => import('neaps'))
 
   function settings (ctx) {
-    const maxKm = Number(ctx.options.offlineMaxDistanceKm)
     return {
-      maxDistance: isFinite(maxKm) && maxKm > 0 ? maxKm : 50,
+      maxDistance: maxDistance(ctx, 'offlineMaxDistanceKm', 50) / 1000, // km, as Neaps gives distances
       datum: ['LAT', 'MLLW', 'MSL'].includes(ctx.options.offlineDatum) ? ctx.options.offlineDatum : undefined
     }
   }
@@ -88,7 +87,7 @@ module.exports = function (app, plugin, deps) {
         const neaps = ctx.state.neaps
         if (!neaps) return
         const r = ctx.state.result
-        const moved = r && require('geolib').getDistance(r.position, ctx.position) / 1000 > MOVE_LIMIT
+        const moved = r && distance(r.position, ctx.position) / 1000 > MOVE_LIMIT
         const fresh = r && !moved && r.key.endsWith(`|${cfg.datum || ''}`) && ctx.t - r.computedAt < ctx.refreshMs &&
           r.extremes.some(e => e.time.getTime() > ctx.t + DAY)
         if (fresh) return
