@@ -11,6 +11,10 @@
   gauge's local datum. Free, Open Government Licence.
 - PEGELONLINE provider (Germany): measured water level at the nearest WSV gauge, above NHN or the gauge
   zero. Free, dl-de/zero-2-0.
+- LINZ provider (New Zealand): high and low waters above chart datum at 83 ports, from LINZ's yearly
+  tide tables, kept in the data folder (works offline for the year). Free, CC BY 4.0.
+- IOC provider (worldwide): raw measured sea level at the nearest IOC gauge, relative to the gauge's own
+  zero. A fallback like Open-Meteo.
 
 ### Changed
 - NOAA: rebuilt on the shared base. Adds the 6-minute prediction and the measured water level from a

@@ -13,8 +13,8 @@
  * Only some sources:   node tools/capture-fixtures.mjs ireland germany ioc
  * Sources: smhi fmi rws chs openmeteo ireland germany admiralty ea ioc noaa linz
  *
- * The UK Admiralty API needs your own free key (https://admiralty.azure-api.net, "UK Tidal API -
- * Discovery"). It is sent in a header and never saved:
+ * The UK Admiralty API needs your own free key (https://admiraltyapi.portal.azure-api.net, "UK Tidal
+ * API - Discovery"). It is sent in a header and never saved:
  *   ADMIRALTY_API_KEY=... node tools/capture-fixtures.mjs admiralty
  */
 import fs from 'node:fs'

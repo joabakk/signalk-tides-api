@@ -2,7 +2,7 @@
 
 This is a copy of sbender9's derived-data.
 
-Currently serving worldtide.info API, NOAA (US), Kartverket (Norway), DMI (Denmark), Rijkswaterstaat (Netherlands), CHS (Canada) and the Marine Institute (Ireland) free data, the Admiralty UK Tidal API (with your own key), measured and forecast sea level from SMHI (Sweden), FMI (Finland), PEGELONLINE (Germany) and the Environment Agency (England), the Open-Meteo marine model worldwide, and offline harmonic predictions computed on the boat. It can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
+Currently serving worldtide.info API, NOAA (US), Kartverket (Norway), DMI (Denmark), Rijkswaterstaat (Netherlands), CHS (Canada) and the Marine Institute (Ireland) and LINZ (New Zealand) free data, the Admiralty UK Tidal API (with your own key), measured and forecast sea level from SMHI (Sweden), FMI (Finland), PEGELONLINE (Germany) and the Environment Agency (England), raw measured sea level worldwide from the IOC sea level monitoring facility, the Open-Meteo marine model worldwide, and offline harmonic predictions computed on the boat. It can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
 
 > **Coming back from signalk-tides?** In 2025 this plugin stopped producing data on newer servers
 > (#67), and [signalk-tides](https://www.npmjs.com/package/signalk-tides) by @bkeepers was published
@@ -29,6 +29,8 @@ Enable one provider under *Tides* in the plugin configuration.
 | Admiralty | UK and Ireland (high and low waters) | yes, free (Discovery tier) |
 | Environment Agency | England (measured tide level only) | no |
 | PEGELONLINE | Germany (measured water level only) | no |
+| LINZ | New Zealand (high and low waters) | no |
+| IOC sea level monitoring | worldwide (raw measured level, gauge zero not referenced) | no |
 | Open-Meteo | worldwide (ocean model, not for coastal navigation) | no |
 | Offline predictions | worldwide, no internet (needs the optional `neaps` package) | no |
 
@@ -36,7 +38,7 @@ Kartverket and DMI only publish data where they have it, so a boat sailing betwe
 can enable both. Where both have data (parts of the Skagerrak), both publish to the same paths; enable
 the one for the waters you are in. The same goes for the other national providers.
 
-Open-Meteo and the offline predictions work almost anywhere but are less precise than a national
+Open-Meteo, the IOC gauges and the offline predictions work almost anywhere but are less precise than a national
 service's own station. They can be enabled together with a national provider: while a station-based
 provider publishes tide values, the fallbacks publish none (so the two don't take turns on the same paths)
 and only answer the `tides` resource when the station-based providers can't; 10 minutes after the
@@ -299,6 +301,42 @@ the water level measured every minute at the nearest gauge, on the coast and the
 Status: checked against real responses for Cuxhaven and Kiel (October 2026). Data: WSV,
 [Data licence Germany – Zero 2.0](https://www.govdata.de/dl-de/zero-2-0).
 
+### LINZ (New Zealand)
+
+Uses Land Information New Zealand's tide predictions (https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions):
+high and low waters above chart datum at the nearest of 83 ports with daily predictions. Each port's
+table for the year is one small file (about 20 kB), downloaded once and kept in the plugin's data folder
+(`linz/`), so the provider works offline for the rest of the year; next year's table is fetched in the
+last week of December. The times in the files are New Zealand standard or daylight time and are
+converted to UTC. The Chatham Islands ports are left out, as their times may be in Chatham time.
+
+| Option | Default | |
+|---|---|---|
+| Use the nearest port within (km) | 30 | |
+| Address of the tide table files | `https://static.charts.linz.govt.nz/tide-tables/maj-ports/csv` | |
+
+Status: checked against the real table for Auckland 2026. Data: LINZ,
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+### IOC sea level monitoring (worldwide)
+
+Uses the IOC Sea Level Station Monitoring Facility (https://www.ioc-sealevelmonitoring.org): the raw sea
+level at the nearest of its about 1700 gauges worldwide that reported in the last two days. The values
+are **relative to each gauge's own zero**, which is not tied to chart datum or a height system, and are
+not quality controlled: useful far from national services to see the level change and the effect of
+weather, not to compare with charted depths. Like Open-Meteo it is a fallback: it publishes nothing while
+a station-based provider does, and it does not feed the `tides` resource.
+
+| Option | Default | |
+|---|---|---|
+| Minutes between updates | 10 | minimum 5 |
+| Use the nearest station within (km) | 30 | |
+| Service address | `https://www.ioc-sealevelmonitoring.org/service.php` | |
+
+The station list (2.4 MB) is downloaded once a month and kept in a small file. Status: checked against
+real responses for Viker and Ittoqqortoormiit (October 2026). Data: IOC SLSMF; acknowledge the facility
+and the station operators.
+
 ### Open-Meteo (worldwide model)
 
 Uses the Open-Meteo marine API (https://open-meteo.com/en/docs/marine-weather-api): the modelled sea level
@@ -368,10 +406,10 @@ $ curl http://localhost:3000/signalk/v2/api/resources/tides
 ```
 
 The data comes from the first enabled provider that has data for the boat's position: the station-based
-providers first (Admiralty `datum` CD, CHS CD, DMI DVR90 or LAT, Kartverket the chosen reference level,
+providers first (Admiralty `datum` CD, CHS CD, LINZ CD, DMI DVR90 or LAT, Kartverket the chosen reference level,
 Marine Institute LAT or OD Malin, NOAA MLLW, Rijkswaterstaat NAP), then the fallbacks, the offline
-predictions and Open-Meteo (`datum` MSL). worldtides.info, SMHI, FMI, PEGELONLINE and the Environment
-Agency (no predictions) do not provide it. Each answer has the next 7 days of highs and lows, and says
+predictions and Open-Meteo (`datum` MSL). worldtides.info, SMHI, FMI, PEGELONLINE, the Environment
+Agency and IOC (no predictions) do not provide it. Each answer has the next 7 days of highs and lows, and says
 its `datum`: check it, as it differs between providers. The answer uses the data the providers already
 fetch, so it adds no requests.
 
