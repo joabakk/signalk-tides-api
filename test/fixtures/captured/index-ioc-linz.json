@@ -1,0 +1,146 @@
+{
+ "captured": "2026-10-19T13:25:04.400Z",
+ "node": "v24.19.0",
+ "requests": [
+  {
+   "name": "ioc-stations",
+   "file": "ioc-stations.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=stationlist&showall=all",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 2435085,
+   "ms": 4289
+  },
+  {
+   "name": "ioc-fredrikstad-vike-a",
+   "file": "ioc-fredrikstad-vike-a.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=data&code=vike&timestart=2026-10-19T10:25:04&timestop=2026-10-19T13:25:04&format=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 1341,
+   "ms": 104
+  },
+  {
+   "name": "ioc-fredrikstad-vike-b",
+   "file": "ioc-fredrikstad-vike-b.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=data&code=vike&timestart=2026-10-19%2010:25:04&timestop=2026-10-19%2013:25:04&format=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 1341,
+   "ms": 106
+  },
+  {
+   "name": "ioc-fredrikstad-vike-c",
+   "file": "ioc-fredrikstad-vike-c.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=data&code=vike&period=0.125&format=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 7824,
+   "ms": 90
+  },
+  {
+   "name": "ioc-fredrikstad-vike-d",
+   "file": "ioc-fredrikstad-vike-d.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=data&code=vike&period=0.125&endtime=2026-10-19T13:25:04&format=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 7824,
+   "ms": 114
+  },
+  {
+   "name": "ioc-reykjavik-scor-a",
+   "file": "ioc-reykjavik-scor-a.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=data&code=scor&timestart=2026-10-19T10:25:04&timestop=2026-10-19T13:25:04&format=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 12913,
+   "ms": 121
+  },
+  {
+   "name": "ioc-reykjavik-scor-b",
+   "file": "ioc-reykjavik-scor-b.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=data&code=scor&timestart=2026-10-19%2010:25:04&timestop=2026-10-19%2013:25:04&format=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 12913,
+   "ms": 126
+  },
+  {
+   "name": "ioc-reykjavik-scor-c",
+   "file": "ioc-reykjavik-scor-c.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=data&code=scor&period=0.125&format=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 76791,
+   "ms": 190
+  },
+  {
+   "name": "ioc-reykjavik-scor-d",
+   "file": "ioc-reykjavik-scor-d.json",
+   "url": "https://www.ioc-sealevelmonitoring.org/service.php?query=data&code=scor&period=0.125&endtime=2026-10-19T13:25:04&format=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 76791,
+   "ms": 156
+  },
+  {
+   "name": "linz-list-view",
+   "file": "linz-list-view.html",
+   "url": "https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions/tide-predictions-list-view",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/html; charset=utf-8",
+   "bytes": 495759,
+   "ms": 5525
+  },
+  {
+   "name": "linz-port-1",
+   "file": "linz-port-1.csv",
+   "url": "https://static.charts.linz.govt.nz/tide-tables/maj-ports/csv/Auckland 2025.csv",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/csv",
+   "bytes": 19487,
+   "ms": 2011
+  },
+  {
+   "name": "linz-port-2",
+   "file": "linz-port-2.csv",
+   "url": "https://static.charts.linz.govt.nz/tide-tables/maj-ports/csv/Auckland 2026.csv",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/csv",
+   "bytes": 19479,
+   "ms": 44
+  },
+  {
+   "name": "linz-constituents-page",
+   "file": "linz-constituents-page.html",
+   "url": "https://www.linz.govt.nz/products-services/data/types-linz-data/sea-level-data/tide-constituents",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/html; charset=utf-8",
+   "bytes": 95139,
+   "ms": 8535
+  },
+  {
+   "name": "linz-constituents",
+   "file": "linz-constituents.txt",
+   "url": "https://www.linz.govt.nz/sites/default/files/2026-08/NZ_Tide_Constituents_2025.zip",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/zip",
+   "bytes": 51563,
+   "ms": 1699
+  }
+ ]
+}
