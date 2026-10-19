@@ -2,7 +2,7 @@
 
 This is a copy of sbender9's derived-data.
 
-Currently serving worldtide.info API, NOAA (US), Kartverket (Norway), DMI (Denmark), Rijkswaterstaat (Netherlands), CHS (Canada) and the Marine Institute (Ireland) and LINZ (New Zealand) free data, the Admiralty UK Tidal API (with your own key), measured and forecast sea level from SMHI (Sweden), FMI (Finland), PEGELONLINE (Germany) and the Environment Agency (England), raw measured sea level worldwide from the IOC sea level monitoring facility, the Open-Meteo marine model worldwide, and offline harmonic predictions computed on the boat. It can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
+Currently serving worldtide.info API, NOAA (US), Kartverket (Norway), DMI (Denmark), Rijkswaterstaat (Netherlands), CHS (Canada) and the Marine Institute (Ireland) and LINZ (New Zealand) free data, measured and forecast sea level from SMHI (Sweden), FMI (Finland), PEGELONLINE (Germany) and the Environment Agency (England), raw measured sea level worldwide from the IOC sea level monitoring facility, the Open-Meteo marine model worldwide, and offline harmonic predictions computed on the boat. It can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
 
 > **Coming back from signalk-tides?** In 2025 this plugin stopped producing data on newer servers
 > (#67), and [signalk-tides](https://www.npmjs.com/package/signalk-tides) by @bkeepers was published
@@ -26,7 +26,6 @@ Enable one provider under *Tides* in the plugin configuration.
 | SMHI | Sweden (measured sea level only) | no |
 | FMI | Finland (sea level forecast and measurements) | no |
 | Marine Institute | Ireland | no |
-| Admiralty | UK and Ireland (high and low waters) | yes, free (Discovery tier) |
 | Environment Agency | England (measured tide level only) | no |
 | PEGELONLINE | Germany (measured water level only) | no |
 | LINZ | New Zealand (high and low waters) | no |
@@ -252,23 +251,6 @@ station's LAT − OD Malin difference, taken from the predicted level (2.46 m at
 with a bad quality flag are left out. Status: checked against real responses for Dublin Port (October
 2026). Data: Marine Institute, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
-### Admiralty (UK, API key needed)
-
-Uses the UK Hydrographic Office's Admiralty UK Tidal API: high and low waters for 7 days at the nearest of
-about 600 ports in the UK and Ireland, above chart datum. It needs your own key: subscribe to "UK Tidal
-API - Discovery" (free) at https://admiraltyapi.portal.azure-api.net and enter the key in the settings.
-The key is sent to the Admiralty only, in a request header. The Discovery tier has a monthly call limit;
-the plugin asks once a day. Only high and low waters: `heightNow` comes from another provider, e.g. the
-Environment Agency's measurements.
-
-| Option | Default | |
-|---|---|---|
-| API key | empty | without it the provider reports that it needs one, once |
-| Use the nearest tide station within (km) | 30 | |
-| API address | `https://admiraltyapi.azure-api.net/uktidalapi/api/V1` | |
-
-Status: built from the API's documentation; not yet checked against a real response.
-
 ### Environment Agency (England)
 
 Uses the Environment Agency's flood monitoring API (https://environment.data.gov.uk/flood-monitoring):
@@ -406,7 +388,7 @@ $ curl http://localhost:3000/signalk/v2/api/resources/tides
 ```
 
 The data comes from the first enabled provider that has data for the boat's position: the station-based
-providers first (Admiralty `datum` CD, CHS CD, LINZ CD, DMI DVR90 or LAT, Kartverket the chosen reference level,
+providers first (CHS `datum` CD, LINZ CD, DMI DVR90 or LAT, Kartverket the chosen reference level,
 Marine Institute LAT or OD Malin, NOAA MLLW, Rijkswaterstaat NAP), then the fallbacks, the offline
 predictions and Open-Meteo (`datum` MSL). worldtides.info, SMHI, FMI, PEGELONLINE, the Environment
 Agency and IOC (no predictions) do not provide it. Each answer has the next 7 days of highs and lows, and says

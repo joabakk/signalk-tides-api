@@ -466,7 +466,7 @@ test('HTTP helpers: User-Agent, GET text and JSON with headers, POST JSON, empty
     let body = ''
     req.on('data', c => { body += c })
     req.on('end', () => {
-      seen.push({ method: req.method, url: req.url, ua: req.headers['user-agent'], type: req.headers['content-type'], key: req.headers['ocp-apim-subscription-key'], body })
+      seen.push({ method: req.method, url: req.url, ua: req.headers['user-agent'], type: req.headers['content-type'], key: req.headers['x-api-key'], body })
       if (req.url === '/empty') { res.writeHead(204); res.end(); return }
       if (req.url === '/fail') { res.writeHead(500); res.end('oops'); return }
       if (req.url === '/text') { res.writeHead(200, { 'Content-Type': 'application/xml' }); res.end('<a>1</a>'); return }
@@ -480,7 +480,7 @@ test('HTTP helpers: User-Agent, GET text and JSON with headers, POST JSON, empty
     const { getText, getJson, postJson } = createProvider.http
     assert.strictEqual(await getText(`${base}/text`), '<a>1</a>')
     assert.deepStrictEqual(await getJson(`${base}/json`), { ok: true, echo: null })
-    await getJson(`${base}/key`, { 'Ocp-Apim-Subscription-Key': 'k1' })
+    await getJson(`${base}/key`, { 'X-Api-Key': 'k1' })
     assert.strictEqual(seen.find(s => s.url === '/key').key, 'k1')
     assert.deepStrictEqual(await postJson(`${base}/post`, { a: 1 }), { ok: true, echo: { a: 1 } })
     assert.strictEqual(await postJson(`${base}/empty`, {}), null)

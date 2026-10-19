@@ -5,8 +5,6 @@
 ### Added
 - Marine Institute provider (Ireland): high and low waters, the predicted level and the measured level
   at the nearest gauge, above LAT or OD Malin. Free, CC BY 4.0.
-- Admiralty provider (UK and Ireland): high and low waters above chart datum from the UKHO's UK Tidal
-  API, with your own free key. Not yet checked against a real response.
 - Environment Agency provider (England): measured tide level at the nearest gauge, in mAOD or the
   gauge's local datum. Free, Open Government Licence.
 - PEGELONLINE provider (Germany): measured water level at the nearest WSV gauge, above NHN or the gauge

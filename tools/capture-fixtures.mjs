@@ -11,11 +11,7 @@
  * something is wrong.
  *
  * Only some sources:   node tools/capture-fixtures.mjs ireland germany ioc
- * Sources: smhi fmi rws chs openmeteo ireland germany admiralty ea ioc noaa linz
- *
- * The UK Admiralty API needs your own free key (https://admiraltyapi.portal.azure-api.net, "UK Tidal
- * API - Discovery"). It is sent in a header and never saved:
- *   ADMIRALTY_API_KEY=... node tools/capture-fixtures.mjs admiralty
+ * Sources: smhi fmi rws chs openmeteo ireland germany ea ioc noaa linz
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -173,31 +169,6 @@ async function germany () {
   }
 }
 
-// --- UK Admiralty Tidal API (needs ADMIRALTY_API_KEY) ---------------------------------------
-async function admiralty () {
-  const key = process.env.ADMIRALTY_API_KEY
-  if (!key) {
-    console.log('   skipped: set ADMIRALTY_API_KEY to capture the Admiralty API')
-    return
-  }
-  const base = 'https://admiraltyapi.azure-api.net/uktidalapi/api/V1'
-  const headers = { 'Ocp-Apim-Subscription-Key': key }
-  const list = (await get('admiralty-stations', `${base}/Stations`, { headers })).json()
-  const features = (list && list.features) || []
-  const near = { lat: 51.11, lon: 1.32 } // Dover
-  features.sort((a, b) => {
-    const pa = a.geometry.coordinates
-    const pb = b.geometry.coordinates
-    return distance(near, { lat: pa[1], lon: pa[0] }) - distance(near, { lat: pb[1], lon: pb[0] })
-  })
-  const s = features[0]
-  if (!s) return
-  const id = s.properties.Id
-  await get(`admiralty-station-${id}`, `${base}/Stations/${id}`, { headers })
-  await get(`admiralty-events-${id}`, `${base}/Stations/${id}/TidalEvents?duration=7`, { headers })
-  await get('admiralty-events-unknown', `${base}/Stations/XXXX/TidalEvents?duration=7`, { headers })
-}
-
 // --- Environment Agency (England), flood monitoring: tide gauges ----------------------------
 async function ea () {
   const base = 'https://environment.data.gov.uk/flood-monitoring'
@@ -272,7 +243,6 @@ const SOURCES = {
   openmeteo: ['Open-Meteo', openMeteo],
   ireland: ['Marine Institute (Ireland)', ireland],
   germany: ['PEGELONLINE (Germany)', germany],
-  admiralty: ['Admiralty (UK)', admiralty],
   ea: ['Environment Agency (England)', ea],
   ioc: ['IOC sea level monitoring', ioc],
   noaa: ['NOAA', noaa],
