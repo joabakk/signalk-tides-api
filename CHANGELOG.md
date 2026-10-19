@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.0
 
 ### Added
 - Marine Institute provider (Ireland): high and low waters, the predicted level and the measured level
