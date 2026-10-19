@@ -88,7 +88,7 @@ test('plugin: station-based providers come before the model and offline fallback
   const loaded = fs.readdirSync(path.join(__dirname, '..', 'calcs'))
     .map(f => require(path.join('..', 'calcs', f))({ config: { configPath: configDir() }, debug () {}, error () {} }, { properties: {} }))
   const fallbacks = loaded.filter(c => c && c.fallback).map(c => c.optionKey).sort()
-  assert.deepStrictEqual(fallbacks, ['offline', 'openmeteo'])
+  assert.deepStrictEqual(fallbacks, ['ioc', 'offline', 'openmeteo'])
 })
 
 test('plugin: the resource can be turned off', () => {
