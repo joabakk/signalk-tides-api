@@ -351,6 +351,7 @@ test('re-publishes from the cache on a timer', async () => {
     await calc.calculator(ESBJERG)
     await wait(100)
     assert.ok(app.messages.some(m => m.updates[0].values), 'published by the timer')
+    assert.strictEqual(app.messages.find(m => m.updates[0].values).updates[0].$source, 'tides-api.dmi')
     assert.strictEqual(fetchJson.calls.length, 5)
   } finally {
     calc.stop()

@@ -91,6 +91,39 @@ test('plugin: station-based providers come before the model and offline fallback
   assert.deepStrictEqual(fallbacks, ['ioc', 'offline', 'openmeteo'])
 })
 
+test('plugin: the values of each provider carry a $source naming its API', async () => {
+  let neaps = true
+  try { await import('neaps') } catch (err) { neaps = false }
+  if (!neaps) return console.log('  (skipped: needs the neaps package)')
+  const messages = []
+  const app = {
+    config: { configPath: configDir() },
+    selfId: 'x',
+    debug () {},
+    error () {},
+    setPluginError () {},
+    setPluginStatus () {},
+    handleMessage (id, delta) { messages.push({ id, delta }) },
+    // near Brofjorden, a station in the offline database: computed on the spot, no network
+    getSelfPath (p) { if (p === 'navigation.position') return { value: { latitude: 58.35, longitude: 11.43 } } },
+    registerResourceProvider () {}
+  }
+  const plugin = require('../index.js')(app)
+  plugin.start({ tides: { offline: true } })
+  try {
+    let delta
+    for (let i = 0; i < 100 && !delta; i++) {
+      await new Promise(resolve => setTimeout(resolve, 50))
+      delta = messages.map(m => m.delta).find(d => d.updates && d.updates[0].values)
+    }
+    assert.ok(delta, 'published')
+    assert.strictEqual(delta.updates[0].$source, 'tides-api.offline')
+    assert.ok(messages.every(m => m.id === 'tides-api'))
+  } finally {
+    plugin.stop()
+  }
+})
+
 test('plugin: the resource can be turned off', () => {
   const { plugin, providers } = pluginSetup({ tidesResource: false, tides: { kartverket: true } })
   try {

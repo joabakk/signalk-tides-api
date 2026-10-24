@@ -13,7 +13,8 @@ Currently serving worldtide.info API, NOAA (US), Kartverket (Norway), DMI (Denma
 
 ## Providers
 
-Enable one provider under *Tides* in the plugin configuration.
+Enable one provider under *Tides* in the plugin configuration. Each value's source names the API it
+comes from, e.g. `tides-api.kartverket` or `tides-api.noaa` (shown in the Data Browser).
 
 | Provider | Area | Key needed |
 |---|---|---|

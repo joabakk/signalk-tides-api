@@ -580,6 +580,7 @@ test('re-publishes from the cache on a timer without new requests', async () => 
     assert.ok(app.messages.some(m => m.updates[0].values), 'published by the timer')
     const delta = app.messages.filter(m => m.updates[0].values).pop()
     assert.strictEqual(delta.context, 'vessels.' + app.selfId)
+    assert.strictEqual(delta.updates[0].$source, 'tides-api.kartverket')
     const v = byPath(delta.updates[0].values)
     // 15:20 is between 15:00 (50.0) and 16:00 (57.4)
     assert.strictEqual(v['environment.tide.heightPredicted'], 0.525)

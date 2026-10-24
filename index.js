@@ -94,18 +94,21 @@ module.exports = function(app) {
             if (calculation && calculation.group === 'tides' && !calculation.fallback) {
               markPublishing(plugin, calculation.optionKey)
             }
+            // $source names the API, e.g. tides-api.kartverket, so its values can be told apart
+            const $source = calculation && calculation.optionKey ? `${plugin.id}.${calculation.optionKey}` : undefined
             if (values[0].context) {
               values.forEach((delta) => {
+                if ($source) (delta.updates || []).forEach(u => { if (!u.$source && !u.source) u.$source = $source })
                 app.handleMessage(plugin.id, delta);
               });
             } else {
               let delta = {
                 context: "vessels." + app.selfId,
                 updates: [
-                  {
+                  Object.assign({
                     timestamp: new Date().toISOString(),
                     values: values,
-                  },
+                  }, $source ? { $source } : {}),
                 ],
               };
 

@@ -452,7 +452,9 @@ test('re-publishes from the cache on a timer, stops with stop()', async () => {
   const { calc, app, calls } = setup({ republishInterval: 20 })
   await calc.calculator(POS)
   await wait(80)
-  assert.ok(app.messages.some(m => m.updates[0].values && m.context === 'vessels.' + app.selfId))
+  const published = app.messages.find(m => m.updates[0].values && m.context === 'vessels.' + app.selfId)
+  assert.ok(published)
+  assert.strictEqual(published.updates[0].$source, 'tides-api.fake', 'the source names the API')
   assert.strictEqual(calls.length, 1)
   calc.stop()
   const count = app.messages.length

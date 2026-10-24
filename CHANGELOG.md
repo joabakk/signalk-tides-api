@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- Every value now has a source naming the API it comes from: `tides-api.kartverket`, `tides-api.noaa`,
+  `tides-api.openmeteo` and so on, instead of only `tides-api`. The Data Browser shows it, and values of
+  two enabled providers are kept apart.
+
 ## 0.8.0
 
 ### Added

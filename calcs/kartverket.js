@@ -285,7 +285,7 @@ module.exports = function (app, plugin, deps) {
       if (values) {
         app.handleMessage(plugin.id, {
           context: 'vessels.' + app.selfId,
-          updates: [{ timestamp: new Date().toISOString(), values }]
+          updates: [{ timestamp: new Date().toISOString(), $source: `${plugin.id}.kartverket`, values }]
         })
       }
     })
