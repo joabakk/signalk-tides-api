@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.1
 
 ### Changed
 - Every value now has a source naming the API it comes from: `tides-api.kartverket`, `tides-api.noaa`,
