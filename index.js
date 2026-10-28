@@ -92,7 +92,7 @@ module.exports = function(app) {
           if (typeof values !== "undefined" && values.length > 0) {
             // station-based tide providers keep the fallbacks (model, offline) quiet
             if (calculation && calculation.group === 'tides' && !calculation.fallback) {
-              markPublishing(plugin, calculation.optionKey)
+              markPublishing(plugin, calculation.optionKey, values[0].context ? [].concat(...values.map(d => (d.updates || []).map(u => u.values || []).flat())) : values, calculation.name || calculation.title)
             }
             // $source names the API, e.g. tides-api.kartverket, so its values can be told apart
             const $source = calculation && calculation.optionKey ? `${plugin.id}.${calculation.optionKey}` : undefined

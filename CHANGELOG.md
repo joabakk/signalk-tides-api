@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- The fallbacks (offline predictions, Open-Meteo, IOC) no longer go quiet next to a provider that only
+  measures (PEGELONLINE, SMHI, FMI, Environment Agency): they add the high and low waters and the
+  predicted level, and leave `heightNow` and `heightObserved` to the measurement (#85).
+
 ## 0.8.1
 
 ### Changed

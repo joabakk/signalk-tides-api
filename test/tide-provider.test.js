@@ -295,18 +295,41 @@ test('a fallback publishes nothing while a station provider does, but still serv
   try {
     assert.ok((await fallback.calc.calculator(POS)).length > 0, 'alone, the fallback publishes')
     assert.ok((await station.calc.calculator(POS)).length > 0)
-    assert.ok(plugin.tideDeltasAt.station > 0)
+    assert.deepStrictEqual(Object.assign({}, plugin.tideDeltasAt.station, { at: 0 }), { at: 0, extremes: true, measured: true, name: 'Fake' })
     assert.strictEqual(plugin.tideDeltasAt.fake, undefined)
     assert.strictEqual(await fallback.calc.calculator(POS), undefined)
     const statuses = fallback.app.statuses.length
     await fallback.calc.calculator(POS)
     assert.strictEqual(fallback.app.statuses.length, statuses, 'no status from a quiet fallback')
     assert.strictEqual((await fallback.calc.tideForecast()).datum, 'MSL')
-    plugin.tideDeltasAt.station = Date.now() - 11 * 60e3
+    plugin.tideDeltasAt.station.at = Date.now() - 11 * 60e3
     assert.ok((await fallback.calc.calculator(POS)).length > 0, 'publishes again 10 min after the station provider stopped')
   } finally {
     fallback.calc.stop()
     station.calc.stop()
+  }
+})
+
+test('next to a provider that only measures, a fallback adds highs, lows and predictions', async () => {
+  const plugin = { id: 'tides-api', properties: { tides: { fake: true, gauge: true } } }
+  const fallback = setup({ plugin, spec: { fallback: true } })
+  // e.g. PEGELONLINE: a measured level, no highs and lows or predictions
+  const gauge = setup({ plugin, spec: { optionKey: 'gauge', name: 'Gauge' }, data: { extremes: [], predicted: [], forecast: [] } })
+  try {
+    const measured = byPath(await gauge.calc.calculator(POS))
+    assert.deepStrictEqual(Object.keys(measured).sort(), ['environment.tide.heightNow', 'environment.tide.heightObserved'])
+    assert.strictEqual(plugin.tideDeltasAt.gauge.extremes, false)
+    assert.strictEqual(plugin.tideDeltasAt.gauge.measured, true)
+    const v = byPath(await fallback.calc.calculator(POS))
+    assert.strictEqual(v['environment.tide.heightHigh'], 0.771)
+    assert.strictEqual(v['environment.tide.heightLow'], 0.568)
+    assert.ok(typeof v['environment.tide.heightPredicted'] === 'number')
+    assert.strictEqual(v['environment.tide.heightNow'], undefined, 'left to the measuring provider')
+    assert.strictEqual(v['environment.tide.heightObserved'], undefined)
+    assert.ok(fallback.app.statuses.pop().includes('height now from Gauge'))
+  } finally {
+    fallback.calc.stop()
+    gauge.calc.stop()
   }
 })
 

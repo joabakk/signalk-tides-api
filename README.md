@@ -39,10 +39,19 @@ can enable both. Where both have data (parts of the Skagerrak), both publish to 
 the one for the waters you are in. The same goes for the other national providers.
 
 Open-Meteo, the IOC gauges and the offline predictions work almost anywhere but are less precise than a national
-service's own station. They can be enabled together with a national provider: while a station-based
-provider publishes tide values, the fallbacks publish none (so the two don't take turns on the same paths)
-and only answer the `tides` resource when the station-based providers can't; 10 minutes after the
-station-based providers stop (e.g. out of their area), the fallbacks publish again.
+service's own station. They can be enabled together with a national provider, so that the two don't
+take turns on the same paths:
+
+- next to a provider with high and low waters (e.g. Kartverket, DMI, NOAA), the fallbacks publish nothing
+  and only answer the `tides` resource when the station-based providers can't;
+- next to a provider that only measures (PEGELONLINE, SMHI, FMI, the Environment Agency), the fallbacks
+  add the high and low waters and the predicted level, and leave `heightNow` and `heightObserved` to the
+  measurement. In Germany, for example, PEGELONLINE and the offline predictions together give the measured
+  level at a WSV gauge and the next high and low water from the same gauge's harmonic constants. Mind
+  the reference levels: PEGELONLINE's NHN and the offline station's datum differ.
+
+10 minutes after the station-based providers stop (e.g. out of their area), the fallbacks publish
+everything again.
 
 ### Kartverket (Norway)
 
