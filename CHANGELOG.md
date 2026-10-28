@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.2
 
 ### Changed
 - The fallbacks (offline predictions, Open-Meteo, IOC) no longer go quiet next to a provider that only
