@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.9.0
 
 ### Added
 - BSH provider (Germany, North Sea and Baltic): official high and low water predictions, the predicted
