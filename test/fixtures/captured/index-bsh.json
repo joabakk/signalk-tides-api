@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-06T16:30:56.021Z",
+ "captured": "2026-11-06T16:32:26.069Z",
  "node": "v24.19.0",
  "requests": [
   {
@@ -10,7 +10,7 @@
    "status": 200,
    "contentType": "application/json",
    "bytes": 6444,
-   "ms": 538
+   "ms": 319
   },
   {
    "name": "bsh-api-openapi",
@@ -20,7 +20,7 @@
    "status": 200,
    "contentType": "application/vnd.oai.openapi+json;version=3.0",
    "bytes": 57988,
-   "ms": 56
+   "ms": 123
   },
   {
    "name": "bsh-api-collections",
@@ -30,7 +30,7 @@
    "status": 200,
    "contentType": "application/json",
    "bytes": 6935,
-   "ms": 190
+   "ms": 193
   },
   {
    "name": "bsh-api-waterlevelforecastdata-queryables",
@@ -40,7 +40,7 @@
    "status": 200,
    "contentType": "application/schema+json",
    "bytes": 6571,
-   "ms": 94
+   "ms": 107
   },
   {
    "name": "bsh-api-waterlevelforecastdata-items",
@@ -50,7 +50,7 @@
    "status": 200,
    "contentType": "application/geo+json",
    "bytes": 188007,
-   "ms": 320
+   "ms": 296
   },
   {
    "name": "bsh-portal-gezeiten-index-js",
@@ -60,7 +60,7 @@
    "status": 200,
    "contentType": "application/javascript; charset=utf-8",
    "bytes": 4382,
-   "ms": 177
+   "ms": 180
   },
   {
    "name": "bsh-portal-gezeiten-common-js",
@@ -70,7 +70,7 @@
    "status": 200,
    "contentType": "application/javascript; charset=utf-8",
    "bytes": 9020,
-   "ms": 56
+   "ms": 53
   },
   {
    "name": "bsh-portal-shared-shared-js",
@@ -80,7 +80,7 @@
    "status": 200,
    "contentType": "application/javascript; charset=utf-8",
    "bytes": 249202,
-   "ms": 199
+   "ms": 203
   },
   {
    "name": "bsh-portal-data-1",
@@ -90,17 +90,17 @@
    "status": 200,
    "contentType": "application/json; charset=utf-8",
    "bytes": 37991,
-   "ms": 85
+   "ms": 87
   },
   {
    "name": "bsh-licences",
    "file": "bsh-licences.html",
    "url": "https://www.bsh.de/DE/Das_BSH/Gebuehren_Preise/Nutzungsbedingungen/lizenzen_node.html",
    "method": "GET",
-   "status": 200,
-   "contentType": "text/html;charset=utf-8",
-   "bytes": 66602,
-   "ms": 846
+   "status": 504,
+   "contentType": "text/html",
+   "bytes": 93,
+   "ms": 50144
   },
   {
    "name": "bsh-fees",
@@ -110,7 +110,7 @@
    "status": 200,
    "contentType": "text/html;charset=utf-8",
    "bytes": 56746,
-   "ms": 1202
+   "ms": 1181
   }
  ]
 }
