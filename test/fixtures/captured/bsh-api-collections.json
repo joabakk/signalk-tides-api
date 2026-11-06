@@ -1,0 +1,51 @@
+{
+  "links" : [ {
+    "rel" : "alternate",
+    "type" : "text/html",
+    "title" : "This document as HTML",
+    "href" : "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections?f=html"
+  }, {
+    "rel" : "self",
+    "type" : "application/json",
+    "title" : "This document",
+    "href" : "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections?f=json"
+  } ],
+  "title" : "Water level forecast",
+  "description" : "The Federal Maritime and Hydrographic Agency (BSH) provides a standardised interface for automatically retrieving official forecasts and tidal predictions, as well as station-based model evaluations of water levels, for the German North Sea and Baltic Sea coasts. This data is available in JSON and FlatGeoBuf formats for integration into custom applications and geographic information systems (GIS).<br><br> The offered data meets the legal requirements for a high-value dataset, i.e. a dataset whose reuse offers significant societal, environmental and economic benefits. The focus is on enabling added value to be created from this data in the form of services and applications. This is why the data can be obtained free of charge and without registration and reused under the 'CC BY 4.0' licence. <br><br> <p><h2>Data and Map Overview</h2> An overview map showing all stations with a brief html view (displaying not all attributes) &rarr; <a href='https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items'>Access the data</a><br><br></p> <p><h2>Quick start examples</h2> <b>Example</b>: <a href='https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items?f=json'>https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items?f=json</a> <br> <b>Description</b>: Will return results for all stations, including the respective model curve forecast of the water level and, if applicable, peak predictions of the tides. <br><br> <b>Example</b>: <a href='https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items/cuxhaven_steubenhoeft?f=json'>https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items/cuxhaven_steubenhoeft?f=json</a> <br> <b>Description</b>: It will return results for a specific station (here, Cuxhaven), including the respective model curve forecast of the water level, as well as peak tide predictions if applicable.<br><br> <b>Example</b>: <a href='https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items/warnemuende?f=fgb'>https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items/warnemuende?f=fgb</a><br> <b>Description</b>: Will download the forecast data as a FlatGeoBuf-file for the station Warnemünde, which can be imported in a GIS-programm.<br><br>A brief description of the parameters can be found here <a href='https://www2.bsh.de/aktdat/wvd/api/parameter_documentation.pdf' target='_blank'>https://www2.bsh.de/aktdat/wvd/api/parameter_documentation.pdf</a><br><br></p><p><h2>Available data formats</h2> <b>JSON: </b>JSON (JavaScript Object Notation) is a lightweight, text-based data interchange format that represents structured information as key–value pairs and is widely used for transmitting and processing forecast data in web and API-based applications. All common programming languages offer straightforward processing options for further visualisation and evaluation.<br><br> <b>FlatGeoBuf: </b>FlatGeobuf is a binary geospatial vector file format designed for efficient storage, fast spatial indexing, and high-performance streaming of large geospatial datasets, particularly in GIS and web mapping applications.</p><br> <p><h2>Terms of Use</h2> BSH's open data is provided under the 'Creative Commons license CC BY 4.0' (<a href='https://creativecommons.org/licenses/by/4.0/legalcode.en'>https://creativecommons.org/licenses/by/4.0/legalcode.en</a>).<br> In short, this means: You are free to use the content. This includes copying and redistributing it in any medium or format. You are also allowed to edit, transform, or build upon the material and use the results for any purpose.<br><br> The following requirements apply when using the data: <br> <ul><li>Attribution: You must provide an appropriate source citation, link to the license, and indicate whether any changes have been made. The form is freely selectable, but must not give the impression that the licensor supports or recommends you or your use.</li> <li>No additional restrictions: You may not impose legal conditions or technical measures that would prevent others from freely using the material under the license.</li></ul></p>",
+  "crs" : [ "http://www.opengis.net/def/crs/OGC/1.3/CRS84" ],
+  "collections" : [ {
+    "links" : [ {
+      "rel" : "items",
+      "type" : "application/flatgeobuf",
+      "title" : "Access the features in the collection 'Water level forecast data' as FlatGeobuf",
+      "href" : "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items?f=fgb"
+    }, {
+      "rel" : "items",
+      "type" : "text/html",
+      "title" : "Access the features in the collection 'Water level forecast data' as HTML",
+      "href" : "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items?f=html"
+    }, {
+      "rel" : "items",
+      "type" : "application/geo+json",
+      "title" : "Access the features in the collection 'Water level forecast data' as GeoJSON",
+      "href" : "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items?f=json"
+    }, {
+      "rel" : "self",
+      "title" : "The 'Water level forecast data' feature collection",
+      "href" : "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata"
+    } ],
+    "title" : "Water level forecast data",
+    "description" : "To use the filter click on 'edit' and select a field with a pattern or use the bounding box to constrain your search result. After click on 'Add' the filter is prepared and after click on 'Apply' you get a new search result via filter selection. You can deactivate your filter selection by clicking on 'Cancel'.<br><br>A brief description of the parameters can be found here <a href='https://www2.bsh.de/aktdat/wvd/api/parameter_documentation.pdf' target='_blank'>https://www2.bsh.de/aktdat/wvd/api/parameter_documentation.pdf</a>",
+    "id" : "waterlevelforecastdata",
+    "extent" : {
+      "spatial" : {
+        "bbox" : [ [ 6.747778, 53.073056, 14.7317, 55.016667 ] ],
+        "crs" : "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
+      }
+    },
+    "itemType" : "feature",
+    "crs" : [ "#/crs" ],
+    "storageCrs" : "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+    "itemCount" : 136
+  } ]
+}

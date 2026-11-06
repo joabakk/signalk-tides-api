@@ -1,36 +1,116 @@
 {
- "captured": "2026-11-06T16:29:29.022Z",
+ "captured": "2026-11-06T16:30:56.021Z",
  "node": "v24.19.0",
  "requests": [
   {
-   "name": "bsh-portal",
-   "file": "bsh-portal.html",
-   "url": "https://gezeiten.bsh.de/",
+   "name": "bsh-api-landing",
+   "file": "bsh-api-landing.json",
+   "url": "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast?f=json",
    "method": "GET",
    "status": 200,
-   "contentType": "text/html; charset=utf-8",
-   "bytes": 15034,
-   "ms": 401
+   "contentType": "application/json",
+   "bytes": 6444,
+   "ms": 538
   },
   {
-   "name": "bsh-portal-en",
-   "file": "bsh-portal-en.html",
-   "url": "https://gezeiten.bsh.de/en",
+   "name": "bsh-api-openapi",
+   "file": "bsh-api-openapi.json",
+   "url": "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/api?f=json",
    "method": "GET",
    "status": 200,
-   "contentType": "text/html; charset=utf-8",
-   "bytes": 14746,
-   "ms": 53
+   "contentType": "application/vnd.oai.openapi+json;version=3.0",
+   "bytes": 57988,
+   "ms": 56
   },
   {
-   "name": "bsh-gezeiten-info",
-   "file": "bsh-gezeiten-info.html",
-   "url": "https://www.bsh.de/DE/DATEN/Vorhersagen/Gezeiten/gezeiten_node.html",
+   "name": "bsh-api-collections",
+   "file": "bsh-api-collections.json",
+   "url": "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections?f=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json",
+   "bytes": 6935,
+   "ms": 190
+  },
+  {
+   "name": "bsh-api-waterlevelforecastdata-queryables",
+   "file": "bsh-api-waterlevelforecastdata-queryables.json",
+   "url": "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/queryables?f=json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/schema+json",
+   "bytes": 6571,
+   "ms": 94
+  },
+  {
+   "name": "bsh-api-waterlevelforecastdata-items",
+   "file": "bsh-api-waterlevelforecastdata-items.json",
+   "url": "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items?f=json&limit=5",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/geo+json",
+   "bytes": 188007,
+   "ms": 320
+  },
+  {
+   "name": "bsh-portal-gezeiten-index-js",
+   "file": "bsh-portal-gezeiten-index-js.txt",
+   "url": "https://gezeiten.bsh.de/gezeiten/index.js",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/javascript; charset=utf-8",
+   "bytes": 4382,
+   "ms": 177
+  },
+  {
+   "name": "bsh-portal-gezeiten-common-js",
+   "file": "bsh-portal-gezeiten-common-js.txt",
+   "url": "https://gezeiten.bsh.de/gezeiten/common.js",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/javascript; charset=utf-8",
+   "bytes": 9020,
+   "ms": 56
+  },
+  {
+   "name": "bsh-portal-shared-shared-js",
+   "file": "bsh-portal-shared-shared-js.txt",
+   "url": "https://gezeiten.bsh.de/shared/shared.js",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/javascript; charset=utf-8",
+   "bytes": 249202,
+   "ms": 199
+  },
+  {
+   "name": "bsh-portal-data-1",
+   "file": "bsh-portal-data-1.json",
+   "url": "https://gezeiten.bsh.de/data/tides_overview.json",
+   "method": "GET",
+   "status": 200,
+   "contentType": "application/json; charset=utf-8",
+   "bytes": 37991,
+   "ms": 85
+  },
+  {
+   "name": "bsh-licences",
+   "file": "bsh-licences.html",
+   "url": "https://www.bsh.de/DE/Das_BSH/Gebuehren_Preise/Nutzungsbedingungen/lizenzen_node.html",
    "method": "GET",
    "status": 200,
    "contentType": "text/html;charset=utf-8",
-   "bytes": 62850,
-   "ms": 1079
+   "bytes": 66602,
+   "ms": 846
+  },
+  {
+   "name": "bsh-fees",
+   "file": "bsh-fees.html",
+   "url": "https://www.bsh.de/DE/Das_BSH/Gebuehren_Preise/Gebuehren_und_Preise/_Anlagen/Downloads/Entgeltverzeichnis-digitale-Daten.html",
+   "method": "GET",
+   "status": 200,
+   "contentType": "text/html;charset=utf-8",
+   "bytes": 56746,
+   "ms": 1202
   }
  ]
 }

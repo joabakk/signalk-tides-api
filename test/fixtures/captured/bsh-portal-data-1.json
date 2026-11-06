@@ -1,0 +1,1393 @@
+{
+   "copyright_note": "©Bundesamt für Seeschifffahrt und Hydrographie (BSH). Das BSH übernimmt für die angegebenen Informationen keine Gewähr.",
+   "publications": {
+      "gezeitentafel": {
+         "image": "gezeitentafeln2026.jpg",
+         "url": "https://www.bsh.de/DE/PUBLIKATIONEN/_Anlagen/Downloads/Nautik_und_Schifffahrt/Sonstige_mitzufuehrende_Publikationen/2115-Gezeitentafeln-2026.html",
+         "label": "Gezeitentafeln 2026: Europäische Gewässer (Vorschau)"
+      },
+      "gezeitenkalender": {
+         "image": "gezeitenkalender2026.jpg",
+         "url": "https://www.bsh.de/DE/PUBLIKATIONEN/_Anlagen/Downloads/Nautik_und_Schifffahrt/Sonstige-nautische-Publikationen/2117-Gezeitenkalender-2026.html",
+         "label": "Gezeitenkalender 2026: (Vorschau)"
+      }
+   },
+   "gauges": [
+      {
+         "station_name": "Kalkgrund, Leuchtturm, Ostsee",
+         "bshnr": "3015P",
+         "latitude": 54.82472,
+         "longitude": 9.88806,
+         "gauge_group": 3,
+         "seo_id": "kalkgrund_leuchtturm"
+      },
+      {
+         "station_name": "Kiel, Holtenau, Ostsee",
+         "bshnr": "3020P",
+         "latitude": 54.37222,
+         "longitude": 10.15694,
+         "gauge_group": 3,
+         "seo_id": "kiel_holtenau"
+      },
+      {
+         "station_name": "Travemünde, Ostsee",
+         "bshnr": "3040P",
+         "latitude": 53.95806,
+         "longitude": 10.87222,
+         "gauge_group": 3,
+         "seo_id": "travemuende"
+      },
+      {
+         "station_name": "Warnemünde, Ostsee",
+         "bshnr": "3060P",
+         "latitude": 54.16972,
+         "longitude": 12.10333,
+         "gauge_group": 3,
+         "seo_id": "warnemuende"
+      },
+      {
+         "station_name": "Borkum, Fischerbalje",
+         "bshnr": "101P",
+         "latitude": 53.5575,
+         "longitude": 6.74778,
+         "gauge_group": 1,
+         "seo_id": "borkum_fischerbalje"
+      },
+      {
+         "station_name": "Bremerhaven, Weser, Alter Leuchtturm",
+         "bshnr": "103P",
+         "latitude": 53.545,
+         "longitude": 8.56806,
+         "gauge_group": 1,
+         "seo_id": "bremerhaven_alter_leuchtturm"
+      },
+      {
+         "station_name": "Norderney, Riffgat",
+         "bshnr": "111P",
+         "latitude": 53.69639,
+         "longitude": 7.15778,
+         "gauge_group": 1,
+         "seo_id": "norderney_riffgat"
+      },
+      {
+         "station_name": "Bremen, Oslebshausen, Weser",
+         "bshnr": "502P",
+         "latitude": 53.11972,
+         "longitude": 8.71222,
+         "gauge_group": 1,
+         "seo_id": "bremen_oslebshausen"
+      },
+      {
+         "station_name": "Brunsbüttel, Elbe, Ost",
+         "bshnr": "504B",
+         "latitude": 53.88778,
+         "longitude": 9.14861,
+         "gauge_group": 1,
+         "seo_id": "brunsbuettel_ost"
+      },
+      {
+         "station_name": "Büsum, Schleuse",
+         "bshnr": "505P",
+         "latitude": 54.12222,
+         "longitude": 8.85917,
+         "gauge_group": 1,
+         "seo_id": "buesum_schleuse"
+      },
+      {
+         "station_name": "Cuxhaven, Steubenhöft, Elbe",
+         "bshnr": "506P",
+         "latitude": 53.86778,
+         "longitude": 8.7175,
+         "gauge_group": 1,
+         "seo_id": "cuxhaven_steubenhoeft"
+      },
+      {
+         "station_name": "Emden, Ems, Große Seeschleuse",
+         "bshnr": "507P",
+         "latitude": 53.33667,
+         "longitude": 7.18639,
+         "gauge_group": 1,
+         "seo_id": "emden_grosse_seeschleuse"
+      },
+      {
+         "station_name": "Hamburg, St. Pauli, Elbe",
+         "bshnr": "508P",
+         "latitude": 53.54556,
+         "longitude": 9.97,
+         "gauge_group": 1,
+         "seo_id": "hamburg_st-pauli"
+      },
+      {
+         "station_name": "Helgoland, Binnenhafen",
+         "bshnr": "509A",
+         "latitude": 54.17889,
+         "longitude": 7.89,
+         "gauge_group": 1,
+         "seo_id": "helgoland_binnenhafen"
+      },
+      {
+         "station_name": "Husum, Schleuse",
+         "bshnr": "510P",
+         "latitude": 54.47222,
+         "longitude": 9.02472,
+         "gauge_group": 1,
+         "seo_id": "husum_schleuse"
+      },
+      {
+         "station_name": "Wilhelmshaven, Alter Vorhafen",
+         "bshnr": "512P",
+         "latitude": 53.51444,
+         "longitude": 8.145,
+         "gauge_group": 1,
+         "seo_id": "wilhelmshaven_alter_vorhafen"
+      },
+      {
+         "station_name": "Fino 3",
+         "bshnr": "606P",
+         "latitude": 55.195,
+         "longitude": 7.15806,
+         "gauge_group": 1,
+         "seo_id": "fino3"
+      },
+      {
+         "station_name": "Fino 1",
+         "bshnr": "610P",
+         "latitude": 54.01472,
+         "longitude": 6.58778,
+         "gauge_group": 1,
+         "seo_id": "fino1"
+      },
+      {
+         "station_name": "List, Sylt, West",
+         "bshnr": "616P",
+         "latitude": 55.05417,
+         "longitude": 8.4,
+         "gauge_group": 2,
+         "seo_id": "list_west"
+      },
+      {
+         "station_name": "List, Sylt, Hafen",
+         "bshnr": "617P",
+         "latitude": 55.01667,
+         "longitude": 8.44056,
+         "gauge_group": 1,
+         "seo_id": "list_hafen"
+      },
+      {
+         "station_name": "Munkmarsch, Sylt",
+         "bshnr": "618P",
+         "latitude": 54.92111,
+         "longitude": 8.36333,
+         "gauge_group": 1,
+         "seo_id": "munkmarsch"
+      },
+      {
+         "station_name": "Westerland, Sylt",
+         "bshnr": "620P",
+         "latitude": 54.90861,
+         "longitude": 8.27111,
+         "gauge_group": 1,
+         "seo_id": "westerland"
+      },
+      {
+         "station_name": "Amrum Odde, Amrum",
+         "bshnr": "622P",
+         "latitude": 54.70667,
+         "longitude": 8.33972,
+         "gauge_group": 1,
+         "seo_id": "amrum_odde"
+      },
+      {
+         "station_name": "Rantumdamm, Sylt",
+         "bshnr": "623A",
+         "latitude": 54.86,
+         "longitude": 8.31333,
+         "gauge_group": 1,
+         "seo_id": "rantumdamm"
+      },
+      {
+         "station_name": "Hörnum, Sylt, West",
+         "bshnr": "624A",
+         "latitude": 54.75806,
+         "longitude": 8.27444,
+         "gauge_group": 2,
+         "seo_id": "hoernum_west"
+      },
+      {
+         "station_name": "Hörnum, Sylt, Hafen",
+         "bshnr": "624P",
+         "latitude": 54.75806,
+         "longitude": 8.29611,
+         "gauge_group": 1,
+         "seo_id": "hoernum_hafen"
+      },
+      {
+         "station_name": "Osterley",
+         "bshnr": "628A",
+         "latitude": 54.84944,
+         "longitude": 8.55583,
+         "gauge_group": 1,
+         "seo_id": "osterley"
+      },
+      {
+         "station_name": "Föhrer Ley, Nord",
+         "bshnr": "629B",
+         "latitude": 54.79639,
+         "longitude": 8.56,
+         "gauge_group": 1,
+         "seo_id": "foehrer_ley_nord"
+      },
+      {
+         "station_name": "Wittdün, Amrum, Hafen",
+         "bshnr": "631P",
+         "latitude": 54.63167,
+         "longitude": 8.38389,
+         "gauge_group": 1,
+         "seo_id": "wittduen_hafen"
+      },
+      {
+         "station_name": "Langeness, Hilligenley",
+         "bshnr": "632D",
+         "latitude": 54.61861,
+         "longitude": 8.54722,
+         "gauge_group": 2,
+         "seo_id": "langeness_hilligenley"
+      },
+      {
+         "station_name": "Langeness, Nord",
+         "bshnr": "632F",
+         "latitude": 54.66556,
+         "longitude": 8.63139,
+         "gauge_group": 1,
+         "seo_id": "langeness_nord"
+      },
+      {
+         "station_name": "Wyk, Föhr",
+         "bshnr": "632P",
+         "latitude": 54.69333,
+         "longitude": 8.57639,
+         "gauge_group": 1,
+         "seo_id": "wyk"
+      },
+      {
+         "station_name": "Südwesthörn",
+         "bshnr": "634P",
+         "latitude": 54.79639,
+         "longitude": 8.65972,
+         "gauge_group": 2,
+         "seo_id": "suedwesthoern"
+      },
+      {
+         "station_name": "Dagebüll",
+         "bshnr": "635P",
+         "latitude": 54.73056,
+         "longitude": 8.68694,
+         "gauge_group": 1,
+         "seo_id": "dagebuell"
+      },
+      {
+         "station_name": "Hooge, Anleger",
+         "bshnr": "636F",
+         "latitude": 54.57861,
+         "longitude": 8.55639,
+         "gauge_group": 1,
+         "seo_id": "hooge_anleger"
+      },
+      {
+         "station_name": "Der Strand, Hamburger Hallig",
+         "bshnr": "637A",
+         "latitude": 54.60528,
+         "longitude": 8.78722,
+         "gauge_group": 1,
+         "seo_id": "der_strand_hamburger_hallig"
+      },
+      {
+         "station_name": "Gröde, Anleger",
+         "bshnr": "637P",
+         "latitude": 54.62944,
+         "longitude": 8.72917,
+         "gauge_group": 1,
+         "seo_id": "groede_anleger"
+      },
+      {
+         "station_name": "Schlüttsiel",
+         "bshnr": "638P",
+         "latitude": 54.6825,
+         "longitude": 8.755,
+         "gauge_group": 1,
+         "seo_id": "schluettsiel"
+      },
+      {
+         "station_name": "Rummelloch, West",
+         "bshnr": "642C",
+         "latitude": 54.48667,
+         "longitude": 8.55278,
+         "gauge_group": 1,
+         "seo_id": "rummelloch_west"
+      },
+      {
+         "station_name": "Pellworm, Hoogerfähre",
+         "bshnr": "642E",
+         "latitude": 54.53556,
+         "longitude": 8.59778,
+         "gauge_group": 1,
+         "seo_id": "pellworm_hoogerfaehre"
+      },
+      {
+         "station_name": "Süderoogsand",
+         "bshnr": "645P",
+         "latitude": 54.42,
+         "longitude": 8.51917,
+         "gauge_group": 1,
+         "seo_id": "suederoogsand"
+      },
+      {
+         "station_name": "Pellworm, Anleger",
+         "bshnr": "647A",
+         "latitude": 54.50083,
+         "longitude": 8.70194,
+         "gauge_group": 1,
+         "seo_id": "pellworm_anleger"
+      },
+      {
+         "station_name": "Nordstrandischmoor",
+         "bshnr": "649A",
+         "latitude": 54.54972,
+         "longitude": 8.79778,
+         "gauge_group": 1,
+         "seo_id": "nordstrandischmoor"
+      },
+      {
+         "station_name": "Holmer Siel",
+         "bshnr": "649B",
+         "latitude": 54.52833,
+         "longitude": 8.86917,
+         "gauge_group": 1,
+         "seo_id": "holmer_siel"
+      },
+      {
+         "station_name": "Strucklahnungshörn, Nordstrand, AP",
+         "bshnr": "649P",
+         "latitude": 54.49889,
+         "longitude": 8.80639,
+         "gauge_group": 1,
+         "seo_id": "strucklahnungshoern"
+      },
+      {
+         "station_name": "Südfall, Fahrwasserkante",
+         "bshnr": "653P",
+         "latitude": 54.44722,
+         "longitude": 8.7525,
+         "gauge_group": 1,
+         "seo_id": "suedfall_fahrwasserkante"
+      },
+      {
+         "station_name": "Everschopsiel",
+         "bshnr": "654E",
+         "latitude": 54.40861,
+         "longitude": 8.82778,
+         "gauge_group": 1,
+         "seo_id": "everschopsiel"
+      },
+      {
+         "station_name": "St. Peter-Ording, Bad",
+         "bshnr": "657P",
+         "latitude": 54.30889,
+         "longitude": 8.57806,
+         "gauge_group": 2,
+         "seo_id": "st-peter-ording_bad"
+      },
+      {
+         "station_name": "Eider-Sperrwerk, Außenpegel",
+         "bshnr": "664P",
+         "latitude": 54.26583,
+         "longitude": 8.84194,
+         "gauge_group": 1,
+         "seo_id": "eider-sperrwerk_aussenpegel"
+      },
+      {
+         "station_name": "Blauort, Norderpiep",
+         "bshnr": "666P",
+         "latitude": 54.16861,
+         "longitude": 8.675,
+         "gauge_group": 1,
+         "seo_id": "blauort_norderpiep"
+      },
+      {
+         "station_name": "Meldorf, Sperrwerk, Außenpegel",
+         "bshnr": "667B",
+         "latitude": 54.09222,
+         "longitude": 8.94917,
+         "gauge_group": 1,
+         "seo_id": "meldorf_sperrwerk_aussenpegel"
+      },
+      {
+         "station_name": "Friedrichskoog, Spitze",
+         "bshnr": "671D",
+         "latitude": 54.03444,
+         "longitude": 8.84056,
+         "gauge_group": 2,
+         "seo_id": "friedrichskoog_spitze"
+      },
+      {
+         "station_name": "Trischen, West",
+         "bshnr": "673P",
+         "latitude": 54.06417,
+         "longitude": 8.65917,
+         "gauge_group": 1,
+         "seo_id": "trischen_west"
+      },
+      {
+         "station_name": "Mittelplate",
+         "bshnr": "675C",
+         "latitude": 54.01222,
+         "longitude": 8.73972,
+         "gauge_group": 1,
+         "seo_id": "mittelplate"
+      },
+      {
+         "station_name": "Friedrichskoog, Hafen, Außenpegel",
+         "bshnr": "675P",
+         "latitude": 53.99944,
+         "longitude": 8.87611,
+         "gauge_group": 1,
+         "seo_id": "friedrichskoog_hafen_aussenpegel"
+      },
+      {
+         "station_name": "Zehnerloch",
+         "bshnr": "676P",
+         "latitude": 53.95556,
+         "longitude": 8.65833,
+         "gauge_group": 1,
+         "seo_id": "zehnerloch"
+      },
+      {
+         "station_name": "Sahlenburg",
+         "bshnr": "677B",
+         "latitude": 53.86389,
+         "longitude": 8.59444,
+         "gauge_group": 2,
+         "seo_id": "sahlenburg"
+      },
+      {
+         "station_name": "Scharhörnriff, Bake A",
+         "bshnr": "677C",
+         "latitude": 53.98444,
+         "longitude": 8.31528,
+         "gauge_group": 1,
+         "seo_id": "scharhoernriff_bake_a"
+      },
+      {
+         "station_name": "Scharhörn, Bake C",
+         "bshnr": "677P",
+         "latitude": 53.97,
+         "longitude": 8.46806,
+         "gauge_group": 1,
+         "seo_id": "scharhoern_bake_c"
+      },
+      {
+         "station_name": "Neuwerk, Anleger",
+         "bshnr": "678W",
+         "latitude": 53.91778,
+         "longitude": 8.48639,
+         "gauge_group": 1,
+         "seo_id": "neuwerk_anleger"
+      },
+      {
+         "station_name": "Kaiser-Wilhelm-Koog, Elbe",
+         "bshnr": "680P",
+         "latitude": 53.91667,
+         "longitude": 8.91667,
+         "gauge_group": 2,
+         "seo_id": "kaiser_wilhelm_koog"
+      },
+      {
+         "station_name": "Neufeld, Hafen",
+         "bshnr": "681A",
+         "latitude": 53.90722,
+         "longitude": 9.0225,
+         "gauge_group": 2,
+         "seo_id": "neufeld_hafen"
+      },
+      {
+         "station_name": "Otterndorf, Elbe",
+         "bshnr": "681P",
+         "latitude": 53.83528,
+         "longitude": 8.87083,
+         "gauge_group": 1,
+         "seo_id": "otterndorf"
+      },
+      {
+         "station_name": "Osteriff, Elbe",
+         "bshnr": "682P",
+         "latitude": 53.85639,
+         "longitude": 9.03167,
+         "gauge_group": 1,
+         "seo_id": "osteriff"
+      },
+      {
+         "station_name": "Oberndorf, Oste",
+         "bshnr": "683B",
+         "latitude": 53.75444,
+         "longitude": 9.14694,
+         "gauge_group": 2,
+         "seo_id": "oberndorf"
+      },
+      {
+         "station_name": "Belum, Oste",
+         "bshnr": "683P",
+         "latitude": 53.82278,
+         "longitude": 9.03722,
+         "gauge_group": 1,
+         "seo_id": "belum"
+      },
+      {
+         "station_name": "Hechthausen, Oste",
+         "bshnr": "685P",
+         "latitude": 53.64056,
+         "longitude": 9.25278,
+         "gauge_group": 1,
+         "seo_id": "hechthausen"
+      },
+      {
+         "station_name": "Bremervörde, Oste",
+         "bshnr": "687P",
+         "latitude": 53.48417,
+         "longitude": 9.15472,
+         "gauge_group": 1,
+         "seo_id": "bremervoerde"
+      },
+      {
+         "station_name": "Brokdorf, Elbe",
+         "bshnr": "688P",
+         "latitude": 53.86278,
+         "longitude": 9.31611,
+         "gauge_group": 1,
+         "seo_id": "brokdorf"
+      },
+      {
+         "station_name": "Stör-Sperrwerk, Außenpegel",
+         "bshnr": "690P",
+         "latitude": 53.82583,
+         "longitude": 9.40111,
+         "gauge_group": 1,
+         "seo_id": "stoer-sperrwerk_aussenpegel"
+      },
+      {
+         "station_name": "Kasenort, Stör",
+         "bshnr": "691R",
+         "latitude": 53.91167,
+         "longitude": 9.40944,
+         "gauge_group": 1,
+         "seo_id": "kasenort"
+      },
+      {
+         "station_name": "Itzehoe, Stör, Hafen",
+         "bshnr": "692A",
+         "latitude": 53.92444,
+         "longitude": 9.50056,
+         "gauge_group": 1,
+         "seo_id": "itzehoe_hafen"
+      },
+      {
+         "station_name": "Breitenberg, Stör",
+         "bshnr": "693P",
+         "latitude": 53.92778,
+         "longitude": 9.63222,
+         "gauge_group": 1,
+         "seo_id": "breitenberg"
+      },
+      {
+         "station_name": "Grönhude, Stör",
+         "bshnr": "694P",
+         "latitude": 53.93583,
+         "longitude": 9.69083,
+         "gauge_group": 1,
+         "seo_id": "groenhude"
+      },
+      {
+         "station_name": "Glückstadt, Elbe",
+         "bshnr": "695P",
+         "latitude": 53.78444,
+         "longitude": 9.40944,
+         "gauge_group": 1,
+         "seo_id": "glueckstadt"
+      },
+      {
+         "station_name": "Wischhafen, Elbe, Sperrwerk",
+         "bshnr": "696P",
+         "latitude": 53.785,
+         "longitude": 9.34111,
+         "gauge_group": 2,
+         "seo_id": "wischhafen_sperrwerk"
+      },
+      {
+         "station_name": "Krautsand, Elbe, Reede",
+         "bshnr": "697P",
+         "latitude": 53.75472,
+         "longitude": 9.39167,
+         "gauge_group": 1,
+         "seo_id": "krautsand"
+      },
+      {
+         "station_name": "Kollmar, Kamperreihe, Elbe",
+         "bshnr": "698P",
+         "latitude": 53.73194,
+         "longitude": 9.46083,
+         "gauge_group": 1,
+         "seo_id": "kollmar_kamperreihe"
+      },
+      {
+         "station_name": "Krückau-Sperrwerk, Binnenpegel",
+         "bshnr": "700R",
+         "latitude": 53.71639,
+         "longitude": 9.52611,
+         "gauge_group": 1,
+         "seo_id": "krueckau-sperrwerk_binnenpegel"
+      },
+      {
+         "station_name": "Elmshorn, Hafen, Krückau",
+         "bshnr": "702A",
+         "latitude": 53.75222,
+         "longitude": 9.65389,
+         "gauge_group": 1,
+         "seo_id": "elmshorn_hafen"
+      },
+      {
+         "station_name": "Grauerort, Elbe, Reede",
+         "bshnr": "703P",
+         "latitude": 53.67917,
+         "longitude": 9.49472,
+         "gauge_group": 1,
+         "seo_id": "grauerort"
+      },
+      {
+         "station_name": "Pinnau-Sperrwerk, Binnenpegel",
+         "bshnr": "704R",
+         "latitude": 53.67111,
+         "longitude": 9.55806,
+         "gauge_group": 1,
+         "seo_id": "pinnau-sperrwerk_binnenpegel"
+      },
+      {
+         "station_name": "Uetersen, Pinnau",
+         "bshnr": "706P",
+         "latitude": 53.67833,
+         "longitude": 9.67722,
+         "gauge_group": 1,
+         "seo_id": "uetersen"
+      },
+      {
+         "station_name": "Stadersand, Schwinge",
+         "bshnr": "709P",
+         "latitude": 53.62972,
+         "longitude": 9.52667,
+         "gauge_group": 1,
+         "seo_id": "stadersand"
+      },
+      {
+         "station_name": "Stade, Schwinge",
+         "bshnr": "710P",
+         "latitude": 53.59778,
+         "longitude": 9.48,
+         "gauge_group": 2,
+         "seo_id": "stade"
+      },
+      {
+         "station_name": "Hetlingen, Elbe",
+         "bshnr": "711P",
+         "latitude": 53.60944,
+         "longitude": 9.58444,
+         "gauge_group": 1,
+         "seo_id": "hetlingen"
+      },
+      {
+         "station_name": "Lühort, Lühe",
+         "bshnr": "712P",
+         "latitude": 53.57139,
+         "longitude": 9.63361,
+         "gauge_group": 1,
+         "seo_id": "luehort"
+      },
+      {
+         "station_name": "Horneburg, Lühe",
+         "bshnr": "713P",
+         "latitude": 53.51222,
+         "longitude": 9.59083,
+         "gauge_group": 1,
+         "seo_id": "horneburg"
+      },
+      {
+         "station_name": "Schulau, Elbe",
+         "bshnr": "714P",
+         "latitude": 53.56861,
+         "longitude": 9.70333,
+         "gauge_group": 1,
+         "seo_id": "schulau"
+      },
+      {
+         "station_name": "Hamburg, Blankenese, Elbe, Unterfeuer",
+         "bshnr": "715P",
+         "latitude": 53.55778,
+         "longitude": 9.79583,
+         "gauge_group": 1,
+         "seo_id": "hamburg_blankenese"
+      },
+      {
+         "station_name": "Hamburg, Cranz, Este-Sperrwerk, AP",
+         "bshnr": "717P",
+         "latitude": 53.53583,
+         "longitude": 9.79167,
+         "gauge_group": 1,
+         "seo_id": "hamburg_cranz"
+      },
+      {
+         "station_name": "Buxtehude, Este",
+         "bshnr": "718P",
+         "latitude": 53.48056,
+         "longitude": 9.70333,
+         "gauge_group": 1,
+         "seo_id": "buxtehude"
+      },
+      {
+         "station_name": "Hamburg, Seemannshöft, Elbe",
+         "bshnr": "720P",
+         "latitude": 53.54,
+         "longitude": 9.88083,
+         "gauge_group": 1,
+         "seo_id": "hamburg_seemannshoeft"
+      },
+      {
+         "station_name": "Hamburg, Harburg, Elbe, Schleuse",
+         "bshnr": "724P",
+         "latitude": 53.47278,
+         "longitude": 9.99194,
+         "gauge_group": 1,
+         "seo_id": "hamburg_harburg"
+      },
+      {
+         "station_name": "Hamburg, Peute, Elbe",
+         "bshnr": "726A",
+         "latitude": 53.52778,
+         "longitude": 10.03333,
+         "gauge_group": 2,
+         "seo_id": "hamburg_peute"
+      },
+      {
+         "station_name": "Hamburg, Dove-Elbe, Elbe, Einfahrt",
+         "bshnr": "727P",
+         "latitude": 53.50833,
+         "longitude": 10.06167,
+         "gauge_group": 1,
+         "seo_id": "hamburg_dove-elbe_einfahrt"
+      },
+      {
+         "station_name": "Hamburg, Bunthaus, Elbe",
+         "bshnr": "729P",
+         "latitude": 53.46139,
+         "longitude": 10.06389,
+         "gauge_group": 1,
+         "seo_id": "hamburg_bunthaus"
+      },
+      {
+         "station_name": "Ilmenau-Sperrwerk, Außenpegel",
+         "bshnr": "730A",
+         "latitude": 53.39472,
+         "longitude": 10.17972,
+         "gauge_group": 1,
+         "seo_id": "ilmenau-sperrwerk_aussenpegel"
+      },
+      {
+         "station_name": "Fahrenholz, Ilmenau",
+         "bshnr": "730C",
+         "latitude": 53.36028,
+         "longitude": 10.31556,
+         "gauge_group": 1,
+         "seo_id": "fahrenholz"
+      },
+      {
+         "station_name": "Over, Elbe",
+         "bshnr": "730P",
+         "latitude": 53.42861,
+         "longitude": 10.10111,
+         "gauge_group": 1,
+         "seo_id": "over"
+      },
+      {
+         "station_name": "Hamburg, Zollenspieker, Elbe",
+         "bshnr": "731P",
+         "latitude": 53.39861,
+         "longitude": 10.18528,
+         "gauge_group": 1,
+         "seo_id": "hamburg_zollenspieker"
+      },
+      {
+         "station_name": "Hamburg, Altengamme, Elbe",
+         "bshnr": "732A",
+         "latitude": 53.43111,
+         "longitude": 10.2975,
+         "gauge_group": 1,
+         "seo_id": "hamburg_altengamme"
+      },
+      {
+         "station_name": "Geesthacht, Elbe, Wehr, Unterpegel",
+         "bshnr": "732D",
+         "latitude": 53.42333,
+         "longitude": 10.33472,
+         "gauge_group": 1,
+         "seo_id": "geesthacht_wehr_unterpegel"
+      },
+      {
+         "station_name": "Alte Weser, Leuchtturm",
+         "bshnr": "734P",
+         "latitude": 53.86333,
+         "longitude": 8.1275,
+         "gauge_group": 1,
+         "seo_id": "alte_weser_leuchtturm"
+      },
+      {
+         "station_name": "Spieka Neufeld",
+         "bshnr": "735A",
+         "latitude": 53.78806,
+         "longitude": 8.55306,
+         "gauge_group": 1,
+         "seo_id": "spieka_neufeld"
+      },
+      {
+         "station_name": "Wremertief",
+         "bshnr": "735B",
+         "latitude": 53.64861,
+         "longitude": 8.49472,
+         "gauge_group": 1,
+         "seo_id": "wremertief"
+      },
+      {
+         "station_name": "Dwarsgat, Unterfeuer",
+         "bshnr": "737P",
+         "latitude": 53.71861,
+         "longitude": 8.3075,
+         "gauge_group": 1,
+         "seo_id": "dwarsgat"
+      },
+      {
+         "station_name": "Robbensüdsteert",
+         "bshnr": "737S",
+         "latitude": 53.63917,
+         "longitude": 8.44528,
+         "gauge_group": 1,
+         "seo_id": "robbensuedsteert"
+      },
+      {
+         "station_name": "Fedderwardersiel, Fedderwarder Priel",
+         "bshnr": "738P",
+         "latitude": 53.59639,
+         "longitude": 8.35444,
+         "gauge_group": 1,
+         "seo_id": "fedderwardersiel"
+      },
+      {
+         "station_name": "Nordenham, Weser, Unterfeuer",
+         "bshnr": "741A",
+         "latitude": 53.46444,
+         "longitude": 8.48806,
+         "gauge_group": 1,
+         "seo_id": "nordenham"
+      },
+      {
+         "station_name": "Rechtenfleth, Weser",
+         "bshnr": "741B",
+         "latitude": 53.38111,
+         "longitude": 8.50056,
+         "gauge_group": 1,
+         "seo_id": "rechtenfleth"
+      },
+      {
+         "station_name": "Brake, Weser",
+         "bshnr": "743P",
+         "latitude": 53.31611,
+         "longitude": 8.48667,
+         "gauge_group": 1,
+         "seo_id": "brake"
+      },
+      {
+         "station_name": "Elsfleth Ohrt, Hunte",
+         "bshnr": "744A",
+         "latitude": 53.22111,
+         "longitude": 8.46,
+         "gauge_group": 1,
+         "seo_id": "elsfleth_ohrt"
+      },
+      {
+         "station_name": "Elsfleth, Weser",
+         "bshnr": "744P",
+         "latitude": 53.26389,
+         "longitude": 8.48139,
+         "gauge_group": 1,
+         "seo_id": "elsfleth"
+      },
+      {
+         "station_name": "Buttelerhörne, Hunte",
+         "bshnr": "745A",
+         "latitude": 53.18,
+         "longitude": 8.4125,
+         "gauge_group": 1,
+         "seo_id": "buttelerhoerne"
+      },
+      {
+         "station_name": "Huntebrück, Hunte",
+         "bshnr": "745P",
+         "latitude": 53.2,
+         "longitude": 8.44639,
+         "gauge_group": 1,
+         "seo_id": "huntebrueck"
+      },
+      {
+         "station_name": "Hollersiel, Hunte",
+         "bshnr": "746P",
+         "latitude": 53.16806,
+         "longitude": 8.37861,
+         "gauge_group": 1,
+         "seo_id": "hollersiel"
+      },
+      {
+         "station_name": "Reithörne, Hunte",
+         "bshnr": "747P",
+         "latitude": 53.16111,
+         "longitude": 8.3225,
+         "gauge_group": 1,
+         "seo_id": "reithoerne"
+      },
+      {
+         "station_name": "Oldenburg, Drielake, Hunte",
+         "bshnr": "748P",
+         "latitude": 53.14028,
+         "longitude": 8.23417,
+         "gauge_group": 1,
+         "seo_id": "oldenburg_drielake"
+      },
+      {
+         "station_name": "Bremen, Farge, Weser",
+         "bshnr": "749P",
+         "latitude": 53.20472,
+         "longitude": 8.51028,
+         "gauge_group": 1,
+         "seo_id": "bremen_farge"
+      },
+      {
+         "station_name": "Bremen, Wasserhorst, Lesum",
+         "bshnr": "750A",
+         "latitude": 53.16278,
+         "longitude": 8.71833,
+         "gauge_group": 1,
+         "seo_id": "bremen_wasserhorst"
+      },
+      {
+         "station_name": "Ritterhude, Hamme",
+         "bshnr": "750B",
+         "latitude": 53.18194,
+         "longitude": 8.76333,
+         "gauge_group": 1,
+         "seo_id": "ritterhude"
+      },
+      {
+         "station_name": "Bremen, Niederblockland, Wümme",
+         "bshnr": "750C",
+         "latitude": 53.16139,
+         "longitude": 8.82639,
+         "gauge_group": 1,
+         "seo_id": "bremen_niederblockland"
+      },
+      {
+         "station_name": "Bremen, Borgfeld, Wümme",
+         "bshnr": "750D",
+         "latitude": 53.13389,
+         "longitude": 8.89444,
+         "gauge_group": 1,
+         "seo_id": "bremen_borgfeld"
+      },
+      {
+         "station_name": "Ochtum, Sperrwerk, Außenpegel",
+         "bshnr": "750G",
+         "latitude": 53.12306,
+         "longitude": 8.64889,
+         "gauge_group": 2,
+         "seo_id": "ochtum-sperrwerk_aussenpegel"
+      },
+      {
+         "station_name": "Bremen, Vegesack, Weser",
+         "bshnr": "750P",
+         "latitude": 53.16944,
+         "longitude": 8.61944,
+         "gauge_group": 1,
+         "seo_id": "bremen_vegesack"
+      },
+      {
+         "station_name": "Bremen, Wilhelm-Kaisen-Brücke, Weser",
+         "bshnr": "751P",
+         "latitude": 53.07306,
+         "longitude": 8.80361,
+         "gauge_group": 1,
+         "seo_id": "bremen_wilhelm-kaisen-bruecke"
+      },
+      {
+         "station_name": "Bremen, Weserwehr, Weser",
+         "bshnr": "752P",
+         "latitude": 53.06028,
+         "longitude": 8.85472,
+         "gauge_group": 1,
+         "seo_id": "bremen_weserwehr"
+      },
+      {
+         "station_name": "Wangerooge, Langes Riff, Nord",
+         "bshnr": "754P",
+         "latitude": 53.80639,
+         "longitude": 7.92917,
+         "gauge_group": 1,
+         "seo_id": "wangerooge_nord"
+      },
+      {
+         "station_name": "Wangerooge, Ost",
+         "bshnr": "756P",
+         "latitude": 53.76722,
+         "longitude": 7.985,
+         "gauge_group": 1,
+         "seo_id": "wangerooge_ost"
+      },
+      {
+         "station_name": "Mellumplate, Leuchtturm",
+         "bshnr": "760P",
+         "latitude": 53.77167,
+         "longitude": 8.0925,
+         "gauge_group": 1,
+         "seo_id": "mellumplate_leuchtturm"
+      },
+      {
+         "station_name": "Schillig",
+         "bshnr": "761P",
+         "latitude": 53.69889,
+         "longitude": 8.04694,
+         "gauge_group": 1,
+         "seo_id": "schillig"
+      },
+      {
+         "station_name": "Wangertief, Horumersiel",
+         "bshnr": "763P",
+         "latitude": 53.68417,
+         "longitude": 8.02333,
+         "gauge_group": 2,
+         "seo_id": "wangertief_horumersiel"
+      },
+      {
+         "station_name": "Hooksielplate",
+         "bshnr": "764B",
+         "latitude": 53.66917,
+         "longitude": 8.14861,
+         "gauge_group": 1,
+         "seo_id": "hooksielplate"
+      },
+      {
+         "station_name": "Hooksiel",
+         "bshnr": "765P",
+         "latitude": 53.64194,
+         "longitude": 8.08194,
+         "gauge_group": 2,
+         "seo_id": "hooksiel"
+      },
+      {
+         "station_name": "Jade-Weser-Port",
+         "bshnr": "768P",
+         "latitude": 53.60167,
+         "longitude": 8.14889,
+         "gauge_group": 1,
+         "seo_id": "jade-weser-port"
+      },
+      {
+         "station_name": "Wilhelmshaven, Neuer Vorhafen, Seeschleuse",
+         "bshnr": "770P",
+         "latitude": 53.53028,
+         "longitude": 8.16083,
+         "gauge_group": 1,
+         "seo_id": "wilhelmshaven_neuer_vorhafen_seeschleuse"
+      },
+      {
+         "station_name": "Eckwarderhörne",
+         "bshnr": "771P",
+         "latitude": 53.52056,
+         "longitude": 8.225,
+         "gauge_group": 2,
+         "seo_id": "eckwarderhoerne"
+      },
+      {
+         "station_name": "Arngast, Leuchtturm",
+         "bshnr": "773P",
+         "latitude": 53.48167,
+         "longitude": 8.1925,
+         "gauge_group": 1,
+         "seo_id": "arngast_leuchtturm"
+      },
+      {
+         "station_name": "Vareler Schleuse",
+         "bshnr": "776P",
+         "latitude": 53.41028,
+         "longitude": 8.18833,
+         "gauge_group": 1,
+         "seo_id": "vareler_schleuse"
+      },
+      {
+         "station_name": "Wangerooge, Hafen",
+         "bshnr": "777P",
+         "latitude": 53.77639,
+         "longitude": 7.86806,
+         "gauge_group": 1,
+         "seo_id": "wangerooge_hafen"
+      },
+      {
+         "station_name": "Harlesiel, Hafen",
+         "bshnr": "778P",
+         "latitude": 53.70694,
+         "longitude": 7.80861,
+         "gauge_group": 1,
+         "seo_id": "harlesiel"
+      },
+      {
+         "station_name": "Spiekeroog, ehem. Landungsbrücke",
+         "bshnr": "779P",
+         "latitude": 53.74917,
+         "longitude": 7.68194,
+         "gauge_group": 1,
+         "seo_id": "spiekeroog"
+      },
+      {
+         "station_name": "Neuharlingersiel",
+         "bshnr": "780P",
+         "latitude": 53.70167,
+         "longitude": 7.70417,
+         "gauge_group": 2,
+         "seo_id": "neuharlingersiel"
+      },
+      {
+         "station_name": "Langeoog, Hafeneinfahrt",
+         "bshnr": "781P",
+         "latitude": 53.72333,
+         "longitude": 7.50167,
+         "gauge_group": 1,
+         "seo_id": "langeoog_hafeneinfahrt"
+      },
+      {
+         "station_name": "Bensersiel",
+         "bshnr": "782P",
+         "latitude": 53.67472,
+         "longitude": 7.575,
+         "gauge_group": 1,
+         "seo_id": "bensersiel"
+      },
+      {
+         "station_name": "Dornumer-Accumersiel",
+         "bshnr": "783P",
+         "latitude": 53.68111,
+         "longitude": 7.48833,
+         "gauge_group": 2,
+         "seo_id": "dornumer-accumersiel"
+      },
+      {
+         "station_name": "Baltrum, Westende",
+         "bshnr": "784P",
+         "latitude": 53.72278,
+         "longitude": 7.36444,
+         "gauge_group": 2,
+         "seo_id": "baltrum_westende"
+      },
+      {
+         "station_name": "Neßmersiel",
+         "bshnr": "785P",
+         "latitude": 53.68889,
+         "longitude": 7.36083,
+         "gauge_group": 2,
+         "seo_id": "nessmersiel"
+      },
+      {
+         "station_name": "Norddeich, Westerriede",
+         "bshnr": "790A",
+         "latitude": 53.64361,
+         "longitude": 7.14806,
+         "gauge_group": 2,
+         "seo_id": "norddeich_westerriede"
+      },
+      {
+         "station_name": "Juist, Seeseite",
+         "bshnr": "793P",
+         "latitude": 53.68333,
+         "longitude": 7.0,
+         "gauge_group": 2,
+         "seo_id": "juist_seeseite"
+      },
+      {
+         "station_name": "Juist, Hafen",
+         "bshnr": "794P",
+         "latitude": 53.6725,
+         "longitude": 6.99583,
+         "gauge_group": 2,
+         "seo_id": "juist_hafen"
+      },
+      {
+         "station_name": "Leyhörn, Leybucht",
+         "bshnr": "796C",
+         "latitude": 53.54917,
+         "longitude": 7.03611,
+         "gauge_group": 1,
+         "seo_id": "leyhoern_leybucht"
+      },
+      {
+         "station_name": "Borkum, Südstrand",
+         "bshnr": "798P",
+         "latitude": 53.57694,
+         "longitude": 6.66139,
+         "gauge_group": 1,
+         "seo_id": "borkum_suedstrand"
+      },
+      {
+         "station_name": "Dukegat",
+         "bshnr": "799G",
+         "latitude": 53.43361,
+         "longitude": 6.92611,
+         "gauge_group": 1,
+         "seo_id": "dukegat"
+      },
+      {
+         "station_name": "Emshörn",
+         "bshnr": "799P",
+         "latitude": 53.49361,
+         "longitude": 6.84111,
+         "gauge_group": 1,
+         "seo_id": "emshoern"
+      },
+      {
+         "station_name": "Knock, Ems",
+         "bshnr": "802P",
+         "latitude": 53.32722,
+         "longitude": 7.03056,
+         "gauge_group": 1,
+         "seo_id": "knock"
+      },
+      {
+         "station_name": "Pogum, Ems",
+         "bshnr": "803P",
+         "latitude": 53.32083,
+         "longitude": 7.25917,
+         "gauge_group": 1,
+         "seo_id": "pogum"
+      },
+      {
+         "station_name": "Terborg, Ems",
+         "bshnr": "805P",
+         "latitude": 53.29278,
+         "longitude": 7.39611,
+         "gauge_group": 1,
+         "seo_id": "terborg"
+      },
+      {
+         "station_name": "Leerort, Ems",
+         "bshnr": "806P",
+         "latitude": 53.21528,
+         "longitude": 7.42611,
+         "gauge_group": 1,
+         "seo_id": "leerort"
+      },
+      {
+         "station_name": "Leda-Sperrwerk, Unterpegel",
+         "bshnr": "808A",
+         "latitude": 53.21417,
+         "longitude": 7.47444,
+         "gauge_group": 1,
+         "seo_id": "leda-sperrwerk_unterpegel"
+      },
+      {
+         "station_name": "Leer, Leda, Schleuse",
+         "bshnr": "808P",
+         "latitude": 53.21583,
+         "longitude": 7.44861,
+         "gauge_group": 2,
+         "seo_id": "leer_schleuse"
+      },
+      {
+         "station_name": "Nortmoor, Altarm Jümme",
+         "bshnr": "810A",
+         "latitude": 53.225,
+         "longitude": 7.57583,
+         "gauge_group": 1,
+         "seo_id": "nortmoor"
+      },
+      {
+         "station_name": "Detern, Jümme",
+         "bshnr": "810B",
+         "latitude": 53.205,
+         "longitude": 7.67278,
+         "gauge_group": 1,
+         "seo_id": "detern"
+      },
+      {
+         "station_name": "Augustfehn, Aper Tief",
+         "bshnr": "810D",
+         "latitude": 53.21,
+         "longitude": 7.7575,
+         "gauge_group": 1,
+         "seo_id": "augustfehn"
+      },
+      {
+         "station_name": "Westringaburg, Leda",
+         "bshnr": "810P",
+         "latitude": 53.20333,
+         "longitude": 7.57139,
+         "gauge_group": 1,
+         "seo_id": "westringaburg"
+      },
+      {
+         "station_name": "Dreyschloot, Leda",
+         "bshnr": "812P",
+         "latitude": 53.17806,
+         "longitude": 7.66917,
+         "gauge_group": 1,
+         "seo_id": "dreyschloot"
+      },
+      {
+         "station_name": "Weener, Ems",
+         "bshnr": "813P",
+         "latitude": 53.16111,
+         "longitude": 7.37194,
+         "gauge_group": 1,
+         "seo_id": "weener"
+      },
+      {
+         "station_name": "Rhede, Ems",
+         "bshnr": "814B",
+         "latitude": 53.07389,
+         "longitude": 7.28778,
+         "gauge_group": 1,
+         "seo_id": "rhede"
+      },
+      {
+         "station_name": "Papenburg, Ems",
+         "bshnr": "814P",
+         "latitude": 53.10833,
+         "longitude": 7.36556,
+         "gauge_group": 1,
+         "seo_id": "papenburg"
+      },
+      {
+         "station_name": "Barßel, Soeste",
+         "bshnr": "816B",
+         "latitude": 53.16917,
+         "longitude": 7.74056,
+         "gauge_group": 2,
+         "seo_id": "barssel"
+      },
+      {
+         "station_name": "Herbrum, Ems, Hafendamm",
+         "bshnr": "816P",
+         "latitude": 53.04278,
+         "longitude": 7.31833,
+         "gauge_group": 1,
+         "seo_id": "herbrum_hafendamm"
+      }
+   ]
+}

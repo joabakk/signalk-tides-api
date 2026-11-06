@@ -1,0 +1,220 @@
+{
+  "title" : "Water level forecast data",
+  "type" : "object",
+  "properties" : {
+    "gauge_label" : {
+      "title" : "Gauge label",
+      "type" : "string"
+    },
+    "official_warning_level_region" : {
+      "title" : "Official warning level region",
+      "type" : "string"
+    },
+    "forecast_text_de" : {
+      "title" : "Water level forecast > Deutsch",
+      "type" : "string"
+    },
+    "forecast_text_en" : {
+      "title" : "Water level forecast > English",
+      "type" : "string"
+    },
+    "forecast_text_additional_de" : {
+      "title" : "Water level forecast Info > Deutsch",
+      "type" : "string"
+    },
+    "forecast_text_additional_en" : {
+      "title" : "Water level forecast Info > English",
+      "type" : "string"
+    },
+    "information_text_de" : {
+      "title" : "Information > Deutsch",
+      "type" : "string"
+    },
+    "information_text_en" : {
+      "title" : "Information > English",
+      "type" : "string"
+    },
+    "licence" : {
+      "title" : "Licence",
+      "type" : "string"
+    },
+    "copyright_de" : {
+      "title" : "Copyright > Deutsch",
+      "type" : "string"
+    },
+    "copyright_en" : {
+      "title" : "Copyright > English",
+      "type" : "string"
+    },
+    "gaugezero_relative_to_nhn" : {
+      "title" : "Gauge zero relative to NHN",
+      "type" : "number"
+    },
+    "chartdatum_relative_to_gaugezero" : {
+      "title" : "Chart datum relative to gauge zero",
+      "type" : "number"
+    },
+    "area" : {
+      "title" : "Area",
+      "type" : "string"
+    },
+    "region" : {
+      "title" : "Region",
+      "type" : "string"
+    },
+    "state" : {
+      "title" : "Federal state",
+      "type" : "string"
+    },
+    "mean_high_water" : {
+      "title" : "Mean high water",
+      "type" : "number"
+    },
+    "mean_low_water" : {
+      "title" : "Mean low water",
+      "type" : "number"
+    },
+    "latitude" : {
+      "title" : "Latitude",
+      "type" : "number"
+    },
+    "longitude" : {
+      "title" : "Longitude",
+      "type" : "number"
+    },
+    "automated_gauge_warning" : {
+      "title" : "Automated gauge warning",
+      "type" : "string"
+    },
+    "bsh_url_waterlevel" : {
+      "title" : "URL BSH waterlevel",
+      "type" : "string"
+    },
+    "measurement_url" : {
+      "title" : "URL measurement",
+      "type" : "string"
+    },
+    "operator_gauge_id" : {
+      "title" : "Operator gauge ID",
+      "type" : "string"
+    },
+    "forecast_timestamp" : {
+      "title" : "Timestamp forecast",
+      "type" : "string"
+    },
+    "automated_curveforecast_timestamp" : {
+      "title" : "Timestamp automated curveforecast",
+      "type" : "string"
+    },
+    "high_water_low_water_event_timestamp" : {
+      "title" : "high_water_low_water > Event timestamp",
+      "type" : "string"
+    },
+    "high_water_low_water_event" : {
+      "title" : "high_water_low_water > event",
+      "type" : "string"
+    },
+    "high_water_low_water_tidal_prediction_value" : {
+      "title" : "high_water_low_water > tidal_prediction_value",
+      "type" : "string"
+    },
+    "high_water_low_water_forecast_value" : {
+      "title" : "high_water_low_water > forecast_value",
+      "type" : "integer"
+    },
+    "high_water_low_water_forecast_uncertainty" : {
+      "title" : "high_water_low_water > forecast_uncertainty",
+      "type" : "number"
+    },
+    "high_water_low_water_forecast_deviation" : {
+      "title" : "high_water_low_water > forecast_deviation",
+      "type" : "string"
+    },
+    "high_water_low_water_forecast_automated_event_warning" : {
+      "title" : "high_water_low_water > forecast_automated_event_warning",
+      "type" : "string"
+    },
+    "high_water_low_water_forecast_event_forecast_timestamp" : {
+      "title" : "high_water_low_water > forecast_event_forecast_timestamp",
+      "type" : "string"
+    },
+    "high_water_low_water_mos_forecast_event_forecast_timestamp" : {
+      "title" : "high_water_low_water > Timestamp event forecast",
+      "type" : "string"
+    },
+    "high_water_low_water_mos_forecast_r0_value" : {
+      "title" : "high_water_low_water > mos_forecast_r0_value",
+      "type" : "integer"
+    },
+    "high_water_low_water_mos_forecast_r0_deviation" : {
+      "title" : "high_water_low_water > mos_forecast_r0_deviation",
+      "type" : "string"
+    },
+    "high_water_low_water_mos_forecast_r1_value" : {
+      "title" : "high_water_low_water > mos_forecast_r1_value",
+      "type" : "integer"
+    },
+    "high_water_low_water_mos_forecast_r1_deviation" : {
+      "title" : "high_water_low_water > mos_forecast_r1_deviation",
+      "type" : "string"
+    },
+    "high_water_low_water_mos_forecast_r2_value" : {
+      "title" : "high_water_low_water > mos_forecast_r2_value",
+      "type" : "integer"
+    },
+    "high_water_low_water_mos_forecast_r2_deviation" : {
+      "title" : "high_water_low_water > mos_forecast_r2_deviation",
+      "type" : "string"
+    },
+    "high_water_low_water_mos_forecast_r3_value" : {
+      "title" : "high_water_low_water > mos_forecast_r3_value",
+      "type" : "integer"
+    },
+    "high_water_low_water_mos_forecast_r3_deviation" : {
+      "title" : "high_water_low_water > mos_forecast_r3_deviation",
+      "type" : "string"
+    },
+    "high_water_low_water_mos_forecast_r4_value" : {
+      "title" : "high_water_low_water > mos_forecast_r4_value",
+      "type" : "integer"
+    },
+    "high_water_low_water_mos_forecast_r4_deviation" : {
+      "title" : "high_water_low_water > mos_forecast_r4_deviation",
+      "type" : "string"
+    },
+    "high_water_low_water_mos_forecast_r5_value" : {
+      "title" : "high_water_low_water > mos_forecast_r5_value",
+      "type" : "integer"
+    },
+    "high_water_low_water_mos_forecast_r5_deviation" : {
+      "title" : "high_water_low_water > mos_forecast_r5_deviation",
+      "type" : "string"
+    },
+    "curve_timestamp" : {
+      "title" : "curve > timestamp",
+      "type" : "string"
+    },
+    "curve_measurement" : {
+      "title" : "curve > measurement",
+      "type" : "string"
+    },
+    "curve_tidal_prediction" : {
+      "title" : "curve > tidal_prediction",
+      "type" : "string"
+    },
+    "curve_automated_curve_forecast" : {
+      "title" : "curve > automated_curve_forecast",
+      "type" : "string"
+    },
+    "geom" : {
+      "$ref" : "geometry-any"
+    },
+    "seo_id" : {
+      "title" : "id",
+      "type" : "string"
+    }
+  },
+  "additionalProperties" : false,
+  "$schema" : "https://json-schema.org/draft/2019-09/schema",
+  "$id" : "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/queryables"
+}

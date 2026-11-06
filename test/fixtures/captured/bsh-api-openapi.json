@@ -1,0 +1,1380 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "Water level forecast",
+    "description" : "The Federal Maritime and Hydrographic Agency (BSH) provides a standardised interface for automatically retrieving official forecasts and tidal predictions, as well as station-based model evaluations of water levels, for the German North Sea and Baltic Sea coasts. This data is available in JSON and FlatGeoBuf formats for integration into custom applications and geographic information systems (GIS).<br><br> The offered data meets the legal requirements for a high-value dataset, i.e. a dataset whose reuse offers significant societal, environmental and economic benefits. The focus is on enabling added value to be created from this data in the form of services and applications. This is why the data can be obtained free of charge and without registration and reused under the 'CC BY 4.0' licence. <br><br> <p><h2>Data and Map Overview</h2> An overview map showing all stations with a brief html view (displaying not all attributes) &rarr; <a href='https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items'>Access the data</a><br><br></p> <p><h2>Quick start examples</h2> <b>Example</b>: <a href='https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items?f=json'>https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items?f=json</a> <br> <b>Description</b>: Will return results for all stations, including the respective model curve forecast of the water level and, if applicable, peak predictions of the tides. <br><br> <b>Example</b>: <a href='https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items/cuxhaven_steubenhoeft?f=json'>https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items/cuxhaven_steubenhoeft?f=json</a> <br> <b>Description</b>: It will return results for a specific station (here, Cuxhaven), including the respective model curve forecast of the water level, as well as peak tide predictions if applicable.<br><br> <b>Example</b>: <a href='https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items/warnemuende?f=fgb'>https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata/items/warnemuende?f=fgb</a><br> <b>Description</b>: Will download the forecast data as a FlatGeoBuf-file for the station Warnemünde, which can be imported in a GIS-programm.<br><br>A brief description of the parameters can be found here <a href='https://www2.bsh.de/aktdat/wvd/api/parameter_documentation.pdf' target='_blank'>https://www2.bsh.de/aktdat/wvd/api/parameter_documentation.pdf</a><br><br></p><p><h2>Available data formats</h2> <b>JSON: </b>JSON (JavaScript Object Notation) is a lightweight, text-based data interchange format that represents structured information as key–value pairs and is widely used for transmitting and processing forecast data in web and API-based applications. All common programming languages offer straightforward processing options for further visualisation and evaluation.<br><br> <b>FlatGeoBuf: </b>FlatGeobuf is a binary geospatial vector file format designed for efficient storage, fast spatial indexing, and high-performance streaming of large geospatial datasets, particularly in GIS and web mapping applications.</p><br> <p><h2>Terms of Use</h2> BSH's open data is provided under the 'Creative Commons license CC BY 4.0' (<a href='https://creativecommons.org/licenses/by/4.0/legalcode.en'>https://creativecommons.org/licenses/by/4.0/legalcode.en</a>).<br> In short, this means: You are free to use the content. This includes copying and redistributing it in any medium or format. You are also allowed to edit, transform, or build upon the material and use the results for any purpose.<br><br> The following requirements apply when using the data: <br> <ul><li>Attribution: You must provide an appropriate source citation, link to the license, and indicate whether any changes have been made. The form is freely selectable, but must not give the impression that the licensor supports or recommends you or your use.</li> <li>No additional restrictions: You may not impose legal conditions or technical measures that would prevent others from freely using the material under the license.</li></ul></p>",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast"
+  } ],
+  "tags" : [ ],
+  "paths" : {
+    "/" : {
+      "get" : {
+        "tags" : [ "Capabilities" ],
+        "summary" : "landing page",
+        "description" : "The landing page provides links to the API definition (link relations `service-desc` and `service-doc`), the Conformance declaration (path `/conformance`, link relation `conformance`), and other resources in the API.",
+        "operationId" : "getLandingPage",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/access_token"
+        }, {
+          "$ref" : "#/components/parameters/fCommon"
+        }, {
+          "$ref" : "#/components/parameters/lang"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The operation was executed successfully.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LandingPage"
+                }
+              },
+              "text/html" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/htmlSchema"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "406" : {
+            "description" : "Not Acceptable"
+          },
+          "500" : {
+            "description" : "Server Error"
+          }
+        }
+      }
+    },
+    "/conformance" : {
+      "get" : {
+        "tags" : [ "Capabilities" ],
+        "summary" : "conformance declaration",
+        "description" : "The URIs of all conformance classes supported by the server. This information is provided to support 'generic' clients that want to access multiple OGC API implementations - and not 'just' a specific API. For clients accessing only a single API, this information is in general not relevant and the OpenAPI definition details the required information about the API.",
+        "operationId" : "getConformanceDeclaration",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/access_token"
+        }, {
+          "$ref" : "#/components/parameters/fCommon"
+        }, {
+          "$ref" : "#/components/parameters/lang"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The operation was executed successfully.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ConformanceDeclaration"
+                }
+              },
+              "text/html" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/htmlSchema"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "406" : {
+            "description" : "Not Acceptable"
+          },
+          "500" : {
+            "description" : "Server Error"
+          }
+        }
+      }
+    },
+    "/collections" : {
+      "get" : {
+        "tags" : [ "Discover data collections" ],
+        "summary" : "feature collections in the dataset 'Water level forecast'",
+        "description" : "The dataset is organized in feature collections. This resource provides information about and access to the feature collections.\nThe response contains the list of collections. For each collection, a link to the items in the collection (path `/collections/{collectionId}/items`, link relation `items`) as well as key information about the collection.\nThis information includes:\n\n* A local identifier for the collection that is unique for the dataset;\n* A title and description for the collection;\n* An indication of the spatial and temporal extent of the data in the collection;\n* A list of coordinate reference systems (CRS) in which geometries may be returned by the server. The first CRS is the default coordinate reference system (the default is always WGS 84 with axis order longitude/latitude);\n* The CRS in which the spatial geometries are stored in the data source (if data is requested in this CRS, the geometries are returned without any coordinate conversion);\n* An indicator about the type of the items in the collection (the default value is 'feature').",
+        "operationId" : "getCollections",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/access_token"
+        }, {
+          "$ref" : "#/components/parameters/fCollections"
+        }, {
+          "$ref" : "#/components/parameters/lang"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The operation was executed successfully.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Collections"
+                }
+              },
+              "text/html" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/htmlSchema"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "406" : {
+            "description" : "Not Acceptable"
+          },
+          "500" : {
+            "description" : "Server Error"
+          }
+        }
+      }
+    },
+    "/collections/waterlevelforecastdata" : {
+      "get" : {
+        "tags" : [ "Discover data collections" ],
+        "summary" : "feature collection 'Water level forecast data'",
+        "description" : "Information about the feature collection with id 'waterlevelforecastdata'. The response contains a link to the items in the collection (path `/collections/{collectionId}/items`,link relation `items`) as well as key information about the collection. This information includes:\n\n* A local identifier for the collection that is unique for the dataset;\n* A title and description for the collection;\n* An indication of the spatial and temporal extent of the data in the collection;\n* A list of coordinate reference systems (CRS) in which geometries may be returned by the server. The first CRS is the default coordinate reference system (the default is always WGS 84 with axis order longitude/latitude);\n* The CRS in which the spatial geometries are stored in the data source (if data is requested in this CRS, the geometries are returned without any coordinate conversion);\n* An indicator about the type of the items in the collection (the default value is 'feature').",
+        "operationId" : "waterlevelforecastdata.getCollection",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/access_token"
+        }, {
+          "$ref" : "#/components/parameters/fCollection"
+        }, {
+          "$ref" : "#/components/parameters/lang"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The operation was executed successfully.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Collection"
+                }
+              },
+              "text/html" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/htmlSchema"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "406" : {
+            "description" : "Not Acceptable"
+          },
+          "500" : {
+            "description" : "Server Error"
+          }
+        }
+      }
+    },
+    "/collections/waterlevelforecastdata/items" : {
+      "get" : {
+        "tags" : [ "Access data" ],
+        "summary" : "retrieve features in the feature collection 'waterlevelforecastdata'",
+        "description" : "The response is a document consisting of features in the collection. The features included in the response are determined by the server based on the query parameters of the request.\n\nTo support access to larger collections without overloading the client, the API supports paged access with links to the next page, if more features are selected that the page size.\n\nThe `bbox` and `datetime` parameter can be used to select only a subset of the features in the collection (the features that are in the bounding box or time interval). The `bbox` parameter matches all features in the collection that are not associated with a location, too. The `datetime` parameter matches all features in the collection that are not associated with a time stamp or interval, too. The `limit` parameter may be used to control the subset of the selected features that should be returned in the response, the page size. Each page may include information about the number of selected and returned features (`numberMatched` and `numberReturned`) as well as links to support paging (link relation `next`).\n\nSee the details of this operation for a description of additional query parameters supported by this resource.",
+        "operationId" : "waterlevelforecastdata.getItems",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/access_token"
+        }, {
+          "$ref" : "#/components/parameters/bbox"
+        }, {
+          "$ref" : "#/components/parameters/bbox-crsFeatures_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/crsFeatures_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/datetime"
+        }, {
+          "$ref" : "#/components/parameters/fFeatures"
+        }, {
+          "$ref" : "#/components/parameters/filter"
+        }, {
+          "$ref" : "#/components/parameters/filter-crs"
+        }, {
+          "$ref" : "#/components/parameters/filter-lang"
+        }, {
+          "$ref" : "#/components/parameters/lang"
+        }, {
+          "$ref" : "#/components/parameters/limitFeatures_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/offsetFeatures"
+        }, {
+          "$ref" : "#/components/parameters/resultTypeFeatures"
+        }, {
+          "$ref" : "#/components/parameters/gauge_label_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/official_warning_level_region_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/licence_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/gaugezero_relative_to_nhn_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/chartdatum_relative_to_gaugezero_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/area_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/region_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/state_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/mean_high_water_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/mean_low_water_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/latitude_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/longitude_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/automated_gauge_warning_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/bsh_url_waterlevel_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/measurement_url_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/operator_gauge_id_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/forecast_timestamp_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/automated_curveforecast_timestamp_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/seo_id_waterlevelforecastdata"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The operation was executed successfully.",
+            "headers" : {
+              "Content-Crs" : {
+                "description" : "The coordinate reference system of coordinates in the response.",
+                "schema" : {
+                  "type" : "string",
+                  "default" : "<http://www.opengis.net/def/crs/OGC/1.3/CRS84>",
+                  "enum" : [ "<http://www.opengis.net/def/crs/OGC/1.3/CRS84>" ]
+                }
+              }
+            },
+            "content" : {
+              "application/geo+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/featureCollectionGeoJson_waterlevelforecastdata"
+                }
+              },
+              "application/flatgeobuf" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FlatGeobuf"
+                }
+              },
+              "text/html" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/htmlSchema"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "406" : {
+            "description" : "Not Acceptable"
+          },
+          "500" : {
+            "description" : "Server Error"
+          }
+        }
+      }
+    },
+    "/collections/waterlevelforecastdata/items/{featureId}" : {
+      "get" : {
+        "tags" : [ "Access data" ],
+        "summary" : "retrieve a feature in the feature collection 'waterlevelforecastdata'",
+        "description" : "Fetch the feature with id `{featureId}`.",
+        "operationId" : "waterlevelforecastdata.getItem",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/featureId"
+        }, {
+          "$ref" : "#/components/parameters/access_token"
+        }, {
+          "$ref" : "#/components/parameters/crsFeatures_waterlevelforecastdata"
+        }, {
+          "$ref" : "#/components/parameters/fFeatures"
+        }, {
+          "$ref" : "#/components/parameters/lang"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The operation was executed successfully.",
+            "headers" : {
+              "Content-Crs" : {
+                "description" : "The coordinate reference system of coordinates in the response.",
+                "schema" : {
+                  "type" : "string",
+                  "default" : "<http://www.opengis.net/def/crs/OGC/1.3/CRS84>",
+                  "enum" : [ "<http://www.opengis.net/def/crs/OGC/1.3/CRS84>" ]
+                }
+              }
+            },
+            "content" : {
+              "application/geo+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/featureGeoJson_waterlevelforecastdata"
+                }
+              },
+              "application/flatgeobuf" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FlatGeobuf"
+                }
+              },
+              "text/html" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/htmlSchema"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "404" : {
+            "description" : "Not Found"
+          },
+          "406" : {
+            "description" : "Not Acceptable"
+          },
+          "500" : {
+            "description" : "Server Error"
+          }
+        }
+      }
+    },
+    "/collections/waterlevelforecastdata/queryables" : {
+      "get" : {
+        "tags" : [ "Discover data collections" ],
+        "summary" : "retrieve the queryables of the feature collection 'waterlevelforecastdata'",
+        "description" : "The Queryables resources identifies the properties that can be referenced in filter expressions to select specific features that meet the criteria identified in the filter. The response is a JSON Schema document that describes a single JSON object where each property is a queryable.\n\nNote: The queryables schema does not specify a schema of any object that can be retrieved from the API.\n\nThe descriptive metadata (title and description of the property) as well as the schema information (data type and constraints like a list of allowed values or minimum/maxmimum values are provided to support clients to constructmeaningful queries for the data.",
+        "operationId" : "waterlevelforecastdata.getQueryables",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/access_token"
+        }, {
+          "$ref" : "#/components/parameters/fQueryables"
+        }, {
+          "$ref" : "#/components/parameters/lang"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The operation was executed successfully.",
+            "content" : {
+              "application/schema+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/anyObject"
+                }
+              },
+              "text/html" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/htmlSchema"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "406" : {
+            "description" : "Not Acceptable"
+          },
+          "500" : {
+            "description" : "Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Link" : {
+        "required" : [ "href" ],
+        "type" : "object",
+        "properties" : {
+          "href" : {
+            "type" : "string",
+            "format" : "uri-reference"
+          },
+          "rel" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          }
+        }
+      },
+      "LandingPage" : {
+        "type" : "object",
+        "properties" : {
+          "extent" : {
+            "$ref" : "#/components/schemas/Extent"
+          },
+          "attribution" : {
+            "type" : "string"
+          },
+          "externalDocs" : {
+            "$ref" : "#/components/schemas/ExternalDocumentation"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "links" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Link"
+            }
+          }
+        }
+      },
+      "StringArray" : {
+        "type" : "array",
+        "items" : {
+          "type" : "string"
+        }
+      },
+      "doubleArrayArray" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/doubleArray"
+        }
+      },
+      "Extent" : {
+        "type" : "object",
+        "properties" : {
+          "temporal" : {
+            "$ref" : "#/components/schemas/TemporalExtent"
+          },
+          "spatial" : {
+            "$ref" : "#/components/schemas/SpatialExtent"
+          }
+        }
+      },
+      "TemporalExtent" : {
+        "required" : [ "interval", "trs" ],
+        "type" : "object",
+        "properties" : {
+          "interval" : {
+            "$ref" : "#/components/schemas/StringArrayArray"
+          },
+          "trs" : {
+            "type" : "string"
+          }
+        }
+      },
+      "doubleArray" : {
+        "type" : "array",
+        "items" : {
+          "type" : "number"
+        }
+      },
+      "SpatialExtent" : {
+        "required" : [ "bbox", "crs" ],
+        "type" : "object",
+        "properties" : {
+          "crs" : {
+            "type" : "string"
+          },
+          "bbox" : {
+            "$ref" : "#/components/schemas/doubleArrayArray"
+          }
+        }
+      },
+      "ExternalDocumentation" : {
+        "required" : [ "url" ],
+        "type" : "object",
+        "properties" : {
+          "description" : {
+            "type" : "string"
+          },
+          "url" : {
+            "type" : "string"
+          }
+        }
+      },
+      "StringArrayArray" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/StringArray"
+        }
+      },
+      "htmlSchema" : {
+        "type" : "string",
+        "example" : "<html>...</html>"
+      },
+      "ConformanceDeclaration" : {
+        "type" : "object",
+        "properties" : {
+          "conformsTo" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "links" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Link"
+            }
+          }
+        }
+      },
+      "Collections" : {
+        "type" : "object",
+        "properties" : {
+          "crs" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "collections" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Collection"
+            }
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "links" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Link"
+            }
+          }
+        }
+      },
+      "Collection" : {
+        "required" : [ "id" ],
+        "type" : "object",
+        "properties" : {
+          "extent" : {
+            "$ref" : "#/components/schemas/Extent"
+          },
+          "storageCrsCoordinateEpoch" : {
+            "type" : "number"
+          },
+          "crs" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "itemType" : {
+            "type" : "string"
+          },
+          "storageCrs" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "links" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Link"
+            }
+          }
+        }
+      },
+      "featureCollectionGeoJson_waterlevelforecastdata" : {
+        "required" : [ "type", "features" ],
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "FeatureCollection" ]
+          },
+          "features" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/featureGeoJson_waterlevelforecastdata"
+            }
+          },
+          "links" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Link"
+            }
+          },
+          "timeStamp" : {
+            "$ref" : "https://raw.githubusercontent.com/opengeospatial/ogcapi-features/master/core/openapi/ogcapi-features-1.yaml#/components/schemas/timeStamp"
+          },
+          "numberMatched" : {
+            "$ref" : "https://raw.githubusercontent.com/opengeospatial/ogcapi-features/master/core/openapi/ogcapi-features-1.yaml#/components/schemas/numberMatched"
+          },
+          "numberReturned" : {
+            "$ref" : "https://raw.githubusercontent.com/opengeospatial/ogcapi-features/master/core/openapi/ogcapi-features-1.yaml#/components/schemas/numberReturned"
+          }
+        }
+      },
+      "FlatGeobuf" : {
+        "type" : "string",
+        "format" : "binary"
+      },
+      "featureGeoJson_waterlevelforecastdata" : {
+        "title" : "Water level forecast data",
+        "required" : [ "type", "geometry", "properties" ],
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "Feature" ]
+          },
+          "links" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Link"
+            }
+          },
+          "id" : {
+            "title" : "id",
+            "type" : "string"
+          },
+          "geometry" : {
+            "$ref" : "https://raw.githubusercontent.com/opengeospatial/ogcapi-features/master/core/openapi/ogcapi-features-1.yaml#/components/schemas/geometryGeoJSON"
+          },
+          "properties" : {
+            "type" : "object",
+            "properties" : {
+              "gauge_label" : {
+                "title" : "Gauge label",
+                "type" : "string"
+              },
+              "official_warning_level_region" : {
+                "title" : "Official warning level region",
+                "type" : "string"
+              },
+              "forecast_text" : {
+                "title" : "Water level forecast",
+                "required" : [ ],
+                "type" : "object",
+                "properties" : {
+                  "de" : {
+                    "title" : "Deutsch",
+                    "type" : "string"
+                  },
+                  "en" : {
+                    "title" : "English",
+                    "type" : "string"
+                  }
+                },
+                "description" : "forecast_text"
+              },
+              "forecast_text_additional" : {
+                "title" : "Water level forecast Info",
+                "required" : [ ],
+                "type" : "object",
+                "properties" : {
+                  "de" : {
+                    "title" : "Deutsch",
+                    "type" : "string"
+                  },
+                  "en" : {
+                    "title" : "English",
+                    "type" : "string"
+                  }
+                },
+                "description" : "forecast_text_additional"
+              },
+              "information_text" : {
+                "title" : "Information",
+                "required" : [ ],
+                "type" : "object",
+                "properties" : {
+                  "de" : {
+                    "title" : "Deutsch",
+                    "type" : "string"
+                  },
+                  "en" : {
+                    "title" : "English",
+                    "type" : "string"
+                  }
+                },
+                "description" : "information_text"
+              },
+              "licence" : {
+                "title" : "Licence",
+                "type" : "string"
+              },
+              "copyright" : {
+                "title" : "Copyright",
+                "required" : [ ],
+                "type" : "object",
+                "properties" : {
+                  "de" : {
+                    "title" : "Deutsch",
+                    "type" : "string"
+                  },
+                  "en" : {
+                    "title" : "English",
+                    "type" : "string"
+                  }
+                },
+                "description" : "copyright"
+              },
+              "gaugezero_relative_to_nhn" : {
+                "title" : "Gauge zero relative to NHN",
+                "type" : "number"
+              },
+              "chartdatum_relative_to_gaugezero" : {
+                "title" : "Chart datum relative to gauge zero",
+                "type" : "number"
+              },
+              "area" : {
+                "title" : "Area",
+                "type" : "string"
+              },
+              "region" : {
+                "title" : "Region",
+                "type" : "string"
+              },
+              "state" : {
+                "title" : "Federal state",
+                "type" : "string"
+              },
+              "mean_high_water" : {
+                "title" : "Mean high water",
+                "type" : "number"
+              },
+              "mean_low_water" : {
+                "title" : "Mean low water",
+                "type" : "number"
+              },
+              "latitude" : {
+                "title" : "Latitude",
+                "type" : "number"
+              },
+              "longitude" : {
+                "title" : "Longitude",
+                "type" : "number"
+              },
+              "automated_gauge_warning" : {
+                "title" : "Automated gauge warning",
+                "type" : "string"
+              },
+              "bsh_url_waterlevel" : {
+                "title" : "URL BSH waterlevel",
+                "type" : "string"
+              },
+              "measurement_url" : {
+                "title" : "URL measurement",
+                "type" : "string"
+              },
+              "operator_gauge_id" : {
+                "title" : "Operator gauge ID",
+                "type" : "string"
+              },
+              "forecast_timestamp" : {
+                "title" : "Timestamp forecast",
+                "type" : "string"
+              },
+              "automated_curveforecast_timestamp" : {
+                "title" : "Timestamp automated curveforecast",
+                "type" : "string"
+              },
+              "high_water_low_water" : {
+                "type" : "array",
+                "items" : {
+                  "title" : "high_water_low_water",
+                  "required" : [ ],
+                  "type" : "object",
+                  "properties" : {
+                    "event_timestamp" : {
+                      "title" : "Event timestamp",
+                      "type" : "string"
+                    },
+                    "event" : {
+                      "type" : "string"
+                    },
+                    "tidal_prediction_value" : {
+                      "type" : "string"
+                    },
+                    "forecast_value" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "forecast_uncertainty" : {
+                      "type" : "number"
+                    },
+                    "forecast_deviation" : {
+                      "type" : "string"
+                    },
+                    "forecast_automated_event_warning" : {
+                      "type" : "string"
+                    },
+                    "forecast_event_forecast_timestamp" : {
+                      "type" : "string"
+                    },
+                    "mos_forecast_event_forecast_timestamp" : {
+                      "title" : "Timestamp event forecast",
+                      "type" : "string"
+                    },
+                    "mos_forecast_r0_value" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "mos_forecast_r0_deviation" : {
+                      "type" : "string"
+                    },
+                    "mos_forecast_r1_value" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "mos_forecast_r1_deviation" : {
+                      "type" : "string"
+                    },
+                    "mos_forecast_r2_value" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "mos_forecast_r2_deviation" : {
+                      "type" : "string"
+                    },
+                    "mos_forecast_r3_value" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "mos_forecast_r3_deviation" : {
+                      "type" : "string"
+                    },
+                    "mos_forecast_r4_value" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "mos_forecast_r4_deviation" : {
+                      "type" : "string"
+                    },
+                    "mos_forecast_r5_value" : {
+                      "type" : "integer",
+                      "format" : "int32"
+                    },
+                    "mos_forecast_r5_deviation" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              },
+              "curve" : {
+                "type" : "array",
+                "items" : {
+                  "title" : "curve",
+                  "required" : [ ],
+                  "type" : "object",
+                  "properties" : {
+                    "timestamp" : {
+                      "type" : "string"
+                    },
+                    "measurement" : {
+                      "type" : "string"
+                    },
+                    "tidal_prediction" : {
+                      "type" : "string"
+                    },
+                    "automated_curve_forecast" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description" : "To use the filter click on 'edit' and select a field with a pattern or use the bounding box to constrain your search result. After click on 'Add' the filter is prepared and after click on 'Apply' you get a new search result via filter selection. You can deactivate your filter selection by clicking on 'Cancel'.<br><br>A brief description of the parameters can be found here <a href='https://www2.bsh.de/aktdat/wvd/api/parameter_documentation.pdf' target='_blank'>https://www2.bsh.de/aktdat/wvd/api/parameter_documentation.pdf</a>"
+      },
+      "anyObject" : {
+        "type" : "object"
+      }
+    },
+    "parameters" : {
+      "access_token" : {
+        "name" : "access_token",
+        "in" : "query",
+        "description" : "Set the authorization token for the request. If no value is provided, the standard HTTP rules apply, i.e., the authorization header will be used to determine the token.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "fCommon" : {
+        "name" : "f",
+        "in" : "query",
+        "description" : "Select the output format of the response. If no value is provided, the standard HTTP rules apply, i.e., the accept header will be used to determine the format.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "html", "json" ]
+        }
+      },
+      "lang" : {
+        "name" : "lang",
+        "in" : "query",
+        "description" : "Select the language of the response. If no value is provided, the standard HTTP rules apply, i.e., the accept-language header will be used to determine the format.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "en", "de" ]
+        }
+      },
+      "fCollections" : {
+        "name" : "f",
+        "in" : "query",
+        "description" : "Select the output format of the response. If no value is provided, the standard HTTP rules apply, i.e., the accept header will be used to determine the format.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "html", "json" ]
+        }
+      },
+      "fCollection" : {
+        "name" : "f",
+        "in" : "query",
+        "description" : "Select the output format of the response. If no value is provided, the standard HTTP rules apply, i.e., the accept header will be used to determine the format.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "html", "json" ]
+        }
+      },
+      "bbox" : {
+        "name" : "bbox",
+        "in" : "query",
+        "description" : "Only features that have a geometry that intersects the bounding box are selected. The bounding box is provided as four numbers:\n\n* Lower left corner, coordinate axis 1 \n* Lower left corner, coordinate axis 2 \n* Upper right corner, coordinate axis 1 \n* Upper right corner, coordinate axis 2 \nThe coordinate reference system of the values is WGS 84 longitude/latitude (http://www.opengis.net/def/crs/OGC/1.3/CRS84) unless a different coordinate reference system is specified in the parameter `bbox-crs`. For WGS 84 longitude/latitude the values are in most cases the sequence of minimum longitude, minimum latitude, maximum longitude and maximum latitude. However, in cases where the box spans the antimeridian the first value (west-most box edge) is larger than the third value (east-most box edge).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "array",
+          "oneOf" : [ {
+            "maxItems" : 4,
+            "minItems" : 4
+          }, {
+            "maxItems" : 6,
+            "minItems" : 6
+          } ],
+          "items" : {
+            "type" : "number",
+            "format" : "double"
+          }
+        }
+      },
+      "bbox-crsFeatures_waterlevelforecastdata" : {
+        "name" : "bbox-crs",
+        "in" : "query",
+        "description" : "The coordinate reference system of the `bbox` parameter. Default is WGS84 longitude/latitude.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "default" : "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+          "enum" : [ "http://www.opengis.net/def/crs/OGC/1.3/CRS84" ]
+        }
+      },
+      "crsFeatures_waterlevelforecastdata" : {
+        "name" : "crs",
+        "in" : "query",
+        "description" : "The coordinate reference system of the response geometries. Default is WGS84 longitude/latitude (with or without height).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "default" : "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+          "enum" : [ "http://www.opengis.net/def/crs/OGC/1.3/CRS84" ]
+        }
+      },
+      "datetime" : {
+        "name" : "datetime",
+        "in" : "query",
+        "description" : "Either a date-time or an interval. Date and time expressions adhere to RFC 3339.\nIntervals may be bounded or half-bounded (double-dots at start or end).\nExamples:\n\n* A date-time: \"2018-02-12T23:20:50Z\"\n* A bounded interval: \"2018-02-12T00:00:00Z/2018-03-18T12:31:12Z\"\n* Half-bounded intervals: \"2018-02-12T00:00:00Z/..\" or \"../2018-03-18T12:31:12Z\"\n\nOnly features that have a temporal property that intersects the value of `datetime` are selected.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "pattern" : "^(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$|^(?:[nN][oO][wW])$|^(?:(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])|(?:\\.\\.)?|(?:[nN][oO][wW]))/(?:(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])|(?:\\.\\.)?|(?:[nN][oO][wW]))$|^(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T(?:[01][0-9]|2[0-3]):(?:[0-5][0-9]):(?:[0-5][0-9]|60)(?:\\.[0-9]+)?(Z|(\\+|-)(?:[01][0-9]|2[0-3]):(?:[0-5][0-9]))$|^(?:(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T(?:[01][0-9]|2[0-3]):(?:[0-5][0-9]):(?:[0-5][0-9]|60)(?:\\.[0-9]+)?(Z|(\\+|-)(?:[01][0-9]|2[0-3]):(?:[0-5][0-9]))|(?:\\.\\.)?|(?:[nN][oO][wW]))/(?:(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T(?:[01][0-9]|2[0-3]):(?:[0-5][0-9]):(?:[0-5][0-9]|60)(?:\\.[0-9]+)?(Z|(\\+|-)(?:[01][0-9]|2[0-3]):(?:[0-5][0-9]))|(?:\\.\\.)?|(?:[nN][oO][wW]))$",
+          "type" : "string"
+        }
+      },
+      "fFeatures" : {
+        "name" : "f",
+        "in" : "query",
+        "description" : "Select the output format of the response. If no value is provided, the standard HTTP rules apply, i.e., the accept header will be used to determine the format.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "fgb", "html", "json" ]
+        }
+      },
+      "filter" : {
+        "name" : "filter",
+        "in" : "query",
+        "description" : "Filter features in the collection using the query expression in the parameter value. Filter expressions are written in the Common Query Language (CQL2), which is a candidate OGC standard. This API implements the draft version from February 2022, which is a release candidate. The language for this query parameter is CQL2 Text (`filter-lang=cql2-text`).\n\nCQL2 Text expressions are similar to SQL expressions and also support spatial, temporal and array predicates. All property references must be queryables of the collection and must be declared in the Queryables sub-resource of the collection.\n\nThe following are examples of CQL Text expressions:\n\n* Logical operators (`AND`, `OR`, `NOT`) are supported\n* Simple comparison predicates (`=`, `<>`, `<`, `>`, `<=`, `>=`):\n  * `address.LocalityName = 'Bonn'`\n  * `measuredHeight > 10`\n  * `storeysAboveGround <= 4`\n  * `creationDate > DATE('2017-12-31')`\n  * `creationDate < DATE('2018-01-01')`\n  * `creationDate >= DATE('2018-01-01') AND creationDate <= DATE('2018-12-31')`\n* Advanced comparison operators (`LIKE`, `BETWEEN`, `IN`, `IS NULL`):\n  * `name LIKE '%Kirche%'`\n  * `measuredHeight BETWEEN 10 AND 20`\n  * `address.LocalityName IN ('Bonn', 'Köln', 'Düren')`\n  * `address.LocalityName NOT IN ('Bonn', 'Köln', 'Düren')`\n  * `name IS NULL`\n  * `name IS NOT NULL`\n* Spatial operators (the standard Simple Feature operators, e.g., `S_INTERSECTS`, `S_WITHIN`):\n  * `S_INTERSECTS(bbox, POLYGON((8 52, 9 52, 9 53, 8 53, 8 52)))`\n* Temporal operators (e.g., `T_AFTER`, `T_BEFORE`, `T_INTERSECTS`)\n  * `T_AFTER(creationDate, DATE('2018-01-01'))`\n  * `T_BEFORE(creationDate, DATE('2018-01-01'))`\n  * `T_INTERSECTS(creationDate, INTERVAL('2018-01-01','2018-12-31'))`\n  * `T_INTERSECTS(INTERVAL(begin,end), INTERVAL('2018-01-01','2018-12-31'))`\n\nWarning: The final version of the Common Query Language standard may include changes to the CQL2 Text language supported by this API.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "filter-crs" : {
+        "name" : "filter-crs",
+        "in" : "query",
+        "description" : "Specify which of the supported CRSs to use to encode geometric values in a filter expression (parameter 'filter'). Default is WGS84 longitude/latitude.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "default" : "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+          "enum" : [ "http://www.opengis.net/def/crs/OGC/1.3/CRS84" ]
+        }
+      },
+      "filter-lang" : {
+        "name" : "filter-lang",
+        "in" : "query",
+        "description" : "Language of the query expression in the 'filter' parameter. Supported are 'cql2-text' (default) and 'cql2-json', specified in the OGC candidate standard 'Common Query Language (CQL2)'. 'cql2-text' is an SQL-like text encoding for filter expressions that also supports spatial, temporal and array predicates. 'cql2-json' is a JSON encoding of that grammar, suitable for use as part of a JSON object that represents a query. The use of 'cql2-text' is recommended for filter expressions in the 'filter' parameter.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "default" : "cql2-text",
+          "enum" : [ "cql2-text", "cql2-json" ]
+        }
+      },
+      "limitFeatures_waterlevelforecastdata" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "The optional limit parameter limits the number of items that are presented in the response document. Only items are counted that are on the first level of the collection in the response document. Nested objects contained within the explicitly requested items are not counted.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "maximum" : 10000,
+          "minimum" : 1,
+          "type" : "integer",
+          "format" : "int32",
+          "default" : 200
+        }
+      },
+      "offsetFeatures" : {
+        "name" : "offset",
+        "in" : "query",
+        "description" : "The optional offset parameter identifies the index of the first feature in the response in the overall result set.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "minimum" : 0,
+          "type" : "integer",
+          "format" : "int32",
+          "default" : 0
+        }
+      },
+      "resultTypeFeatures" : {
+        "name" : "result-type",
+        "in" : "query",
+        "description" : "'hitsOnly'.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "hitsOnly" ]
+        }
+      },
+      "gauge_label_waterlevelforecastdata" : {
+        "name" : "gauge_label",
+        "in" : "query",
+        "description" : "Filter the collection by property 'gauge_label' (Gauge label).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Gauge label",
+          "type" : "string"
+        }
+      },
+      "official_warning_level_region_waterlevelforecastdata" : {
+        "name" : "official_warning_level_region",
+        "in" : "query",
+        "description" : "Filter the collection by property 'official_warning_level_region' (Official warning level region).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Official warning level region",
+          "type" : "string"
+        }
+      },
+      "licence_waterlevelforecastdata" : {
+        "name" : "licence",
+        "in" : "query",
+        "description" : "Filter the collection by property 'licence' (Licence).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Licence",
+          "type" : "string"
+        }
+      },
+      "gaugezero_relative_to_nhn_waterlevelforecastdata" : {
+        "name" : "gaugezero_relative_to_nhn",
+        "in" : "query",
+        "description" : "Filter the collection by property 'gaugezero_relative_to_nhn' (Gauge zero relative to NHN).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Gauge zero relative to NHN",
+          "type" : "number"
+        }
+      },
+      "chartdatum_relative_to_gaugezero_waterlevelforecastdata" : {
+        "name" : "chartdatum_relative_to_gaugezero",
+        "in" : "query",
+        "description" : "Filter the collection by property 'chartdatum_relative_to_gaugezero' (Chart datum relative to gauge zero).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Chart datum relative to gauge zero",
+          "type" : "number"
+        }
+      },
+      "area_waterlevelforecastdata" : {
+        "name" : "area",
+        "in" : "query",
+        "description" : "Filter the collection by property 'area' (Area).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Area",
+          "type" : "string"
+        }
+      },
+      "region_waterlevelforecastdata" : {
+        "name" : "region",
+        "in" : "query",
+        "description" : "Filter the collection by property 'region' (Region).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Region",
+          "type" : "string"
+        }
+      },
+      "state_waterlevelforecastdata" : {
+        "name" : "state",
+        "in" : "query",
+        "description" : "Filter the collection by property 'state' (Federal state).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Federal state",
+          "type" : "string"
+        }
+      },
+      "mean_high_water_waterlevelforecastdata" : {
+        "name" : "mean_high_water",
+        "in" : "query",
+        "description" : "Filter the collection by property 'mean_high_water' (Mean high water).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Mean high water",
+          "type" : "number"
+        }
+      },
+      "mean_low_water_waterlevelforecastdata" : {
+        "name" : "mean_low_water",
+        "in" : "query",
+        "description" : "Filter the collection by property 'mean_low_water' (Mean low water).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Mean low water",
+          "type" : "number"
+        }
+      },
+      "latitude_waterlevelforecastdata" : {
+        "name" : "latitude",
+        "in" : "query",
+        "description" : "Filter the collection by property 'latitude' (Latitude).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Latitude",
+          "type" : "number"
+        }
+      },
+      "longitude_waterlevelforecastdata" : {
+        "name" : "longitude",
+        "in" : "query",
+        "description" : "Filter the collection by property 'longitude' (Longitude).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Longitude",
+          "type" : "number"
+        }
+      },
+      "automated_gauge_warning_waterlevelforecastdata" : {
+        "name" : "automated_gauge_warning",
+        "in" : "query",
+        "description" : "Filter the collection by property 'automated_gauge_warning' (Automated gauge warning).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Automated gauge warning",
+          "type" : "string"
+        }
+      },
+      "bsh_url_waterlevel_waterlevelforecastdata" : {
+        "name" : "bsh_url_waterlevel",
+        "in" : "query",
+        "description" : "Filter the collection by property 'bsh_url_waterlevel' (URL BSH waterlevel).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "URL BSH waterlevel",
+          "type" : "string"
+        }
+      },
+      "measurement_url_waterlevelforecastdata" : {
+        "name" : "measurement_url",
+        "in" : "query",
+        "description" : "Filter the collection by property 'measurement_url' (URL measurement).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "URL measurement",
+          "type" : "string"
+        }
+      },
+      "operator_gauge_id_waterlevelforecastdata" : {
+        "name" : "operator_gauge_id",
+        "in" : "query",
+        "description" : "Filter the collection by property 'operator_gauge_id' (Operator gauge ID).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Operator gauge ID",
+          "type" : "string"
+        }
+      },
+      "forecast_timestamp_waterlevelforecastdata" : {
+        "name" : "forecast_timestamp",
+        "in" : "query",
+        "description" : "Filter the collection by property 'forecast_timestamp' (Timestamp forecast).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Timestamp forecast",
+          "type" : "string"
+        }
+      },
+      "automated_curveforecast_timestamp_waterlevelforecastdata" : {
+        "name" : "automated_curveforecast_timestamp",
+        "in" : "query",
+        "description" : "Filter the collection by property 'automated_curveforecast_timestamp' (Timestamp automated curveforecast).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "Timestamp automated curveforecast",
+          "type" : "string"
+        }
+      },
+      "seo_id_waterlevelforecastdata" : {
+        "name" : "seo_id",
+        "in" : "query",
+        "description" : "Filter the collection by property 'seo_id' (id).",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "title" : "id",
+          "type" : "string"
+        }
+      },
+      "featureId" : {
+        "name" : "featureId",
+        "in" : "path",
+        "description" : "The local identifier of a feature, unique within the feature collection.",
+        "required" : true,
+        "schema" : {
+          "pattern" : "[^/ ]+",
+          "type" : "string"
+        }
+      },
+      "fQueryables" : {
+        "name" : "f",
+        "in" : "query",
+        "description" : "Select the output format of the response. If no value is provided, the standard HTTP rules apply, i.e., the accept header will be used to determine the format.",
+        "required" : false,
+        "style" : "form",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "html", "json" ]
+        }
+      }
+    }
+  }
+}
