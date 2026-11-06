@@ -235,25 +235,31 @@ async function linz () {
   for (const link of data) await get('linz-constituents', abs(link))
 }
 
-// --- BSH (Germany): yearly tide predictions per gauge from the tide portal --------------------
+// --- BSH (Germany): Water Level Forecast API (OGC API Features, ldproxy) and the tide portal -----
 async function bsh () {
-  const links = (body, base) => [...new Set((body.match(/href="([^"]+)"/gi) || []).map(h => h.slice(6, -1)))]
-    .map(l => { try { return new URL(l.replace(/&amp;/g, '&'), base).toString() } catch (e) { return null } }).filter(Boolean)
-  const home = 'https://gezeiten.bsh.de/'
-  const start = await get('bsh-portal', home)
-  await get('bsh-portal-en', `${home}en`)
-  const all = links(start.body, home)
-  // station pages: one per gauge, e.g. .../cuxhaven-steubenhoeft
-  const wanted = [/cuxhaven/i, /helgoland/i, /b(ue|ü|%C3%BC)sum/i]
-  const pages = wanted.map(re => all.find(l => re.test(l) && !/\.(pdf|txt|zip|csv)(\?|$)/i.test(l))).filter(Boolean)
-  for (const [i, page] of pages.entries()) {
-    const station = await get(`bsh-station-${i + 1}`, page)
-    const files = links(station.body, page).filter(l => /\.(txt|csv|zip|xml|json|pdf)(\?|$)|download|export/i.test(l))
-    // the year's files (high/low waters, 10-minute curve) and the format descriptions
-    for (const [j, file] of files.slice(0, 6).entries()) await get(`bsh-station-${i + 1}-file-${j + 1}`, file)
+  const api = 'https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast'
+  await get('bsh-api-landing', `${api}?f=json`)
+  await get('bsh-api-openapi', `${api}/api?f=json`)
+  const collections = (await get('bsh-api-collections', `${api}/collections?f=json`)).json()
+  for (const c of ((collections && collections.collections) || []).slice(0, 6)) {
+    const id = encodeURIComponent(c.id)
+    await get(`bsh-api-${c.id}-queryables`, `${api}/collections/${id}/queryables?f=json`)
+    await get(`bsh-api-${c.id}-items`, `${api}/collections/${id}/items?f=json&limit=5`)
   }
-  // the terms for tide data (fee schedule for digital data)
-  await get('bsh-gezeiten-info', 'https://www.bsh.de/DE/DATEN/Vorhersagen/Gezeiten/gezeiten_node.html')
+  // the tide portal is a script page: its scripts, and the data addresses they fetch
+  const portal = 'https://gezeiten.bsh.de'
+  const urls = new Set()
+  for (const script of ['/gezeiten/index.js', '/gezeiten/common.js', '/shared/shared.js']) {
+    const js = await get(`bsh-portal${script.replace(/[/.]/g, '-')}`, portal + script)
+    for (const m of js.body.matchAll(/["'`]((?:https?:\/\/[^"'`\s]+|\/[^"'`\s]*?)\.(?:json|txt|csv|geojson)[^"'`\s]*)["'`]/g)) urls.add(m[1])
+    for (const m of js.body.matchAll(/["'`](https?:\/\/[^"'`\s]*(?:api|data|ldproxy)[^"'`\s]*)["'`]/g)) urls.add(m[1])
+  }
+  for (const [k, u] of [...urls].filter(u => !u.includes('${')).slice(0, 8).entries()) {
+    await get(`bsh-portal-data-${k + 1}`, u.startsWith('http') ? u : portal + u)
+  }
+  // terms: licences and the fee schedule for digital data
+  await get('bsh-licences', 'https://www.bsh.de/DE/Das_BSH/Gebuehren_Preise/Nutzungsbedingungen/lizenzen_node.html')
+  await get('bsh-fees', 'https://www.bsh.de/DE/Das_BSH/Gebuehren_Preise/Gebuehren_und_Preise/_Anlagen/Downloads/Entgeltverzeichnis-digitale-Daten.html')
 }
 
 const SOURCES = {
