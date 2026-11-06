@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- BSH provider (Germany, North Sea and Baltic): official high and low water predictions, the predicted
+  level, BSH's water level forecast and the measured level at about 136 coastal stations, from the BSH
+  Water Level Forecast API, above chart datum or NHN. Free, CC BY 4.0 (#85).
+
 ## 0.8.2
 
 ### Changed

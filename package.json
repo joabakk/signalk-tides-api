@@ -23,6 +23,7 @@
     "test/noaa.test.js",
     "test/ioc.test.js",
     "test/linz.test.js",
+    "test/bsh.test.js",
     "test/fixtures/*.json",
     "test/fixtures/*.xml",
     "test/fixtures/*.csv",
@@ -30,7 +31,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "node test/kartverket.test.js && node test/dmi.test.js && node test/tides-resource.test.js && node test/tide-provider.test.js && node test/openmeteo.test.js && node test/offline.test.js && node test/chs.test.js && node test/rws.test.js && node test/smhi.test.js && node test/fmi.test.js && node test/ireland.test.js && node test/germany.test.js && node test/ea.test.js && node test/noaa.test.js && node test/ioc.test.js && node test/linz.test.js"
+    "test": "node test/kartverket.test.js && node test/dmi.test.js && node test/tides-resource.test.js && node test/tide-provider.test.js && node test/openmeteo.test.js && node test/offline.test.js && node test/chs.test.js && node test/rws.test.js && node test/smhi.test.js && node test/fmi.test.js && node test/ireland.test.js && node test/germany.test.js && node test/ea.test.js && node test/noaa.test.js && node test/ioc.test.js && node test/linz.test.js && node test/bsh.test.js"
   },
   "keywords": [
     "signalk-node-server-plugin",
@@ -50,7 +51,8 @@
     "environment-agency",
     "pegelonline",
     "linz",
-    "ioc"
+    "ioc",
+    "bsh"
   ],
   "author": {
     "name": "Joachim Bakke"

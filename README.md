@@ -2,7 +2,7 @@
 
 This is a copy of sbender9's derived-data.
 
-Currently serving worldtide.info API, NOAA (US), Kartverket (Norway), DMI (Denmark), Rijkswaterstaat (Netherlands), CHS (Canada) and the Marine Institute (Ireland) and LINZ (New Zealand) free data, measured and forecast sea level from SMHI (Sweden), FMI (Finland), PEGELONLINE (Germany) and the Environment Agency (England), raw measured sea level worldwide from the IOC sea level monitoring facility, the Open-Meteo marine model worldwide, and offline harmonic predictions computed on the boat. It can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
+Currently serving worldtide.info API, NOAA (US), Kartverket (Norway), DMI (Denmark), Rijkswaterstaat (Netherlands), CHS (Canada) and the Marine Institute (Ireland), BSH (Germany) and LINZ (New Zealand) free data, measured and forecast sea level from SMHI (Sweden), FMI (Finland), PEGELONLINE (Germany) and the Environment Agency (England), raw measured sea level worldwide from the IOC sea level monitoring facility, the Open-Meteo marine model worldwide, and offline harmonic predictions computed on the boat. It can potentially serve other APIs and web sources for tidal data. Please feel free to contribute
 
 > **Coming back from signalk-tides?** In 2025 this plugin stopped producing data on newer servers
 > (#67), and [signalk-tides](https://www.npmjs.com/package/signalk-tides) by @bkeepers was published
@@ -28,6 +28,7 @@ comes from, e.g. `tides-api.kartverket` or `tides-api.noaa` (shown in the Data B
 | FMI | Finland (sea level forecast and measurements) | no |
 | Marine Institute | Ireland | no |
 | Environment Agency | England (measured tide level only) | no |
+| BSH | Germany, North Sea and Baltic (predictions, forecast, measurements) | no |
 | PEGELONLINE | Germany (measured water level only) | no |
 | LINZ | New Zealand (high and low waters) | no |
 | IOC sea level monitoring | worldwide (raw measured level, gauge zero not referenced) | no |
@@ -277,6 +278,38 @@ arrive about 45 minutes late; values older than 2 hours are not published.
 Status: checked against real responses for Dover and Newlyn (October 2026). Data: Environment Agency,
 Open Government Licence v3 (the service is marked beta).
 
+### BSH (Germany)
+
+Uses the BSH's Water Level Forecast API (https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast),
+open data of the Federal Maritime and Hydrographic Agency: at about 136 stations on the North Sea and
+Baltic coasts, the official high and low water predictions, the predicted level every 10 minutes, BSH's
+water level forecast and the measured level (from the station's PEGELONLINE gauge), in one answer per
+station. Baltic stations have no tide predictions (the Baltic has hardly any tide), only the forecast
+and the measurement.
+
+| Path | Contents |
+|---|---|
+| `environment.tide.heightHigh`, `environment.tide.timeHigh`, `heightLow`, `timeLow` | next high and low water (astronomical prediction; North Sea) |
+| `environment.tide.heightNow` | measured level if from the last hour, otherwise the forecast, otherwise the prediction |
+| `environment.tide.heightPredicted` | astronomical tide now |
+| `environment.tide.heightForecast` | BSH's water level forecast now, with wind and air pressure |
+| `environment.tide.heightObserved` | latest measured level |
+| `environment.tide.weatherEffect` | measured minus predicted |
+
+| Option | Default | |
+|---|---|---|
+| Reference level | CD | chart datum (LAT on the North Sea, mean water on the Baltic); `NHN` gives the German height datum. BSH gives each station's chart datum and NHN relative to its gauge zero |
+| Minutes between updates | 15 | minimum 10 |
+| Use the nearest station within (km) | 30 | |
+| API address | `https://gdi.bsh.de/ldproxy/rest/services/WaterLevelForecast/collections/waterlevelforecastdata` | |
+
+Requests: the stations near the boat (a small `bbox` search, which also returns their data) after a move
+of 5 km, then the nearest station at the update interval (about 37 kB). On the German coast, BSH gives
+everything PEGELONLINE gives plus the predictions and forecasts, so enable one of the two there.
+Status: checked against real responses for Alte Weser and Althagen (November 2026). Data: BSH, open data
+under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); official water level forecasts per §1
+SeeAufG; the BSH accepts no liability for them.
+
 ### PEGELONLINE (Germany)
 
 Uses PEGELONLINE of the Federal Waterways and Shipping Administration (https://www.pegelonline.wsv.de):
@@ -398,7 +431,7 @@ $ curl http://localhost:3000/signalk/v2/api/resources/tides
 ```
 
 The data comes from the first enabled provider that has data for the boat's position: the station-based
-providers first (CHS `datum` CD, LINZ CD, DMI DVR90 or LAT, Kartverket the chosen reference level,
+providers first (BSH `datum` CD or NHN, CHS CD, LINZ CD, DMI DVR90 or LAT, Kartverket the chosen reference level,
 Marine Institute LAT or OD Malin, NOAA MLLW, Rijkswaterstaat NAP), then the fallbacks, the offline
 predictions and Open-Meteo (`datum` MSL). worldtides.info, SMHI, FMI, PEGELONLINE, the Environment
 Agency and IOC (no predictions) do not provide it. Each answer has the next 7 days of highs and lows, and says
