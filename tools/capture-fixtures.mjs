@@ -11,7 +11,7 @@
  * something is wrong.
  *
  * Only some sources:   node tools/capture-fixtures.mjs ireland germany ioc
- * Sources: smhi fmi rws chs openmeteo ireland germany ea ioc noaa linz
+ * Sources: smhi fmi rws chs openmeteo ireland germany ea ioc noaa linz bsh
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -235,6 +235,27 @@ async function linz () {
   for (const link of data) await get('linz-constituents', abs(link))
 }
 
+// --- BSH (Germany): yearly tide predictions per gauge from the tide portal --------------------
+async function bsh () {
+  const links = (body, base) => [...new Set((body.match(/href="([^"]+)"/gi) || []).map(h => h.slice(6, -1)))]
+    .map(l => { try { return new URL(l.replace(/&amp;/g, '&'), base).toString() } catch (e) { return null } }).filter(Boolean)
+  const home = 'https://gezeiten.bsh.de/'
+  const start = await get('bsh-portal', home)
+  await get('bsh-portal-en', `${home}en`)
+  const all = links(start.body, home)
+  // station pages: one per gauge, e.g. .../cuxhaven-steubenhoeft
+  const wanted = [/cuxhaven/i, /helgoland/i, /b(ue|ü|%C3%BC)sum/i]
+  const pages = wanted.map(re => all.find(l => re.test(l) && !/\.(pdf|txt|zip|csv)(\?|$)/i.test(l))).filter(Boolean)
+  for (const [i, page] of pages.entries()) {
+    const station = await get(`bsh-station-${i + 1}`, page)
+    const files = links(station.body, page).filter(l => /\.(txt|csv|zip|xml|json|pdf)(\?|$)|download|export/i.test(l))
+    // the year's files (high/low waters, 10-minute curve) and the format descriptions
+    for (const [j, file] of files.slice(0, 6).entries()) await get(`bsh-station-${i + 1}-file-${j + 1}`, file)
+  }
+  // the terms for tide data (fee schedule for digital data)
+  await get('bsh-gezeiten-info', 'https://www.bsh.de/DE/DATEN/Vorhersagen/Gezeiten/gezeiten_node.html')
+}
+
 const SOURCES = {
   smhi: ['SMHI', smhi],
   fmi: ['FMI', fmi],
@@ -246,7 +267,8 @@ const SOURCES = {
   ea: ['Environment Agency (England)', ea],
   ioc: ['IOC sea level monitoring', ioc],
   noaa: ['NOAA', noaa],
-  linz: ['LINZ (New Zealand)', linz]
+  linz: ['LINZ (New Zealand)', linz],
+  bsh: ['BSH tide portal (Germany)', bsh]
 }
 const asked = process.argv.slice(2)
 const unknown = asked.filter(a => !SOURCES[a])
